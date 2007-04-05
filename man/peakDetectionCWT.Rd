@@ -28,8 +28,7 @@ peakDetectionCWT(ms, scales = c(1, seq(2, 30, 2), seq(32, 64, 4)), SNR.Th = 3, n
   \item{wCoefs} { 2-D CWT coefficient matrix, see \code{\link{cwt}} for details.}
 }
 \references{ 
-Pan Du, Warren A. Kibbe, Simon M. Lin, Improved peak detection in mass spectrum by incorporating continuous wavelet transform-based pattern matching, Bioinformatics Advance Access published online on July 4, 2006
-(http://bioinformatics.oxfordjournals.org/cgi/content/abstract/btl355?ijkey=HfCb7kHvQBY6HE6&keytype=ref)
+Du, P., Kibbe, W.A. and Lin, S.M. (2006) Improved peak detection in mass spectrum by incorporating continuous wavelet transform-based pattern matching, Bioinformatics, 22, 2059-2065.
 }
 \author{Pan Du, Simon Lin}
 

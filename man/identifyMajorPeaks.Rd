@@ -38,10 +38,10 @@ Return a list with following elements:
   \item{potentialPeakIndex}{the m/z indexes of all potential peaks, which satisfy all requirements of a peak without considering its SNR. Useful, if you want to change to a lower SNR threshold later.}
   \item{allPeakIndex}{the m/z indexes of all the peaks, whose order is the same as peakCenterIndex, peakCenterValue, peakSNR and peakScale.}
 
+All of these return elements have peak names, which are the same as the corresponding peak ridges. see \code{\link{getRidge}} for details.
 }
 \references{
-Pan Du, Warren A. Kibbe, Simon M. Lin, Improved peak detection in mass spectrum by incorporating continuous wavelet transform-based pattern matching, Bioinformatics Advance Access published online on July 4, 2006
-(http://bioinformatics.oxfordjournals.org/cgi/content/abstract/btl355?ijkey=HfCb7kHvQBY6HE6&keytype=ref)
+Du, P., Kibbe, W.A. and Lin, S.M. (2006) Improved peak detection in mass spectrum by incorporating continuous wavelet transform-based pattern matching, Bioinformatics, 22, 2059-2065.
 }
 \author{Pan Du, Simon Lin}
 

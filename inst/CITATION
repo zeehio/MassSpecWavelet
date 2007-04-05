@@ -1,0 +1,14 @@
+citHeader("To cite MassSpecWavelet package in publications use:")
+
+citEntry(entry="article",  
+   author="Pan Du, Warren A. Kibbe, and Simon M. Lin",
+   title="Improved peak detection in mass spectrum by incorporating continuous wavelet transform-based pattern matching",
+   journal="Bioinformatics",
+   year="2006",
+   volume="22",
+   pages="2059-2065",
+   textVersion = paste("Du, P., Kibbe, W.A. and Lin, S.M. (2006) Improved peak detection in mass spectrum by incorporating continuous wavelet transform-based pattern matching, Bioinformatics, 22, 2059-2065."))
+
+citFooter("We have invested a lot of time and effort in creating the MassSpecWavelet package,",
+          "please cite it when using it for data analysis.")
+

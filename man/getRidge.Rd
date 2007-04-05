@@ -20,11 +20,10 @@ getRidge(localMax, iInit = ncol(localMax), step = -1, iFinal = 1, minWinSize= 5,
 }
 
 \value{
- Return a list of ridge, with m/z index of peak at the raw spectrum as the names of the ridges.
+ Return a list of ridge. As some ridges may end at the scale larger than 1, in order to keep the uniqueness of the ridge names, we combined the smallest scale of the ridge and m/z index of the peak at that scale together to name the ridges. For example the ridge name "1\_653" means the peak ridge ends at the CWT scale 1 with m/z index 653 at scale 1. 
 }
 \references{ 
-Pan Du, Warren A. Kibbe, Simon M. Lin, Improved peak detection in mass spectrum by incorporating continuous wavelet transform-based pattern matching, Bioinformatics Advance Access published online on July 4, 2006
-(http://bioinformatics.oxfordjournals.org/cgi/content/abstract/btl355?ijkey=HfCb7kHvQBY6HE6&keytype=ref)
+Du, P., Kibbe, W.A. and Lin, S.M. (2006) Improved peak detection in mass spectrum by incorporating continuous wavelet transform-based pattern matching, Bioinformatics, 22, 2059-2065.
 }
 \author{ Pan Du, Simon Lin }
 \seealso{ \code{\link{getLocalMaximumCWT}}, \code{\link{identifyMajorPeaks}}}

@@ -51,7 +51,7 @@ Load the example data
 data(exampleMS)
 @ 
 
-Continuous wavelet transform with Mexican Hat wavelet. \\ The 2-D CWT coefficients image of MS spectrum in [5000, 11000] is shown in Figure \~ref{fig:cwt}
+Continuous wavelet transform with Mexican Hat wavelet. \\ The 2-D CWT coefficients image of MS spectrum in [5000, 11000] is shown in Figure \ref{fig:cwt}
 <<>>=
 scales <- seq(1, 64, 2)
  wCoefs <- cwt(exampleMS, scales = scales, wavelet = "mexh")
@@ -76,7 +76,7 @@ box()
 
 \subsection{Peak identification process}
 Identify the ridges by linking the local maxima \\
-The identified local maxima is shown in Figure \~ref{fig:localMax}
+The identified local maxima is shown in Figure \ref{fig:localMax}
 
 <<>>=
 ## Attach the raw spectrum as the first column
@@ -109,7 +109,7 @@ plotRidgeList(ridgeList,  wCoefs, range=plotRange)
 \label{fig:ridge}
 \end{figure}            
 
-Identify the identified ridges lines and SNR
+Identify the identified ridges lines and SNR using \Rfunction{identifyMajorPeaks}. The returns of \Rfunction{identifyMajorPeaks} include the peakIndex, peakSNR and etc. All these elements carry peak names, which are the same as the corresponding peak ridges. See function \Rfunction{getRidge} for details.
 
 <<>>=
 SNR.Th <- 3
@@ -118,6 +118,8 @@ majorPeakInfo <- identifyMajorPeaks(ridgeList, wCoefs, SNR.Th = SNR.Th, nearbyPe
 ## Plot the identified peaks
 peakIndex <- majorPeakInfo$peakIndex
 @
+
+Plot the specta with identified peaks marked with read circles.
 \begin{figure}
 \centering
 <<fig=true, width=10, height=5>>=

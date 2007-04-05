@@ -1,0 +1,46 @@
+\name{peakDetectionCWT}
+\alias{peakDetectionCWT}
+\title{ The main function of peak detection by CWT based pattern matching }
+\description{
+  This function is a wrapper of \code{\link{cwt}}, \code{\link{getLocalMaximumCWT}}, \code{\link{getRidge}}, \code{\link{identifyMajorPeaks}}
+}
+\usage{
+peakDetectionCWT(ms, scales = c(1, seq(2, 30, 2), seq(32, 64, 4)), SNR.Th = 3, nearbyPeak = TRUE, peakScaleRange = 5, amp.Th = 0.01, minNoiseLevel = amp.Th/SNR.Th, ridgeLength = 24, tuneIn = FALSE, ...)
+}
+%- maybe also 'usage' for other objects documented here.
+\arguments{
+  \item{ms}{ the mass spectrometry spectrum }
+  \item{scales}{ scales of CWT }
+  \item{SNR.Th}{ SNR (Signal to Noise Ratio) threshold}
+  \item{nearbyPeak}{ Determine whether to include the nearby small peaks of major peaks. TRUE by default}
+  \item{peakScaleRange}{ the scale range of the peak. larger than 5 by default. }
+  \item{amp.Th}{ the minimum required amplitude of the peak }
+  \item{minNoiseLevel}{ the minimum noise level used in computing the SNR }
+  \item{ridgeLength}{ the minimum highest scale of the peak in 2-D CWT coefficient matrix }
+  \item{tuneIn}{ determine whether to tune in the parameter estimation of the detected peaks }
+  \item{\dots}{ other parameters of used by \code{\link{getLocalMaximumCWT}}, \code{\link{getRidge}}, \code{\link{identifyMajorPeaks}} }
+}
+
+\value{
+  \item{majorPeakInfo}{ return of \code{\link{identifyMajorPeaks}}}
+  \item{ridgeList}{return of \code{\link{getRidge}}}
+  \item{localMax}{ return of \code{\link{getLocalMaximumCWT}} }
+  \item{wCoefs} { 2-D CWT coefficient matrix, see \code{\link{cwt}} for details.}
+}
+\references{ 
+Pan Du, Warren A. Kibbe, Simon M. Lin, Improved peak detection in mass spectrum by incorporating continuous wavelet transform-based pattern matching, Bioinformatics Advance Access published online on July 4, 2006
+(http://bioinformatics.oxfordjournals.org/cgi/content/abstract/btl355?ijkey=HfCb7kHvQBY6HE6&keytype=ref)
+}
+\author{Pan Du, Simon Lin}
+
+\seealso{ \code{\link{cwt}}, \code{\link{getLocalMaximumCWT}}, \code{\link{getRidge}}, \code{\link{identifyMajorPeaks}} }
+\examples{
+	data(exampleMS)
+	SNR.Th <- 3
+	peakInfo <- peakDetectionCWT(exampleMS, SNR.Th=SNR.Th)
+	majorPeakInfo = peakInfo$majorPeakInfo
+	peakIndex <- majorPeakInfo$peakIndex
+	plotPeak(exampleMS, peakIndex, main=paste('Identified peaks with SNR >', SNR.Th)) 
+}
+\keyword{methods}
+

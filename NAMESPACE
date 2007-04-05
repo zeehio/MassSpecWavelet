@@ -1,0 +1,1 @@
+export(cwt, getLocalMaximumCWT, getRidge, getRidgeLength, identifyMajorPeaks, localMaximum, peakDetectionCWT, plotLocalMax, plotPeak, plotRidgeList, tuneInPeakInfo)

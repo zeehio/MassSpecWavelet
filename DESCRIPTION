@@ -1,7 +1,7 @@
 Package: MassSpecWavelet
 Type: Package
 Title: Mass spectrum processing by wavelet-based algorithms
-Version: 1.1.4
+Version: 1.2.0
 Date: 2007-04-05
 Depends: waveslim
 Author: Pan Du, Warren Kibbe, Simon Lin

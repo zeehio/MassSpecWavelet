@@ -14,9 +14,9 @@ function(localMax, iInit=ncol(localMax), step=-1, iFinal=1, minWinSize=5, gapTh=
 	## Identify all the peak pathes from the coarse level to detail levels (high column to low column)
 	## Only consider the shortest path
 	colInd <- seq(iInit+step, iFinal, step)
-	ridgeList <- sapply(maxInd_curr, as.list)
+	ridgeList <- as.list(maxInd_curr)
 	names(ridgeList) <- maxInd_curr
-	peakStatus <- sapply(rep(0, length(maxInd_curr)), as.list)
+	peakStatus <- as.list(rep(0, length(maxInd_curr)))
 	names(peakStatus) <- maxInd_curr
 	
 	## orphanRidgeList keep the ridges disconnected at certain scale level
@@ -31,8 +31,8 @@ function(localMax, iInit=ncol(localMax), step=-1, iFinal=1, minWinSize=5, gapTh=
 
 		if (colInd[j] == skip) {
 			oldname <- names(ridgeList)
-			ridgeList <- sapply(ridgeList, function(x) c(x, x[length(x)]))
-			#peakStatus <- sapply(peakStatus, function(x) c(x, x[length(x)]))
+			ridgeList <- lapply(ridgeList, function(x) c(x, x[length(x)]))
+			#peakStatus <- lapply(peakStatus, function(x) c(x, x[length(x)]))
 			names(ridgeList) <- oldname
 			#names(peakStatus) <- oldname
 			next
@@ -103,20 +103,20 @@ function(localMax, iInit=ncol(localMax), step=-1, iFinal=1, minWinSize=5, gapTh=
 		## Update the names of the ridgeList as the new selected peaks
 		#if (scale.j >= 2) {
 			names(ridgeList) <- selPeak.j
-			names(peakStatus) <- selPeak.j			
+			names(peakStatus) <- selPeak.j
 		#}
 		
 		## If the level is larger than 3, expand the peak list by including other unselected peaks at that level
 		if (scale.j >= 2) {
 			maxInd_next <- which(localMax[, col.j] > 0)
 			unSelPeak.j <- maxInd_next[!(maxInd_next %in% selPeak.j)]
-			newPeak.j <- sapply(unSelPeak.j, as.list)
+			newPeak.j <- as.list(unSelPeak.j)
 			names(newPeak.j) <- unSelPeak.j
 			## Update ridgeList
 			ridgeList <- c(ridgeList, newPeak.j)
 			maxInd_curr <- c(selPeak.j, unSelPeak.j)
 			## Update peakStatus
-			newPeakStatus <- sapply(rep(0, length(newPeak.j)), as.list)
+			newPeakStatus <- as.list(rep(0, length(newPeak.j)))
 			names(newPeakStatus) <- newPeak.j
 			peakStatus <- c(peakStatus, newPeakStatus)
 		} else {

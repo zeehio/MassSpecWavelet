@@ -3,6 +3,7 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Get the CWT coefficient values corresponding to the peak ridge}
 \description{
+Get the CWT coefficient values corresponding to the peak ridge
 }
 \usage{
 getRidgeValue(ridgeList, wCoefs, skip = 0)

@@ -3,8 +3,7 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{ smooth (denoise) the spectrum by DWT (Discrete Wavelet Transform) }
 \description{
-  
-
+  Smooth (denoise) the spectrum by DWT (Discrete Wavelet Transform)
 }
 \usage{
 smoothDWT(ms, nLevel = 6, wf = "la8", localNoiseTh = seq(1, 0, by = -0.2), localWinSize = 500, globalNoiseTh = 0.75, smoothMethod = c("soft", "hard"), method = c('dwt', 'modwt'))

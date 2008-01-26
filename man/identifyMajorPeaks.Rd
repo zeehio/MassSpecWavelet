@@ -5,10 +5,11 @@
 \description{
 Indentify the peaks based on the ridge list (returned by \code{\link{getRidge}}) in 2-D CWT coefficient matrix and estimated Signal to Noise Ratio (SNR) }
 \usage{
-identifyMajorPeaks(ridgeList, wCoefs, scales = as.numeric(colnames(wCoefs)), SNR.Th = 3, peakScaleRange = 5, ridgeLength = 32, nearbyPeak = FALSE, nearbyWinSize = 100, winSize.noise = 500, SNR.method = "quantile", minNoiseLevel = 0.001)
+identifyMajorPeaks(ms, ridgeList, wCoefs, scales = as.numeric(colnames(wCoefs)), SNR.Th = 3, peakScaleRange = 5, ridgeLength = 32, nearbyPeak = FALSE, nearbyWinSize = 100, winSize.noise = 500, SNR.method = "quantile", minNoiseLevel = 0.001)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
+  \item{ms}{ the mass spectrometry spectrum }  
   \item{ridgeList}{returned by \code{\link{getRidge}}}
   \item{wCoefs}{ 2-D CWT coefficients }
   \item{scales}{ scales of CWT, by default it is the colnames of wCoefs }
@@ -55,7 +56,7 @@ Du, P., Kibbe, W.A. and Lin, S.M. (2006) Improved peak detection in mass spectru
 	ridgeList <- getRidge(localMax)
 	
 	SNR.Th <- 3
-	majorPeakInfo <- identifyMajorPeaks(ridgeList, wCoefs, SNR.Th=SNR.Th)
+	majorPeakInfo <- identifyMajorPeaks(exampleMS, ridgeList, wCoefs, SNR.Th=SNR.Th)
 	## Plot the identified peaks
 	peakIndex <- majorPeakInfo$peakIndex
 	plotPeak(exampleMS, peakIndex, main=paste('Identified peaks with SNR >', SNR.Th)) 

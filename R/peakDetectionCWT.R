@@ -1,6 +1,6 @@
 "peakDetectionCWT" <-
 function(ms, scales=c(1, seq(2,30,2),seq(32, 64, 4)), SNR.Th=3, nearbyPeak=TRUE, peakScaleRange=5, 
-		amp.Th=0.01, minNoiseLevel=amp.Th/SNR.Th, ridgeLength=24, tuneIn=FALSE, ... ) {
+		amp.Th=0.01, minNoiseLevel=amp.Th/SNR.Th, ridgeLength=24, tuneIn=FALSE, ...) {
 
 	if (minNoiseLevel > 1)  names(minNoiseLevel) <- 'fixed' 
 	## Perform Continuous Wavelet Transform
@@ -22,16 +22,16 @@ function(ms, scales=c(1, seq(2,30,2),seq(32, 64, 4)), SNR.Th=3, nearbyPeak=TRUE,
 			amp.Th <- max(wCoefs) * amp.Th
 		}
 	} 
-	localMax <- getLocalMaximumCWT(wCoefs, amp.Th=amp.Th, ...)
+	localMax <- getLocalMaximumCWT(wCoefs, amp.Th=amp.Th)
 	colnames(localMax) <- colnames(wCoefs)
 
 	##-----------------------------------------
 	## Indentify the ridges from coarse level to more detailed levels
-	ridgeList <- getRidge(localMax, gapTh=3, skip=2, ...)
+	ridgeList <- getRidge(localMax, gapTh=3, skip=2)
 
 	##-----------------------------------------
 	## Indentify the major peaks and their nearby peaks 
-	majorPeakInfo <- identifyMajorPeaks(ridgeList, wCoefs, SNR.Th=SNR.Th, peakScaleRange=peakScaleRange, 
+	majorPeakInfo <- identifyMajorPeaks(ms, ridgeList, wCoefs, SNR.Th=SNR.Th, peakScaleRange=peakScaleRange, 
 			nearbyPeak=nearbyPeak, minNoiseLevel=minNoiseLevel, ridgeLength=ridgeLength, ...)
 
 	if (tuneIn) {

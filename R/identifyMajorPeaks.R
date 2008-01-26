@@ -1,5 +1,5 @@
 "identifyMajorPeaks" <-
-function(ridgeList, wCoefs, scales=as.numeric(colnames(wCoefs)), SNR.Th=3, peakScaleRange=5, 
+function(ms, ridgeList, wCoefs, scales=as.numeric(colnames(wCoefs)), SNR.Th=3, peakScaleRange=5, 
 		ridgeLength=32, nearbyPeak=FALSE, nearbyWinSize=100, winSize.noise=500, SNR.method='quantile', minNoiseLevel=0.001) {
 
 	if (is.null(scales)) {
@@ -34,7 +34,9 @@ function(ridgeList, wCoefs, scales=as.numeric(colnames(wCoefs)), SNR.Th=3, peakS
 	ridgeName <- names(ridgeList)
 	ridgeInfo <- matrix(as.numeric(unlist(strsplit(ridgeName, '_'))), nrow=2)
 	ridgeLevel <- ridgeInfo[1,]
-	mzInd <- sapply(ridgeList, function(x) x[1])
+	#mzInd <- sapply(ridgeList, function(x) x[1])
+	notnull <- sapply(ridgeList, function(x) {!is.null(x[1])})  # fixed by Steffen Neumann
+	mzInd <- sapply(ridgeList[notnull], function(x) {x[1]})     # fixed by Steffen Neumann
 	#mzInd <- ridgeInfo[2,]
 
 	## Reorder them by m/z index
@@ -82,18 +84,22 @@ function(ridgeList, wCoefs, scales=as.numeric(colnames(wCoefs)), SNR.Th=3, peakS
 	#names(ridgeValue) <- names(ridgeList)		
 	#ridgeLen <- get.ridgeLength(ridgeValue, Th=0.5)
 	
-	## Compute SNR of each peaks
+	## Compute SNR of each peak
 	noise <- abs(wCoefs[,'1'])
 	peakSNR <- NULL	
 	nMz <- nrow(wCoefs)		# The length of ms signal
+	
 	for (k in 1:length(ridgeList)) {
 		ind.k <- mzInd[k]
 		start.k <- ifelse(ind.k - winSize.noise < 1, 1, ind.k - winSize.noise)
 		end.k <- ifelse(ind.k + winSize.noise > nMz, nMz, ind.k + winSize.noise)
+		ms.int <- ms[start.k:end.k] ## m/z intensity values in ind.k + /- winSize.noise (Added by Steffen Neumann)
 		noiseLevel.k <- switch(SNR.method,
 			quantile = quantile(noise[start.k:end.k], probs=0.95), 
 			sd = sd(noise[start.k:end.k]),
-			mad = mad(noise[start.k:end.k], center=0))
+			mad = mad(noise[start.k:end.k], center=0),
+			data.mean = mean(ms.int),		# (data.mean and data.mean.quant were added by Steffen Neumann)
+			data.mean.quant = mean(ms.int[ ms.int < quantile(ms.int,probs=.95) ])  )
 		## Limit the minNoiseLevel to avoid the case of very low noise level, e.g., smoothed spectrum
 		if (noiseLevel.k < minNoiseLevel) noiseLevel.k <- minNoiseLevel
 		peakSNR <- c(peakSNR, peakValue[k]/noiseLevel.k)

@@ -18,7 +18,7 @@ peakDetectionCWT(ms, scales = c(1, seq(2, 30, 2), seq(32, 64, 4)), SNR.Th = 3, n
   \item{minNoiseLevel}{ the minimum noise level used in computing the SNR }
   \item{ridgeLength}{ the minimum highest scale of the peak in 2-D CWT coefficient matrix }
   \item{tuneIn}{ determine whether to tune in the parameter estimation of the detected peaks }
-  \item{\dots}{ other parameters of used by \code{\link{getLocalMaximumCWT}}, \code{\link{getRidge}}, \code{\link{identifyMajorPeaks}} }
+  \item{\dots}{ other parameters used by \code{\link{identifyMajorPeaks}} }
 }
 
 \value{

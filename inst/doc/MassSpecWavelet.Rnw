@@ -114,7 +114,7 @@ Identify the identified ridges lines and SNR using \Rfunction{identifyMajorPeaks
 <<>>=
 SNR.Th <- 3
 nearbyPeak <- TRUE
-majorPeakInfo <- identifyMajorPeaks(ridgeList, wCoefs, SNR.Th = SNR.Th, nearbyPeak=nearbyPeak)
+majorPeakInfo <- identifyMajorPeaks(exampleMS, ridgeList, wCoefs, SNR.Th = SNR.Th, nearbyPeak=nearbyPeak)
 ## Plot the identified peaks
 peakIndex <- majorPeakInfo$peakIndex
 @
@@ -191,5 +191,9 @@ The above peak detection process can identify the peaks, however, it can only ap
 
 \section{Future Extension}
 More MS data analysis and wavelet related functions will be implemented in MassSpecWavelet package. 
+
+
+\section{Acknowledgments}
+We would like to thanks the users and researchers around the world contribute to the MassSpecWavelet package, provide great comments and suggestions and report bugs. Especially, we would like  to thanks Steffen Neumann and Ralf Tautenhahn fixing some bugs for the package. 
 
 \end{document}

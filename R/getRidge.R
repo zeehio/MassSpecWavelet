@@ -13,7 +13,11 @@ function(localMax, iInit=ncol(localMax), step=-1, iFinal=1, minWinSize=5, gapTh=
 
 	## Identify all the peak pathes from the coarse level to detail levels (high column to low column)
 	## Only consider the shortest path
-	colInd <- seq(iInit+step, iFinal, step)
+	if ( ncol(localMax) > 1 ) {		## fixed by Steffen Neumann
+		colInd <- seq(iInit+step, iFinal, step)
+	} else {
+		colInd <- 1
+	}
 	ridgeList <- as.list(maxInd_curr)
 	names(ridgeList) <- maxInd_curr
 	peakStatus <- as.list(rep(0, length(maxInd_curr)))
@@ -59,6 +63,9 @@ function(localMax, iInit=ncol(localMax), step=-1, iFinal=1, minWinSize=5, gapTh=
 			#ind.curr <- which(localMax[, col.j] > 0)
 			if (length(ind.curr) == 0) {
 				status.k <- peakStatus[[as.character(ind.k)]]
+				## bug  work-around (fixed by Steffen Neumann)
+				if (is.null(status.k)) status.k <- gapTh +1
+				##
 				if (status.k > gapTh & scale.j >= 2) {
 					temp <- ridgeList[[as.character(ind.k)]]
 					orphanRidgeList <- c(orphanRidgeList, list(temp[1:(length(temp)-status.k)]))

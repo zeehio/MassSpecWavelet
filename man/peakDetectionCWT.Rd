@@ -25,7 +25,7 @@ peakDetectionCWT(ms, scales = c(1, seq(2, 30, 2), seq(32, 64, 4)), SNR.Th = 3, n
   \item{majorPeakInfo}{ return of \code{\link{identifyMajorPeaks}}}
   \item{ridgeList}{return of \code{\link{getRidge}}}
   \item{localMax}{ return of \code{\link{getLocalMaximumCWT}} }
-  \item{wCoefs} { 2-D CWT coefficient matrix, see \code{\link{cwt}} for details.}
+  \item{wCoefs}{ 2-D CWT coefficient matrix, see \code{\link{cwt}} for details.}
 }
 \references{ 
 Du, P., Kibbe, W.A. and Lin, S.M. (2006) Improved peak detection in mass spectrum by incorporating continuous wavelet transform-based pattern matching, Bioinformatics, 22, 2059-2065.

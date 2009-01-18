@@ -5,20 +5,21 @@
   This function is a wrapper of \code{\link{cwt}}, \code{\link{getLocalMaximumCWT}}, \code{\link{getRidge}}, \code{\link{identifyMajorPeaks}}
 }
 \usage{
-peakDetectionCWT(ms, scales = c(1, seq(2, 30, 2), seq(32, 64, 4)), SNR.Th = 3, nearbyPeak = TRUE, peakScaleRange = 5, amp.Th = 0.01, minNoiseLevel = amp.Th/SNR.Th, ridgeLength = 24, tuneIn = FALSE, ...)
+peakDetectionCWT(ms, scales = c(1, seq(2, 30, 2), seq(32, 64, 4)), SNR.Th = 3, peakThr=NULL, nearbyPeak = TRUE, peakScaleRange = 5, amp.Th = 0.05, minNoiseLevel = amp.Th/SNR.Th, ridgeLength = 24, tuneIn = FALSE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{ms}{ the mass spectrometry spectrum }
   \item{scales}{ scales of CWT }
   \item{SNR.Th}{ SNR (Signal to Noise Ratio) threshold}
+  \item{peakThr}{ Minimal absolute intensity (above the baseline) of peaks to be picked. If this value is provided, then the smoothing function \code{\link{sav.gol}} will be called to estimate the local intensity.}
   \item{nearbyPeak}{ Determine whether to include the nearby small peaks of major peaks. TRUE by default}
   \item{peakScaleRange}{ the scale range of the peak. larger than 5 by default. }
   \item{amp.Th}{ the minimum required amplitude of the peak }
   \item{minNoiseLevel}{ the minimum noise level used in computing the SNR }
   \item{ridgeLength}{ the minimum highest scale of the peak in 2-D CWT coefficient matrix }
   \item{tuneIn}{ determine whether to tune in the parameter estimation of the detected peaks }
-  \item{\dots}{ other parameters used by \code{\link{identifyMajorPeaks}} }
+  \item{\dots}{ other parameters used by \code{\link{identifyMajorPeaks}} and smoothing function \code{\link{sav.gol}} }
 }
 
 \value{
@@ -27,6 +28,8 @@ peakDetectionCWT(ms, scales = c(1, seq(2, 30, 2), seq(32, 64, 4)), SNR.Th = 3, n
   \item{localMax}{ return of \code{\link{getLocalMaximumCWT}} }
   \item{wCoefs}{ 2-D CWT coefficient matrix, see \code{\link{cwt}} for details.}
 }
+
+
 \references{ 
 Du, P., Kibbe, W.A. and Lin, S.M. (2006) Improved peak detection in mass spectrum by incorporating continuous wavelet transform-based pattern matching, Bioinformatics, 22, 2059-2065.
 }

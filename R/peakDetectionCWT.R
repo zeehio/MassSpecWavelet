@@ -1,6 +1,5 @@
 "peakDetectionCWT" <-
-function(ms, scales=c(1, seq(2,30,2),seq(32, 64, 4)), SNR.Th=3, nearbyPeak=TRUE, peakScaleRange=5, 
-		amp.Th=0.01, minNoiseLevel=amp.Th/SNR.Th, ridgeLength=24, tuneIn=FALSE, ...) {
+function(ms, scales=c(1, seq(2,30,2),seq(32, 64, 4)), SNR.Th=3, peakThr=NULL, nearbyPeak=TRUE, peakScaleRange=5, amp.Th=0.05, minNoiseLevel=amp.Th/SNR.Th, ridgeLength=24, tuneIn=FALSE, ...) {
 
 	if (minNoiseLevel > 1)  names(minNoiseLevel) <- 'fixed' 
 	## Perform Continuous Wavelet Transform
@@ -24,6 +23,28 @@ function(ms, scales=c(1, seq(2,30,2),seq(32, 64, 4)), SNR.Th=3, nearbyPeak=TRUE,
 	} 
 	localMax <- getLocalMaximumCWT(wCoefs, amp.Th=amp.Th)
 	colnames(localMax) <- colnames(wCoefs)
+
+	## In order to fastern the calculation, we can filter some local maxima with small amplitude
+	## In this case a baseline estimation was performed.
+	if (!is.null(peakThr)) {
+		otherPar <- list(...)
+		if ('fl' %in% names(otherPar)) {
+			filterLength <- otherPar$fl
+			otherPar <- otherPar[- which(names(otherPar) == 'fl')]
+		} else {
+			filterLength <- 1000
+		}
+		if ('forder' %in% names(otherPar)) {
+			fOrder <- otherPar$forder
+			otherPar <- otherPar[- which(names(otherPar) == 'forder')]
+		} else {
+			fOrder <- 2
+		}
+		## Baseline estimation using Savitzky Golay Filter  
+		## this part was added by Steffen Neumann
+		sg <- sav.gol(ms, fl=filterLength,forder=fOrder)
+		localMax[(ms - sg) < peakThr,] <- 0
+	}
 
 	##-----------------------------------------
 	## Indentify the ridges from coarse level to more detailed levels

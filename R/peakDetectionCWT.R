@@ -1,5 +1,5 @@
 "peakDetectionCWT" <-
-function(ms, scales=c(1, seq(2,30,2),seq(32, 64, 4)), SNR.Th=3, peakThr=NULL, nearbyPeak=TRUE, peakScaleRange=5, amp.Th=0.05, minNoiseLevel=amp.Th/SNR.Th, ridgeLength=24, tuneIn=FALSE, ...) {
+function(ms, scales=c(1, seq(2,30,2),seq(32, 64, 4)), SNR.Th=3, nearbyPeak=TRUE, peakScaleRange=5, amp.Th=0.01, minNoiseLevel=amp.Th/SNR.Th, ridgeLength=24, peakThr=NULL, tuneIn=FALSE, ...) {
 
 	if (minNoiseLevel > 1)  names(minNoiseLevel) <- 'fixed' 
 	## Perform Continuous Wavelet Transform

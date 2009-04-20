@@ -1,7 +1,7 @@
 Package: MassSpecWavelet
 Type: Package
 Title: Mass spectrum processing by wavelet-based algorithms
-Version: 1.9.2
+Version: 1.10.0
 Date: 2009-01-16
 Depends: waveslim
 Suggests: xcms, caTools

@@ -22,7 +22,6 @@ function(ms, scales=1, wavelet='mexh') {
     oldLen <- length(ms)
 	## To increase the computation effeciency of FFT, extend it as the power of 2
 	## because of a strange signal length 21577 makes the FFT very slow!
-	#ms <- extend.nBase(ms, nLevel=1, base=2)
 	ms <- extendNBase(ms, nLevel=NULL, base=2)
 	len <- length(ms)
     nbscales <- length(scales)

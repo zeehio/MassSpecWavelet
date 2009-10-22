@@ -1,6 +1,11 @@
 "extendNBase" <-
 function(x, nLevel=1, base=2, ...) {
-	if (!is.matrix(x)) x <- matrix(x, ncol=1)	
+	
+	if (!is.matrix(x)) {
+		x <- matrix(x, ncol=1)
+	} else if (min(dim(x)) == 1) {
+		x <- matrix(x, ncol=1)
+	}
 	
 	nR <- nrow(x)
 	if (is.null(nLevel)) {

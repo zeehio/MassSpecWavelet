@@ -48,9 +48,4 @@ pinv <- function (A)
 }
  
 
-#-----------------------------------------------------------------------
-# call c function "convolve2"
-conv <- function(a, b) {
-  .Call("convolve2", a, b, PACKAGE = "MassSpecWavelet")
-}  
 

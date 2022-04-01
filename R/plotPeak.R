@@ -13,9 +13,9 @@ function(ms, peakIndex=NULL, mz=1:length(ms), range=c(min(mz), max(mz)), method=
 	plot(mz[selInd], ms[selInd], type='l', xlab=xlab, ylab='Intensity', main=main, log=log)
 	if (!is.null(peakIndex)) {
 		if (method[1] == 'p') {
-			points(mz[peakIndex], ms[peakIndex], col='red', ...)
+			graphics::points(mz[peakIndex], ms[peakIndex], col='red', ...)
 		} else {
-			abline(v=mz[peakIndex], col='blue',...)
+			graphics::abline(v=mz[peakIndex], col='blue',...)
 		}
 	}
 }

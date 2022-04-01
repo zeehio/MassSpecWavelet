@@ -35,7 +35,7 @@ function(ms, nLevel=6, wf="la8", localNoiseTh=seq(1, 0, by=-0.2), localWinSize=5
 			coef.i <- coef[[i]]
 			## Two thresholds are used here. One is the global threshold, another one is local threshold
 			## The local peaks should be above both thresholds
-			globalTh.i <- quantile(abs(coef.i), globalNoiseTh[i])
+			globalTh.i <- stats::quantile(abs(coef.i), globalNoiseTh[i])
 			ind.global <- which(abs(coef.i) > globalTh.i)
 
 			## Transform the vector as a matrix with column length equals winSize
@@ -43,7 +43,7 @@ function(ms, nLevel=6, wf="la8", localNoiseTh=seq(1, 0, by=-0.2), localWinSize=5
 			len <- length(coef.i)
 			temp <- matrix(extendNBase(abs(coef.i), base=localWinSize, nLevel=1, method='open', direction='right'), nrow=localWinSize)
 
-			localTh.i <- apply(temp, 2, function(x) quantile(x, localNoiseTh[i]))
+			localTh.i <- apply(temp, 2, function(x) stats::quantile(x, localNoiseTh[i]))
 			localTh.i <- rep(1, localWinSize) %*% t(localTh.i)
 			ind.local <- which(temp > localTh.i)
 			selInd <- ind.local[ind.local %in% ind.global]

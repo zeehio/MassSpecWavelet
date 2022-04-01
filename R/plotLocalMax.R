@@ -1,7 +1,7 @@
 "plotLocalMax" <-
 function(localMax, wCoefs=NULL, range=c(1, nrow(localMax)), colorMap='RYB', main=NULL, cex=3, pch='.', ... ) {
 	if (colorMap == 'RYB') {
-		rgb.palette <- colorRampPalette(c("red", "orange", "blue"), space = "rgb")
+		rgb.palette <- grDevices::colorRampPalette(c("red", "orange", "blue"), space = "rgb")
 		colorMap <- rgb.palette(255)
 		#colorMap <- heat.colors(255)
 	}
@@ -26,6 +26,6 @@ function(localMax, wCoefs=NULL, range=c(1, nrow(localMax)), colorMap='RYB', main
 
 	plot(seq(range[1],range[2], length=ncol(localMax)), 1:ncol(localMax), type='n', xlab='m/z index', ylab='CWT coefficient scale', main=main)
 	ind <- which(localMax[range[1]:range[2],] > 0)
-	points(tR[ind], tC[ind], col=col, cex=cex, pch=pch, ...)
+	graphics::points(tR[ind], tC[ind], col=col, cex=cex, pch=pch, ...)
 }
 

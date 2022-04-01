@@ -1,7 +1,7 @@
 "plotRidgeList" <-
 function(ridgeList, wCoefs=NULL, range=NULL, colorMap='RYB', main=NULL, pch='.', cex=3, ...) {
 	if (colorMap == 'RYB') {
-		rgb.palette <- colorRampPalette(c("red", "orange", "blue"),
+		rgb.palette <- grDevices::colorRampPalette(c("red", "orange", "blue"),
                                 space = "rgb")
 		colorMap <- rgb.palette(255)
 		#colorMap <- heat.colors(255)
@@ -53,7 +53,7 @@ function(ridgeList, wCoefs=NULL, range=NULL, colorMap='RYB', main=NULL, pch='.',
 			ridgeValue.i <- wCoefs[coefInd.i]
 			col <- colorMap[1+log(1+abs(ridgeValue.i))*255/log(1+maxSelV)]	
 		}
-		points(ridge.i, scales.i, pch=pch, cex=cex, col=col, ...) 
+		graphics::points(ridge.i, scales.i, pch=pch, cex=cex, col=col, ...) 
 	}
 }
 

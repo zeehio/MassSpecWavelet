@@ -37,8 +37,8 @@ function(ms, scales=1, wavelet='mexh') {
         if (length(j) == 1)		j <- c(1, 1)
 		lenWave <- length(j)
         f[1:lenWave] <- rev(psi[j]) - mean(psi[j])
-		if (length(f) > len) stop(paste('scale', scale.i, 'is too large!'))
-		wCoefs.i <- 1/sqrt(scale.i) * convolve(ms, f)
+		if (length(f) > len) stop('scale ', scale.i, ' is too large!')
+		wCoefs.i <- 1/sqrt(scale.i) * stats::convolve(ms, f)
 		## Shift the position with half wavelet width
 		wCoefs.i <- c(wCoefs.i[(len-floor(lenWave/2) + 1) : len], wCoefs.i[1:(len-floor(lenWave/2))])
 		wCoefs <- cbind(wCoefs, wCoefs.i)

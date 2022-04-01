@@ -95,11 +95,11 @@ function(ms, ridgeList, wCoefs, scales=as.numeric(colnames(wCoefs)), SNR.Th=3, p
 		end.k <- ifelse(ind.k + winSize.noise > nMz, nMz, ind.k + winSize.noise)
 		ms.int <- ms[start.k:end.k] ## m/z intensity values in ind.k + /- winSize.noise (Added by Steffen Neumann)
 		noiseLevel.k <- switch(SNR.method,
-			quantile = quantile(noise[start.k:end.k], probs=0.95), 
-			sd = sd(noise[start.k:end.k]),
-			mad = mad(noise[start.k:end.k], center=0),
+			quantile = stats::quantile(noise[start.k:end.k], probs=0.95), 
+			sd = stats::sd(noise[start.k:end.k]),
+			mad = stats::mad(noise[start.k:end.k], center=0),
 			data.mean = mean(ms.int),		# (data.mean and data.mean.quant were added by Steffen Neumann)
-			data.mean.quant = mean(ms.int[ ms.int < quantile(ms.int,probs=.95) ])  )
+			data.mean.quant = mean(ms.int[ ms.int < stats::quantile(ms.int,probs=.95) ])  )
 		## Limit the minNoiseLevel to avoid the case of very low noise level, e.g., smoothed spectrum
 		if (noiseLevel.k < minNoiseLevel) noiseLevel.k <- minNoiseLevel
 		peakSNR <- c(peakSNR, peakValue[k]/noiseLevel.k)

@@ -23,8 +23,7 @@ sav.gol <- function(T, fl, forder=4, dorder=0)
 
     # -- calculate filter coefficients --
     fc <- (fl-1)/2 # index: window left and right
-    X <- outer(-fc:fc, 0:forder, FUN="^") # polynomial terms and
-coefficients
+    X <- outer(-fc:fc, 0:forder, FUN="^") # polynomial terms and coefficients
     Y <- pinv(X); # pseudoinverse
 
     # -- filter via convolution and take care of the end points --

@@ -9,7 +9,7 @@ function(x, nLevel=1, base=2, ...) {
 	
 	nR <- nrow(x)
 	if (is.null(nLevel)) {
-		nR1 <- nextn(nR, base)		
+		nR1 <- stats::nextn(nR, base)		
 	} else {
 		nR1 <- ceiling(nR / base^nLevel) * base^nLevel		
 	}

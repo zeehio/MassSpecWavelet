@@ -3,5 +3,5 @@
 # ----------------------------------------------------------------------
 
 conv <- function(a, b) {
-  .Call("convolve2", a, b, PACKAGE = "MassSpecWavelet")
+  .Call("convolve2", as.double(a), as.double(b), PACKAGE = "MassSpecWavelet")
 }  

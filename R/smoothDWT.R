@@ -2,16 +2,18 @@
 function(ms, nLevel=6, wf="la8", localNoiseTh=seq(1, 0, by=-0.2), localWinSize=500, globalNoiseTh=0.75, 
  			smoothMethod=c('soft', 'hard'), method=c('dwt', 'modwt')) {
 
-	if(!require(waveslim)) stop('Package waveslim is required!')
+	if (!requireNamespace("waveslim", quietly = TRUE)) {
+        stop('Please install the waveslim package to use smoothDWT()')
+    }
 	smoothMethod <- match.arg(smoothMethod)
 	method <- match.arg(method)
 	specLength <- length(ms)
 
 	ms <- extendNBase(ms, nLevel=nLevel, method='open', direction='right')
 	if (method == 'dwt') {
-		coef <- dwt(ms, wf="la8", n.levels=nLevel, boundary="reflection")		
+		coef <- waveslim::dwt(ms, wf="la8", n.levels=nLevel, boundary="reflection")		
 	} else {
-		coef <- modwt(ms, wf="la8", n.levels=nLevel, boundary="reflection")		
+		coef <- waveslim::modwt(ms, wf="la8", n.levels=nLevel, boundary="reflection")		
 	}
 	
 	localNoiseTh[localNoiseTh > 1] <- 1
@@ -62,18 +64,18 @@ function(ms, nLevel=6, wf="la8", localNoiseTh=seq(1, 0, by=-0.2), localWinSize=5
 	temp <- coef.new
 	temp[[nLevel + 1]][] <- 0
 	if (method == 'dwt') {
-		detail <- idwt(temp)[1:specLength]		
+		detail <- waveslim::idwt(temp)[1:specLength]		
 	} else {
-		detail <- imodwt(temp)[1:specLength]		
+		detail <- waveslim::imodwt(temp)[1:specLength]		
 	}
 	temp <- coef.new
 	for (i in 1:nLevel)  temp[[i]][] <- 0	
 	if (method == 'dwt') {
-		approx <- idwt(temp)[1:specLength]		
-		smoothMS <- idwt(coef.new)[1:specLength]
+		approx <- waveslim::idwt(temp)[1:specLength]		
+		smoothMS <- waveslim::idwt(coef.new)[1:specLength]
 	} else {
-		approx <- imodwt(temp)[1:specLength]		
-		smoothMS <- imodwt(coef.new)[1:specLength]
+		approx <- waveslim::imodwt(temp)[1:specLength]		
+		smoothMS <- waveslim::imodwt(coef.new)[1:specLength]
 	}
 	
 	## Inverse modwt transform	

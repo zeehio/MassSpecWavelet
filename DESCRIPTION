@@ -22,6 +22,5 @@ Authors@R: c(
     )
 Description: Processing Mass Spectrometry spectrum by using wavelet based algorithm.
 License: LGPL (>= 2)
-Depends: waveslim
-Suggests: xcms, caTools
+Suggests: xcms, caTools, waveslim
 biocViews: ImmunoOncology, MassSpectrometry, Proteomics

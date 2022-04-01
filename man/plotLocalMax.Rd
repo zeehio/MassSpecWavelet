@@ -6,7 +6,13 @@
 Plot the local maximum matrix of 2-D CWT coefficients returned by \code{\link{getLocalMaximumCWT}}
 }
 \usage{
-plotLocalMax(localMax, wCoefs = NULL, range = c(1, nrow(localMax)), colorMap = "RYB", main = NULL, cex = 3, pch = ".", ...)
+plotLocalMax(
+ localMax,
+ wCoefs = NULL,
+ range = c(1, nrow(localMax)),
+ colorMap = "RYB",
+ main = NULL, cex = 3, pch = ".", ...
+)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

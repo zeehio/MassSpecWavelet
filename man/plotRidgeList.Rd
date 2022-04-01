@@ -6,7 +6,8 @@
   Plot the ridge list returned by \code{\link{getRidge}}
 }
 \usage{
-plotRidgeList(ridgeList, wCoefs = NULL, range = NULL, colorMap = "RYB", main = NULL, pch = ".", cex = 3, ...)
+plotRidgeList(ridgeList, wCoefs = NULL, range = NULL,
+              colorMap = "RYB", main = NULL, pch = ".", cex = 3, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

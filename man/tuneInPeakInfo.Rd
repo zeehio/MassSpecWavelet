@@ -6,7 +6,8 @@
 Based on the identified peak position, more precise estimation of the peak information, i.e., peak position and peak scale, can be got by this function. The basic idea is to cut the segment of spectrum near the identified peaks, and then do similar procedures as \code{\link{peakDetectionCWT}}, but with more detailed scales around the estimated peak scale.
 }
 \usage{
-tuneInPeakInfo(ms, majorPeakInfo = NULL, peakIndex = NULL, peakScale = NULL, maxScale = 128, ...)
+tuneInPeakInfo(ms, majorPeakInfo = NULL, peakIndex = NULL,
+               peakScale = NULL, maxScale = 128, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

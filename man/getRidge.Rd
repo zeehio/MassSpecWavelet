@@ -6,7 +6,15 @@
 Identify ridges by connecting the local maximum of 2-D CWT coefficients from the coarse scale to detail scale. The local maximum matrix is returned  from \code{\link{getLocalMaximumCWT}}
 }
 \usage{
-getRidge(localMax, iInit = ncol(localMax), step = -1, iFinal = 1, minWinSize= 5, gapTh = 3, skip = NULL)
+getRidge(
+ localMax,
+ iInit = ncol(localMax),
+ step = -1,
+ iFinal = 1,
+ minWinSize= 5,
+ gapTh = 3,
+ skip = NULL
+)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

@@ -25,8 +25,6 @@ The return is a smoothed vector (baseline).
 This function was added by Steffen Neumann. We appreciated his help to make the package better.
 }
 
-\examples{
-}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 \keyword{methods}

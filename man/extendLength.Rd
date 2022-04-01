@@ -6,7 +6,12 @@
 Extend the length of a signal or matrix by row
 }
 \usage{
-extendLength(x, addLength = NULL, method = c("reflection", "open", "circular"), direction = c("right", "left", "both"))
+extendLength(
+ x,
+ addLength = NULL,
+ method = c("reflection", "open", "circular"),
+ direction = c("right", "left", "both")
+)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

@@ -6,7 +6,9 @@
 Plot the identified peaks over the spectrum. The identified peaks are returned by \code{\link{peakDetectionCWT}} or \code{\link{identifyMajorPeaks}}
 }
 \usage{
-plotPeak(ms, peakIndex = NULL, mz = 1:length(ms), range = c(min(mz), max(mz)), method = c("p", "l"), main = NULL, log = "", ...)
+plotPeak(ms, peakIndex = NULL, mz = 1:length(ms),
+         range = c(min(mz), max(mz)), method = c("p", "l"), main = NULL, log = "", ...
+)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

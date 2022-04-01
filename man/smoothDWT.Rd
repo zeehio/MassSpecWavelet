@@ -6,7 +6,9 @@
   Smooth (denoise) the spectrum by DWT (Discrete Wavelet Transform)
 }
 \usage{
-smoothDWT(ms, nLevel = 6, wf = "la8", localNoiseTh = seq(1, 0, by = -0.2), localWinSize = 500, globalNoiseTh = 0.75, smoothMethod = c("soft", "hard"), method = c('dwt', 'modwt'))
+smoothDWT(ms, nLevel = 6, wf = "la8", localNoiseTh = seq(1, 0, by = -0.2),
+          localWinSize = 500, globalNoiseTh = 0.75, smoothMethod = c("soft", "hard"),
+          method = c('dwt', 'modwt'))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -19,18 +21,11 @@ smoothDWT(ms, nLevel = 6, wf = "la8", localNoiseTh = seq(1, 0, by = -0.2), local
   \item{smoothMethod}{ the method used for denoising. 'hard' means keeping the dwt coefficients higher than the threshold unchanged; "soft" means the dwt coefficients higher than the threshold were subtracted by the threshold. }
   \item{method}{ 'dwt' or 'modwt' used for decomposition }
 }
-\details{
-  
 
-}
 \value{
 return the smoothed mass spectrum with the 'detail' component of DWT as an attribute 'detail'.
 }
-\references{  }
 \author{ Pan Du }
 
-\examples{
-
-}
 \keyword{ methods }
 

@@ -21,7 +21,4 @@ getRidgeValue(ridgeList, wCoefs, skip = 0)
 
 \author{Pan Du}
 
-\examples{
-
-}
 \keyword{methods}

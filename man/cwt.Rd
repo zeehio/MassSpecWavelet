@@ -29,7 +29,8 @@ The return is the 2-D CWT coefficient matrix, with column names as the scale. Ea
 
 	## Plot the 2-D CWT coefficients as image (It may take a while!)
 	xTickInterval <- 1000
-	image(5000:11000, scales, wCoefs, col=terrain.colors(256), axes=FALSE, xlab='m/z index', ylab='CWT coefficient scale', main='CWT coefficients')
+	image(5000:11000, scales, wCoefs, col=terrain.colors(256), axes=FALSE,
+          xlab='m/z index', ylab='CWT coefficient scale', main='CWT coefficients')
 	axis(1, at=seq(5000, 11000, by=xTickInterval))
 	axis(2, at=c(1, seq(10, 64, by=10)))
 	box()

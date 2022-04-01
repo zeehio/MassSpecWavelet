@@ -5,7 +5,19 @@
   This function is a wrapper of \code{\link{cwt}}, \code{\link{getLocalMaximumCWT}}, \code{\link{getRidge}}, \code{\link{identifyMajorPeaks}}
 }
 \usage{
-peakDetectionCWT(ms, scales = c(1, seq(2, 30, 2), seq(32, 64, 4)), SNR.Th = 3, nearbyPeak = TRUE, peakScaleRange = 5, amp.Th = 0.01, minNoiseLevel = amp.Th/SNR.Th, ridgeLength = 24, peakThr=NULL, tuneIn = FALSE, ...)
+peakDetectionCWT(
+ ms,
+ scales = c(1, seq(2, 30, 2), seq(32, 64, 4)),
+ SNR.Th = 3,
+ nearbyPeak = TRUE,
+ peakScaleRange = 5,
+ amp.Th = 0.01,
+ minNoiseLevel = amp.Th/SNR.Th,
+ ridgeLength = 24,
+ peakThr=NULL,
+ tuneIn = FALSE,
+ ...
+)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

@@ -5,7 +5,20 @@
 \description{
 Indentify the peaks based on the ridge list (returned by \code{\link{getRidge}}) in 2-D CWT coefficient matrix and estimated Signal to Noise Ratio (SNR) }
 \usage{
-identifyMajorPeaks(ms, ridgeList, wCoefs, scales = as.numeric(colnames(wCoefs)), SNR.Th = 3, peakScaleRange = 5, ridgeLength = 32, nearbyPeak = FALSE, nearbyWinSize = 100, winSize.noise = 500, SNR.method = "quantile", minNoiseLevel = 0.001)
+identifyMajorPeaks(
+ ms,
+ ridgeList,
+ wCoefs,
+ scales = as.numeric(colnames(wCoefs)),
+ SNR.Th = 3,
+ peakScaleRange = 5,
+ ridgeLength = 32,
+ nearbyPeak = FALSE,
+ nearbyWinSize = 100,
+ winSize.noise = 500,
+ SNR.method = "quantile",
+ minNoiseLevel = 0.001
+)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

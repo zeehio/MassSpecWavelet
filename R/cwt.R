@@ -1,8 +1,8 @@
 "cwt" <-
 function(ms, scales=1, wavelet='mexh') {
 	## Check for the wavelet format
-	if (wavelet == 'mexh') {
-		psi_xval <- seq(-8, 8, length=1024)
+	if (identical(wavelet, 'mexh')) {
+		psi_xval <- seq(-8, 8, length.out=1024)
 		psi <- (2/sqrt(3) * pi^(-0.25)) * (1 - psi_xval^2) *exp(-psi_xval^2/2)
 		#plot(psi_xval, psi)
 	} else if (is.matrix(wavelet)) {

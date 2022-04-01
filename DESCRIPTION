@@ -20,7 +20,7 @@ Authors@R: c(
            role = c("cre"),
            comment = c(ORCID = "0000-0002-8994-1549"))
     )
-Description: Processing Mass Spectrometry spectrum by using wavelet based algorithm
+Description: Processing Mass Spectrometry spectrum by using wavelet based algorithm.
 License: LGPL (>= 2)
 Depends: waveslim
 Suggests: xcms, caTools

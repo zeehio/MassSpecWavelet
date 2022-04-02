@@ -21,6 +21,8 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-8994-1549"))
     )
 Description: Processing Mass Spectrometry spectrum by using wavelet based algorithm.
+URL: https://github.com/zeehio/MassSpecWavelet
+BugReports: http://github.com/zeehio/MassSpecWavelet/issues
 License: LGPL (>= 2)
 Suggests: xcms, caTools, waveslim
 biocViews: ImmunoOncology, MassSpectrometry, Proteomics

@@ -1,4 +1,4 @@
-# MassSpecWavelet 1.6.1 (2022-04-01)
+# MassSpecWavelet 1.61.1 (2022-04-01)
 
 - Change Maintainer to Sergio Oller
 - Add NEWS.md file

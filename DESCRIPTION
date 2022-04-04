@@ -3,7 +3,7 @@ Type: Package
 Title: Mass spectrum processing by wavelet-based algorithms
 Version: 1.61.2
 Encoding: UTF-8
-Date: 2022-04-01
+Date: 2022-04-04
 Authors@R: c(
     person(given = "Pan",
            family = "Du",

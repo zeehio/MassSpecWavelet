@@ -1,7 +1,7 @@
 Package: MassSpecWavelet
 Type: Package
 Title: Mass spectrum processing by wavelet-based algorithms
-Version: 1.61.1
+Version: 1.61.2
 Encoding: UTF-8
 Date: 2022-04-01
 Authors@R: c(
@@ -24,5 +24,6 @@ Description: Processing Mass Spectrometry spectrum by using wavelet based algori
 URL: https://github.com/zeehio/MassSpecWavelet
 BugReports: http://github.com/zeehio/MassSpecWavelet/issues
 License: LGPL (>= 2)
-Suggests: xcms, caTools, waveslim
+Suggests: waveslim, BiocStyle, knitr, rmarkdown
 biocViews: ImmunoOncology, MassSpectrometry, Proteomics
+VignetteBuilder: knitr

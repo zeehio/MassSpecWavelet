@@ -1,3 +1,8 @@
+# MassSpecWavelet 1.61.2 (2022-04-04)
+
+- Remove xcms and caTools. Those are great packages but we don't use them directly in MassSpecWavelet.
+- Replace Sweave with RMarkdown vignette and update styles with BiocStyle
+
 # MassSpecWavelet 1.61.1 (2022-04-01)
 
 - Change Maintainer to Sergio Oller

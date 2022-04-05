@@ -23,7 +23,9 @@ plotRidgeList(ridgeList, wCoefs = NULL, range = NULL,
 
 
 \author{ Pan Du}
-
+\value{
+No value is returned; this function is called for its side effects (plot).
+}
 \seealso{\code{\link{getRidge}}}
 \examples{
 	data(exampleMS)

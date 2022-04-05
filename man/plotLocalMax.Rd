@@ -28,6 +28,10 @@ plotLocalMax(
 
 \author{Pan Du}
 
+\value{
+No value is returned; this function is called for its side effects (plot).
+}
+
 \seealso{ \code{\link{getLocalMaximumCWT}} }
 \examples{
 	data(exampleMS)

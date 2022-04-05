@@ -23,6 +23,9 @@ plotPeak(ms, peakIndex = NULL, mz = 1:length(ms),
 }
 
 \author{Pan Du}
+\value{
+No value is returned; this function is called for its side effects (plot).
+}
 
 \seealso{\code{\link{peakDetectionCWT}}, \code{\link{identifyMajorPeaks}}}
 \examples{

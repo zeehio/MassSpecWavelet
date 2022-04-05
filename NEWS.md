@@ -1,6 +1,7 @@
 # MassSpecWavelet 1.61.3 (2022-04-05)
 
 - Add signal to Suggests. Replace sav.gol() with signal::sgolayfilt(). Closes #2
+- Minor documentation improvements
 
 # MassSpecWavelet 1.61.2 (2022-04-04)
 

@@ -31,7 +31,7 @@ peakDetectionCWT(
   \item{ridgeLength}{ the minimum highest scale of the peak in 2-D CWT coefficient matrix }
   \item{peakThr}{ Minimal absolute intensity (above the baseline) of peaks to be picked. If this value is provided, then the smoothing function \code{\link[signal]{sgolayfilt}} will be called to estimate the local intensity.(added based on the suggestion and code of Steffen Neumann)}
   \item{tuneIn}{ determine whether to tune in the parameter estimation of the detected peaks }
-  \item{\dots}{other parameters used by \code{\link{identifyMajorPeaks}}. Besides those parameters, we have \code{fl} (for filter length = 1001) and \code{forder = 2} (for filter order) which are passed to \code{\link[signal]{sgolayfilt}} when a \code{peakThr} is given.}
+  \item{\dots}{other parameters used by \code{\link{identifyMajorPeaks}}. Additionally, \code{fl} (filter length, with a default value of 1001) and \code{forder} (filter order, with a default value of 2) are set and passed to \code{\link[signal]{sgolayfilt}} when \code{peakThr} is given.}
 }
 
 \value{

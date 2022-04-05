@@ -6,7 +6,7 @@ Date: 2014-03-18
 Depends: waveslim
 Suggests: xcms, caTools
 Author: Pan Du, Warren Kibbe, Simon Lin
-Maintainer: Pan Du <dupan.mail@gmail.com>
+Maintainer: Sergio Oller <sergioller@gmail.com>
 Description: Processing Mass Spectrometry spectrum by using wavelet based algorithm
 License: LGPL (>= 2)
 biocViews: ImmunoOncology, MassSpectrometry, Proteomics

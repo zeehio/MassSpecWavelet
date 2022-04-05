@@ -24,14 +24,14 @@ peakDetectionCWT(
   \item{ms}{ the mass spectrometry spectrum }
   \item{scales}{ scales of CWT }
   \item{SNR.Th}{ SNR (Signal to Noise Ratio) threshold}
-  \item{nearbyPeak}{ Determine whether to include the nearby small peaks of major peaks. TRUE by default}
+  \item{nearbyPeak}{ Determine whether to include the nearby small peaks of major peaks. \code{TRUE} by default}
   \item{peakScaleRange}{ the scale range of the peak. larger than 5 by default. }
   \item{amp.Th}{ the minimum required relative amplitude of the peak (ratio to the maximum of CWT coefficients) }
   \item{minNoiseLevel}{ the minimum noise level used in computing the SNR }
   \item{ridgeLength}{ the minimum highest scale of the peak in 2-D CWT coefficient matrix }
-  \item{peakThr}{ Minimal absolute intensity (above the baseline) of peaks to be picked. If this value is provided, then the smoothing function \code{\link{sav.gol}} will be called to estimate the local intensity.(added based on the suggestion and code of Steffen Neumann)}
+  \item{peakThr}{ Minimal absolute intensity (above the baseline) of peaks to be picked. If this value is provided, then the smoothing function \code{\link[signal]{sgolayfilt}} will be called to estimate the local intensity.(added based on the suggestion and code of Steffen Neumann)}
   \item{tuneIn}{ determine whether to tune in the parameter estimation of the detected peaks }
-  \item{\dots}{ other parameters used by \code{\link{identifyMajorPeaks}} and smoothing function \code{\link{sav.gol}} }
+  \item{\dots}{other parameters used by \code{\link{identifyMajorPeaks}}. Besides those parameters, we have \code{fl} (for filter length = 1001) and \code{forder = 2} (for filter order) which are passed to \code{\link[signal]{sgolayfilt}} when a \code{peakThr} is given.}
 }
 
 \value{

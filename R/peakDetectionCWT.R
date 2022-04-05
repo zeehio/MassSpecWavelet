@@ -28,10 +28,17 @@ function(ms, scales=c(1, seq(2,30,2),seq(32, 64, 4)), SNR.Th=3, nearbyPeak=TRUE,
 	## In order to fastern the calculation, we can filter some local maxima with small amplitude
 	## In this case a baseline estimation was performed.
 	if (!is.null(peakThr)) {
+		if (!requireNamespace("signal", quietly = TRUE)) {
+			stop('The use of peakThr= argument in MassSpecWavelet::peakDetectionCWT() requires to install the "signal" package. Please use install.packages("signal")')
+		}
 		if ('fl' %in% names(otherPar)) {
 			filterLength <- otherPar$fl
 		} else {
-			filterLength <- 1000
+			filterLength <- 1001
+		}
+		if (filterLength %% 2 == 0) {
+			warning("filter length in peakDetectionCWT(fl=) needs to be odd (increasing it by 1)")
+			filterLength <- filterLength + 1
 		}
 		if ('forder' %in% names(otherPar)) {
 			fOrder <- otherPar$forder
@@ -40,7 +47,7 @@ function(ms, scales=c(1, seq(2,30,2),seq(32, 64, 4)), SNR.Th=3, nearbyPeak=TRUE,
 		}
 		## Baseline estimation using Savitzky Golay Filter  
 		## this part was added by Steffen Neumann
-		sg <- sav.gol(ms, fl=filterLength,forder=fOrder)
+		sg <- signal::sgolayfilt(ms, p = fOrder, n = filterLength)
 		localMax[(ms - sg) < peakThr,] <- 0
 	}
 	## remove the parameters in otherPar for function "sav.gol"

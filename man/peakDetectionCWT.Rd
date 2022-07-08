@@ -22,7 +22,7 @@ peakDetectionCWT(
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{ms}{ the mass spectrometry spectrum }
-  \item{scales}{ scales of CWT }
+  \item{scales}{ Scales of CWT. See \code{\link{cwt}} for details. }
   \item{SNR.Th}{ SNR (Signal to Noise Ratio) threshold}
   \item{nearbyPeak}{ Determine whether to include the nearby small peaks of major peaks. \code{TRUE} by default}
   \item{peakScaleRange}{ the scale range of the peak. larger than 5 by default. }

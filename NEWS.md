@@ -1,4 +1,4 @@
-# MassSpecWavelet 1.61.4 (2022-07-08)
+# MassSpecWavelet 1.63.0 (2022-07-08)
 
 - Drop sav.gol alias from the documentation. Related to #2
 - Explain how the scales argument is defined in relation to the mother wavelet.

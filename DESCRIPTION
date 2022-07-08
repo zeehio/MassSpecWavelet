@@ -1,7 +1,7 @@
 Package: MassSpecWavelet
 Type: Package
 Title: Mass spectrum processing by wavelet-based algorithms
-Version: 1.61.4
+Version: 1.63.0
 Encoding: UTF-8
 Date: 2022-07-08
 Authors@R: c(

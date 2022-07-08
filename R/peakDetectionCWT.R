@@ -50,7 +50,7 @@ function(ms, scales=c(1, seq(2,30,2),seq(32, 64, 4)), SNR.Th=3, nearbyPeak=TRUE,
 		sg <- signal::sgolayfilt(ms, p = fOrder, n = filterLength)
 		localMax[(ms - sg) < peakThr,] <- 0
 	}
-	## remove the parameters in otherPar for function "sav.gol"
+	## remove the parameters in otherPar that were passed to the Savitzky-Golay filter
 	otherPar <- otherPar[!(names(otherPar) %in% c('fl', 'forder', 'dorder'))]
 
 	##-----------------------------------------

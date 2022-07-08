@@ -1,3 +1,7 @@
+# MassSpecWavelet development (2022-07-08)
+
+- Drop sav.gol alias from the documentation. Related to #2
+
 # MassSpecWavelet 1.61.3 (2022-04-05)
 
 - Add signal to Suggests. Replace sav.gol() with signal::sgolayfilt(). Closes #2

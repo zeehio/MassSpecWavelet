@@ -1,6 +1,5 @@
 \name{peakDetectionCWT}
 \alias{peakDetectionCWT}
-\alias{sav.gol} % Remove this alias after some time
 \title{ The main function of peak detection by CWT based pattern matching }
 \description{
   This function is a wrapper of \code{\link{cwt}}, \code{\link{getLocalMaximumCWT}}, \code{\link{getRidge}}, \code{\link{identifyMajorPeaks}}

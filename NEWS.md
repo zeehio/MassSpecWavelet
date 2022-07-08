@@ -2,6 +2,7 @@
 
 - Drop sav.gol alias from the documentation. Related to #2
 - Explain how the scales argument is defined in relation to the mother wavelet.
+- Add sessionInfo() to the vignette
 
 # MassSpecWavelet 1.61.3 (2022-04-05)
 

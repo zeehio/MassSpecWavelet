@@ -2,14 +2,14 @@
 title: "Using the MassSpecWavelet package"
 author:
 - name: Pan Du
-  affiliation: 
+  affiliation:
   - &id Robert H. Lurie Comprehensive Cancer Center. Northwestern University, Chicago, IL, 60611, USA
 - name:  Warren A. Kibbe
   affiliation: *id
 - name:  Simon Lin
   affiliation: *id
 package: MassSpecWavelet
-output: 
+output:
   BiocStyle::html_document
 vignette: >
   %\VignetteIndexEntry{Using the MassSpecWavelet package}
@@ -17,9 +17,9 @@ vignette: >
   %\VignetteKeywords{Wavelet}
   %\VignetteKeywords{MassSpecWavelet}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}  
+  %\VignetteEncoding{UTF-8}
 ---
-  
+
 # Version Info
 
 ```{r, echo=FALSE, results="hide", warning=FALSE}
@@ -56,16 +56,18 @@ Results: Most peak detection algorithms simply identify peaks based on amplitude
 ## Continuous wavelet transform with Mexican Hat wavelet
 
 Load the example data
+
 ```{r}
 data(exampleMS)
-``` 
+```
 
 Continuous wavelet transform with Mexican Hat wavelet. The 2-D CWT coefficients image of MS spectrum in [5000, 11000] is shown in Figure \@ref(fig:cwt)
+
 ```{r}
 scales <- seq(1, 64, 2)
  wCoefs <- cwt(exampleMS, scales = scales, wavelet = "mexh")
 ```
- 
+
 ```{r cwt,fig.align='center', fig.cap="2-D CWT coefficient image", height=10, width=20}
 ## Plot the 2-D CWT coefficients as image (It may take a while!)
 xTickInterval <- 1000
@@ -94,15 +96,16 @@ Identify the ridges by linking the local maxima. The identified local maxima is 
 wCoefs <- cbind(as.vector(exampleMS), wCoefs)
 colnames(wCoefs) <- c(0, scales)
 localMax <- getLocalMaximumCWT(wCoefs)
-    
+
 ```
- 
+
 ```{r localMax, width=10, height=5,fig.align='center',fig.cap="Identified local maxima of CWT coefficients at each scale"}
 plotLocalMax(localMax, wCoefs, range=plotRange)
 ```
 
 
 Identify the ridge lines by connecting local maxima of CWT coefficient at adjacent scales
+
 ```{r }
 ridgeList <- getRidge(localMax)
 ```
@@ -135,7 +138,7 @@ plotPeak(
   peakIndex,
   range=plotRange,
   main=paste('Identified peaks with SNR >', SNR.Th)
-) 
+)
 ```
 
 
@@ -158,11 +161,12 @@ plotPeak(
   range=plotRange,
   log='x',
   main=paste('Identified peaks with SNR >', SNR.Th)
-) 
+)
 ```
 
 Plot Signal to Noise Ration (SNR) of the peaks
-```{r }
+
+```{r}
 peakSNR <- majorPeakInfo$peakSNR
 allPeakIndex <- majorPeakInfo$allPeakIndex
 ```
@@ -203,12 +207,17 @@ plot(
 abline(v=betterPeakInfo$peakCenterIndex, col='red')
 ```
 
-
-
 # Future Extension
 
-More MS data analysis and wavelet related functions will be implemented in MassSpecWavelet package. 
+More MS data analysis and wavelet related functions will be implemented in MassSpecWavelet package.
 
 
 # Acknowledgments
-We would like to thanks the users and researchers around the world contribute to the MassSpecWavelet package, provide great comments and suggestions and report bugs. Especially, we would like to thanks Steffen Neumann and Ralf Tautenhahn fixing some bugs for the package. 
+We would like to thanks the users and researchers around the world contribute to the MassSpecWavelet package, provide great comments and suggestions and report bugs. Especially, we would like to thanks Steffen Neumann and Ralf Tautenhahn fixing some bugs for the package.
+
+
+# Session Information
+
+```{r}
+sessionInfo()
+```

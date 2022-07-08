@@ -35,9 +35,9 @@ scaled wavelet becomes a wavelet of \eqn{\sigma = \code{scales}} points. Using t
  need to use \code{scales} larger than 64, consider providing your own mother wavelet. See the examples.
 
 
-According to \doi{10.1063/1.3505103}, if your spectrum has a gaussian peak shape of variance \eqn{\sigma^2} points then the optimal scale to detect it
-should be \code{scales = 1.9 \eqn{\sigma}}. If your spectrum has a Lorentzian peak shape of half-width-half-maximum \eqn{\lambda} points then the
-optimal scale should be \code{scales = 2.9 \eqn{\lambda}}. Take these values as suggestions for your analysis.
+According to \doi{10.1063/1.3505103}, if your spectrum has a gaussian peak shape of variance \eqn{s^2} points then the optimal scale to detect it
+should be \code{scales = 1.9 s}. If your spectrum has a Lorentzian peak shape of half-width-half-maximum \eqn{L} points then the
+optimal scale should be \code{scales = 2.9 L}. Take these values as suggestions for your analysis.
 
 }
 

@@ -35,9 +35,9 @@ scaled wavelet becomes a wavelet of \eqn{\sigma = \code{scales}} points. Using t
  need to use \code{scales} larger than 64, consider providing your own mother wavelet. See the examples.
 
 
-According to \doi{10.1063/1.3505103}, if your spectrum has a gaussian peak shape of variance \eqn{s^2} points then the optimal scale to detect it
-should be \code{scales = 1.9 s}. If your spectrum has a Lorentzian peak shape of half-width-half-maximum \eqn{L} points then the
-optimal scale should be \code{scales = 2.9 L}. Take these values as suggestions for your analysis.
+According to \doi{10.1063/1.3505103}, if your spectrum has a gaussian peak shape of variance \eqn{m^2} points then the scales range
+should cover \eqn{[1, 1.9 m]}. If your spectrum has a Lorentzian peak shape of half-width-half-maximum \eqn{L} points then the
+scales range should cover \eqn{[1, 2.9 L]}. They also suggest using a \eqn{\log_{1.18}} spacing. Take these values as suggestions for your analysis.
 
 }
 
@@ -67,6 +67,22 @@ optimal scale should be \code{scales = 2.9 L}. Take these values as suggestions 
 	axis(1, at=seq(5000, 11000, by=xTickInterval))
 	axis(2, at=c(1, seq(10, 128, by=10)))
 	box()
+
+	## Custom log1.18 spaced scales:
+	get_scales <- function(scale_min, scale_max, num_scales) {
+		(seq(0, 1, length.out = num_scales)^1.18)*(scale_max-scale_min) + scale_min
+	}
+        scales <- get_scales(scale_min=1, scale_max=64, num_scales = 32)
+        print(scales)
+        # For detecting a gaussian peak of 10 points:
+	gaussian_peak_sigma <- 10 # points
+        scales <- get_scales(scale_min=1, scale_max=1.9*gaussian_peak_sigma, num_scales = 32)
+        print(scales)
+        # For detecting a lorentzian peak of 10 points:
+	lorentzian_peak_gamma <- 10 # points
+        scales <- get_scales(scale_min=1, scale_max=2.9*lorentzian_peak_gamma, num_scales = 32)
+        print(scales)
+
 
 }
 \keyword{ methods }

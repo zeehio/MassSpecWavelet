@@ -1,6 +1,6 @@
 "identifyMajorPeaks" <-
 function(ms, ridgeList, wCoefs, scales=as.numeric(colnames(wCoefs)), SNR.Th=3, peakScaleRange=5, 
-		ridgeLength=32, nearbyPeak=FALSE, nearbyWinSize=ifelse(nearbyPeak, 150, 100), winSize.noise=500, SNR.method='quantile', minNoiseLevel=0.001, excludeBoundariesSize=nearbyWinSize/2) {
+		ridgeLength=32, nearbyPeak=FALSE, nearbyWinSize=150L, winSize.noise=500, SNR.method='quantile', minNoiseLevel=0.001, excludeBoundariesSize=ifelse(nearbyPeak, 75L, 50L)) {
 
 	if (is.null(scales)) {
 		scales <- 1:ncol(wCoefs)

@@ -14,11 +14,11 @@ identifyMajorPeaks(
  peakScaleRange = 5,
  ridgeLength = 32,
  nearbyPeak = FALSE,
- nearbyWinSize = ifelse(nearbyPeak, 150, 100),
+ nearbyWinSize = 150L,
  winSize.noise = 500,
  SNR.method = "quantile",
  minNoiseLevel = 0.001,
- excludeBoundariesSize = nearbyWinSize/2
+ excludeBoundariesSize = ifelse(nearbyPeak, 75L, 50L)
 )
 }
 %- maybe also 'usage' for other objects documented here.

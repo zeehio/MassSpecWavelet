@@ -14,10 +14,11 @@ identifyMajorPeaks(
  peakScaleRange = 5,
  ridgeLength = 32,
  nearbyPeak = FALSE,
- nearbyWinSize = 100,
+ nearbyWinSize = ifelse(nearbyPeak, 150, 100),
  winSize.noise = 500,
  SNR.method = "quantile",
- minNoiseLevel = 0.001
+ minNoiseLevel = 0.001,
+ excludeBoundariesSize = nearbyWinSize/2
 )
 }
 %- maybe also 'usage' for other objects documented here.
@@ -34,13 +35,15 @@ identifyMajorPeaks(
   \item{winSize.noise}{ the local window size to estimate the noise level. }
   \item{SNR.method}{ method to estimate noise level. Currently, only 95 percentage quantile is supported. }
   \item{minNoiseLevel}{ the minimum noise level used in calculating SNR, i.e., if the estimated noise level is less than "minNoiseLevel", it will use "minNoiseLevel" instead. If the noise level is less than 0.5, it will be treated as the ratio to the maximum amplitude of the spectrum. }
+  \item{excludeBoundariesSize}{ number of points at each boundary of the ms signal that will be excluded in search for peaks to avoid boundary effects. } 
 }
 
 \details{
 The determination of the peaks is based on three rules:
 Rule 1: The maximum ridge scale of the peak should larger than a certain threshold
-Rule 2: Based on the scale of the peak (corresponding to the maximum value of the peak ridge) should be within certain range
-Rule 3: Based on the peak SNR 
+Rule 1.1: Based on the scale of the peak (corresponding to the maximum value of the peak ridge) should be within certain range
+Rule 2: Based on the peak SNR 
+Rule 3: The peak should not appear at the boundaries of the signal.
 }
 \value{
 Return a list with following elements:

@@ -1,6 +1,6 @@
 "identifyMajorPeaks" <-
 function(ms, ridgeList, wCoefs, scales=as.numeric(colnames(wCoefs)), SNR.Th=3, peakScaleRange=5, 
-		ridgeLength=32, nearbyPeak=FALSE, nearbyWinSize=100, winSize.noise=500, SNR.method='quantile', minNoiseLevel=0.001) {
+		ridgeLength=32, nearbyPeak=FALSE, nearbyWinSize=ifelse(nearbyPeak, 150, 100), winSize.noise=500, SNR.method='quantile', minNoiseLevel=0.001, excludeBoundariesSize=nearbyWinSize/2) {
 
 	if (is.null(scales)) {
 		scales <- 1:ncol(wCoefs)
@@ -113,7 +113,6 @@ function(ms, ridgeList, wCoefs, scales=as.numeric(colnames(wCoefs)), SNR.Th=3, p
 	if (nearbyPeak) {
 		selInd1 <- which(selInd1)
 		index <- 1:length(mzInd)
-		nearbyWinSize <- 150
 		tempInd <- NULL
 		for (ind.i in selInd1) {
 			tempInd <- c(tempInd, index[mzInd >= mzInd[ind.i] - nearbyWinSize & mzInd <= mzInd[ind.i] + nearbyWinSize])
@@ -125,8 +124,8 @@ function(ms, ridgeList, wCoefs, scales=as.numeric(colnames(wCoefs)), SNR.Th=3, p
 	selInd2 <- (peakSNR > SNR.Th)
 	
 	## Because of the boundary effects,
-	## remove the peaks (half of the nearbyWinSize) at both ends of the signal profile if exists
-	selInd3 <- !(mzInd %in% c(1:(nearbyWinSize/2), (nrow(wCoefs) - (nearbyWinSize/2) + 1):nrow(wCoefs)))
+	## remove the peaks (half of the excludeBoundariesSize) at both ends of the signal profile if exists
+	selInd3 <- !(mzInd %in% c(1:excludeBoundariesSize, (nrow(wCoefs) - excludeBoundariesSize + 1):nrow(wCoefs)))
 
 	## combine SNR and peak length rule and other rules
 	selInd <- (selInd1 & selInd2 & selInd3)

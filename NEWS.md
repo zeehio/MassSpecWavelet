@@ -1,6 +1,15 @@
 # MassSpecWavelet 1.63.2
 
 - Let getLocalMaximumCWT() have a relative amp.Th. Related to #4.
+- Fix bug on identifyMajorPeaks() where nearbyWinSize was forced to 150
+  if nearbyPeak was set to TRUE. Related to #4.
+- Added excludeBoundariesSize argument to identifyMajorPeaks(). Before,
+  nearbyWinSize was used for two different but related criteria: the
+  range for including peaks close to a large peak AND the range to
+  exclude peaks close to the beginning and end of the signal. Now,
+  we have two independent arguments for each setting.
+  The current behaviour does not change, but it is now more 
+  flexible. Related to #4.
 
 # MassSpecWavelet 1.63.1 (2022-07-08)
 

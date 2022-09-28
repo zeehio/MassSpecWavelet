@@ -131,7 +131,9 @@ function(localMax, iInit=ncol(localMax), step=-1, iFinal=1, minWinSize=5, gapTh=
 		}
 	}
 	## Attach the peak level at the beginning of the ridge names
-	names(ridgeList) <- paste(1, names(ridgeList), sep='_')
+	if (length(ridgeList) > 0) {
+		names(ridgeList) <- paste(1, names(ridgeList), sep='_')
+	}
 	names(orphanRidgeList) <- orphanRidgeName
 	## Combine ridgeList and orphanRidgeList
 	ridgeList <- c(ridgeList, orphanRidgeList)

@@ -1,3 +1,7 @@
+# MassSpecWavelet 1.63.2
+
+- Let getLocalMaximumCWT() have a relative amp.Th. Related to #4.
+
 # MassSpecWavelet 1.63.1 (2022-07-08)
 
 - Drop sav.gol alias from the documentation. Related to #2

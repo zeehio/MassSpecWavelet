@@ -7,13 +7,14 @@ The size of slide window linearly changes from the coarse scale (bigger window s
 The scale of CWT increases with the column index.
 }
 \usage{
-getLocalMaximumCWT(wCoefs, minWinSize= 5, amp.Th = 0)
+getLocalMaximumCWT(wCoefs, minWinSize= 5, amp.Th = 0, is_amp_thres_relative = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{wCoefs}{2-D CWT coefficients, each column corresponding to CWT coefficient at one scale. The column name is the scale.}
   \item{minWinSize}{The minimum slide window size used.}
   \item{amp.Th}{ The minimum peak amplitude. }
+  \item{is_amp_thres_relative}{Whether \code{amp.Th} is given relative to \code{max(wCoefs)}. }
 }
 
 \value{

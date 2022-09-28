@@ -1,8 +1,12 @@
 "getLocalMaximumCWT" <-
-function(wCoefs, minWinSize=5, amp.Th=0) {
+function(wCoefs, minWinSize=5, amp.Th=0, is_amp_thres_relative = FALSE) {
 
 	localMax <- NULL
 	scales <- as.numeric(colnames(wCoefs))
+
+    if (isTRUE(is_amp_thres_relative)) {
+        amp.Th <- max(wCoefs) * amp.Th
+    }
 	
 	for (i in 1:length(scales)) {
 		scale.i <- scales[i]

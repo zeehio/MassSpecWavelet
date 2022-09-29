@@ -1,4 +1,4 @@
-# MassSpecWavelet 1.63.2
+# MassSpecWavelet 1.63.2 (2022-09-29)
 
 - Let getLocalMaximumCWT() have a relative amp.Th. Related to #4.
 - Fix bug on identifyMajorPeaks() where nearbyWinSize was forced to 150

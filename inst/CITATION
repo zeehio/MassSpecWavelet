@@ -1,14 +1,22 @@
-citHeader("To cite MassSpecWavelet package in publications use:")
-
-citEntry(entry="article",  
-   author="Pan Du, Warren A. Kibbe, and Simon M. Lin",
-   title="Improved peak detection in mass spectrum by incorporating continuous wavelet transform-based pattern matching",
-   journal="Bioinformatics",
-   year="2006",
-   volume="22",
-   pages="2059-2065",
-   textVersion = paste("Du, P., Kibbe, W.A. and Lin, S.M. (2006) Improved peak detection in mass spectrum by incorporating continuous wavelet transform-based pattern matching, Bioinformatics, 22, 2059-2065."))
-
-citFooter("We have invested a lot of time and effort in creating the MassSpecWavelet package,",
-          "please cite it when using it for data analysis.")
-
+bibentry(
+ bibtype="Article",
+ title="Improved peak detection in mass spectrum by incorporating continuous wavelet transform-based pattern matching",
+ journal="Bioinformatics",
+ volume = "22",
+ number = "17",
+ pages = "2059-2065",
+ year = "2006",
+ month = "09",
+ issn = "1367-4803",
+ doi = "10.1093/bioinformatics/btl355",
+ author = c(
+     person(given="Pan", family="Du"),
+     person(given="Warren A.", family="Kibbe"),
+     person(given="Simon M.", family="Lin")
+ ),
+ url = "https://doi.org/10.1093/bioinformatics/btl355",
+ eprint = "https://academic.oup.com/bioinformatics/article-pdf/22/17/2059/767773/btl355.pdf",
+ textVersion="Pan Du, Warren A. Kibbe, Simon M. Lin, Improved peak detection in mass spectrum by incorporating continuous wavelet transform-based pattern matching, Bioinformatics Volume 22, Issue 17, September 2006, Pages 2059–2065, https://doi.org/10.1093/bioinformatics/btl355",
+ header="To cite MassSpecWavelet package in publications use:",
+ footer="We have invested a lot of time and effort in creating the MassSpecWavelet package, please cite it when using it for data analysis."
+)

@@ -38,4 +38,4 @@ MassSpecWavelet:::extendNBase(a)
 \author{
 Pan Du
 }
-\keyword{methods}
+\keyword{internal}

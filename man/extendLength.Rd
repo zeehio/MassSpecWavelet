@@ -22,16 +22,16 @@ By default, it is "reflection".}
 \item{direction}{three options available: c("right", "left", "both")}
 }
 \value{
-return the extended vector or matrix.
+The extended vector or matrix.
 }
 \description{
 Extend the length of a signal or matrix by row
 }
 \examples{
-
-# a = matrix(rnorm(9), 3)
-# extendLength(a, 3, direction='right') 	## not exposed function
-
+\donttest{
+a = matrix(rnorm(9), 3)
+extendLength(a, 3, direction='right')
+}
 }
 \seealso{
 \code{\link[=extendNBase]{extendNBase()}}
@@ -39,4 +39,4 @@ Extend the length of a signal or matrix by row
 \author{
 Pan Du
 }
-\keyword{methods}
+\keyword{internal}

@@ -12,7 +12,7 @@
 #' @return Return a extended matrix
 #' @author Pan Du
 #' @seealso [extendLength()]
-#' @keywords methods
+#' @keywords internal
 #' @examples
 #' \donttest{
 #' a <- matrix(rnorm(9), 3)

@@ -39,7 +39,7 @@
 #'
 getRidge <- function(localMax, iInit = ncol(localMax), step = -1, iFinal = 1, minWinSize = 5, gapTh = 3, skip = NULL) {
     scales <- as.numeric(colnames(localMax))
-    if (is.null(scales)) scales <- 1:ncol(localMax)
+    if (is.null(scales)) scales <- seq_len(ncol(localMax))
 
     maxInd_curr <- which(localMax[, iInit] > 0)
     nMz <- nrow(localMax)
@@ -66,7 +66,7 @@ getRidge <- function(localMax, iInit = ncol(localMax), step = -1, iFinal = 1, mi
     orphanRidgeName <- NULL
     nLevel <- length(colInd)
 
-    for (j in 1:nLevel) {
+    for (j in seq_len(nLevel)) {
         col.j <- colInd[j]
         scale.j <- scales[col.j]
 
@@ -133,7 +133,7 @@ getRidge <- function(localMax, iInit = ncol(localMax), step = -1, iFinal = 1, mi
             removeInd <- NULL
             for (dupPeak.jk in dupPeak.j) {
                 selInd <- which(selPeak.j == dupPeak.jk)
-                selLen <- sapply(ridgeList[selInd], length)
+                selLen <- vapply(ridgeList[selInd], length,integer(1L))
                 removeInd.jk <- which.max(selLen)
                 removeInd <- c(removeInd, selInd[-removeInd.jk])
                 orphanRidgeList <- c(orphanRidgeList, ridgeList[removeInd.jk])

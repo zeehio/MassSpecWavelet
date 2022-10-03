@@ -35,7 +35,7 @@ plotRidgeList <- function(ridgeList, wCoefs = NULL, range = NULL, colorMap = "RY
         colorMap <- rgb.palette(255)
         # colorMap <- heat.colors(255)
     }
-    ridgeLen <- sapply(ridgeList, length)
+    ridgeLen <- vapply(ridgeList, length, integer(1L))
     ridgeName <- names(ridgeList)
     ridgeInfo <- matrix(as.numeric(unlist(strsplit(ridgeName, "_"))), nrow = 2)
     ridgeLevel <- ridgeInfo[1, ]

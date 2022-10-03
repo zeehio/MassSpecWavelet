@@ -116,7 +116,7 @@ cwt <- function(ms, scales = 1, wavelet = "mexh") {
     psi_xval <- psi_xval - psi_xval[1]
     dxval <- psi_xval[2]
     xmax <- psi_xval[length(psi_xval)]
-    for (i in 1:length(scales)) {
+    for (i in seq_along(scales)) {
         scale.i <- scales[i]
         f <- rep(0, len)
         j <- 1 + floor((0:(scale.i * xmax)) / (scale.i * dxval))

@@ -8,15 +8,15 @@
 #' @param method three methods available, c("reflection", "open", "circular").
 #' By default, it is "reflection".
 #' @param direction three options available: c("right", "left", "both")
-#' @return return the extended vector or matrix.
+#' @return The extended vector or matrix.
 #' @author Pan Du
 #' @seealso [extendNBase()]
-#' @keywords methods
+#' @keywords internal
 #' @examples
-#'
-#' # a = matrix(rnorm(9), 3)
-#' # extendLength(a, 3, direction='right') 	## not exposed function
-#'
+#' \donttest{
+#' a = matrix(rnorm(9), 3)
+#' extendLength(a, 3, direction='right')
+#' }
 extendLength <- function(x, addLength = NULL, method = c("reflection", "open", "circular"), direction = c("right", "left", "both")) {
     if (is.null(addLength)) stop("Please provide the length to be added!")
     if (!is.matrix(x)) x <- matrix(x, ncol = 1)

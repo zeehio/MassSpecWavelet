@@ -35,7 +35,7 @@ getLocalMaximumCWT <- function(wCoefs, minWinSize = 5, amp.Th = 0, is_amp_thres_
         amp.Th <- max(wCoefs) * amp.Th
     }
 
-    for (i in 1:length(scales)) {
+    for (i in seq_along(scales)) {
         scale.i <- scales[i]
         winSize.i <- scale.i * 2 + 1
         if (winSize.i < minWinSize) {

@@ -21,6 +21,9 @@ adjacent CWT scales. The ridge line is cut off at the end point, whose
 amplitude divided by the maximum ridge amplitude is larger than the cutoff
 amplitude ratio threshold (0.5 by default).
 }
+\examples{
+stopifnot(getRidgeLength(list(c(5,4,3,2,1), c(5,3,1))) == c(3,2))
+}
 \author{
 Pan Du
 }

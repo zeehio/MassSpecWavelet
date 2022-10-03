@@ -25,7 +25,7 @@ CWT(Continuous Wavelet Transform) with Mexican Hat wavelet (by default) to
 match the peaks in Mass Spectrometry spectrum
 }
 \details{
-The default mother wavelet is a Mexican Hat evaluated in the \link{-8,8} range
+The default mother wavelet is a Mexican Hat evaluated in the \eqn{[-8,8]} range
 using 1024 points (a step of roughly 1/64):
 
 \deqn{ \psi(x) = \frac{2}{\sqrt{3}} \pi^{-0.25} ( 1 - x^2 ) \exp{-x^2/2} }

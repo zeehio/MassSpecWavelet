@@ -13,7 +13,7 @@
 #' The scaled wavelet is a downsampled version of the mother wavelet. The
 #' `scale` determines how many samples per \eqn{x} unit are taken. For
 #' instance, with the default Mexican Hat wavelet, a `scales = 2` will
-#' evaluate the [-8, 8] range sampling twice per \eqn{x} unit, this is with a
+#' evaluate the \eqn{[-8, 8]} range sampling twice per \eqn{x} unit, this is with a
 #' step of 0.5. This generates a 33 points long scaled wavelet. Choosing this
 #' type of scaling is convenient because the scaled wavelet becomes a wavelet
 #' of \eqn{\sigma = `scales`} points. Using the default wavelet, a
@@ -22,7 +22,7 @@
 #' wavelet. If you need to use `scales` larger than 64, consider providing
 #' your own mother wavelet. See the examples.
 #'
-#' According to \doi{10.1063/1.3505103"}, if
+#' According to \doi{10.1063/1.3505103}, if
 #' your spectrum has a gaussian peak shape of variance \eqn{m^2} points then
 #' the scales range should cover \eqn{[1, 1.9 m]}. If your spectrum has a
 #' Lorentzian peak shape of half-width-half-maximum \eqn{L} points then the

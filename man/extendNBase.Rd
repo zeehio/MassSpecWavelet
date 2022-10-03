@@ -26,9 +26,10 @@ Extend the data as the exponential of base N by increasing row number.
 The method 'open' is padding the the matrix with the last row.
 }
 \examples{
-
-# a = matrix(rnorm(9), 3)
-# extendNBase(a)	## not exposed function
+\donttest{
+a <- matrix(rnorm(9), 3)
+MassSpecWavelet:::extendNBase(a)
+}
 
 }
 \seealso{

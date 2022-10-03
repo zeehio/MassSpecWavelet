@@ -6,16 +6,8 @@
 \alias{MassSpecWavelet-package}
 \title{Peak detection of mass spectrum by Wavelet transform based methods}
 \description{
-Process Mass Spectrum (MS) by Wavelet Transforms-based algorithms
-}
-\details{
-\tabular{ll}{ Package: \tab MassSpecWavelet\cr Type: \tab Package\cr
-Version: \tab 1.0.4\cr Date: \tab 2007-04-05\cr License: \tab GPL 2 or
-newer\cr } MassSpecWavelet R package is aimed to process Mass Spectrometry
-(MS) data mainly based on Wavelet Transforms. The current version only
-supports the peak detection based on Continuous Wavelet Transform (CWT).
-Future versions will include more functions covering entire MS data
-processes.
+MassSpecWavelet R package is aimed to detect peaks on Mass Spectrometry (MS)
+data using Continuous Wavelet Transform (CWT).
 }
 \examples{
 
@@ -42,7 +34,5 @@ Useful links:
 }
 \author{
 Pan Du, Simon Lin
-
-Maintainer: Pan Du \href{mailto:dupan@northwestern.edu}{dupan@northwestern.edu}
 }
 \keyword{package}

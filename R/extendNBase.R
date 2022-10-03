@@ -14,9 +14,10 @@
 #' @seealso [extendLength()]
 #' @keywords methods
 #' @examples
-#'
-#' # a = matrix(rnorm(9), 3)
-#' # extendNBase(a)	## not exposed function
+#' \donttest{
+#' a <- matrix(rnorm(9), 3)
+#' MassSpecWavelet:::extendNBase(a)
+#' }
 #'
 extendNBase <- function(x, nLevel = 1, base = 2, ...) {
     if (!is.matrix(x)) {

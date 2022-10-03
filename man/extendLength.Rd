@@ -29,12 +29,12 @@ Extend the length of a signal or matrix by row
 }
 \examples{
 
-	# a = matrix(rnorm(9), 3)
-	# extendLength(a, 3, direction='right') 	## not exposed function
+# a = matrix(rnorm(9), 3)
+# extendLength(a, 3, direction='right') 	## not exposed function
 
 }
 \seealso{
-\code{\link{extendNBase}}
+\code{\link[=extendNBase]{extendNBase()}}
 }
 \author{
 Pan Du

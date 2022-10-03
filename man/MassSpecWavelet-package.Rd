@@ -21,10 +21,10 @@ processes.
 
 data(exampleMS)
 SNR.Th <- 3
-peakInfo <- peakDetectionCWT(exampleMS, SNR.Th=SNR.Th)
-majorPeakInfo = peakInfo$majorPeakInfo
+peakInfo <- peakDetectionCWT(exampleMS, SNR.Th = SNR.Th)
+majorPeakInfo <- peakInfo$majorPeakInfo
 peakIndex <- majorPeakInfo$peakIndex
-plotPeak(exampleMS, peakIndex, main=paste('Identified peaks with SNR >', SNR.Th)) 
+plotPeak(exampleMS, peakIndex, main = paste("Identified peaks with SNR >", SNR.Th))
 
 }
 \references{
@@ -43,6 +43,6 @@ Useful links:
 \author{
 Pan Du, Simon Lin
 
-Maintainer: Pan Du <dupan@northwestern.edu>
+Maintainer: Pan Du \href{mailto:dupan@northwestern.edu}{dupan@northwestern.edu}
 }
 \keyword{package}

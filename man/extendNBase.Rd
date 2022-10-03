@@ -14,7 +14,7 @@ changing the 'base' as base\^nLevel}
 
 \item{base}{the base, 2 by default}
 
-\item{\dots}{other parameters of used by \code{\link{extendLength}}}
+\item{\dots}{other parameters of used by \code{\link[=extendLength]{extendLength()}}}
 }
 \value{
 Return a extended matrix
@@ -27,12 +27,12 @@ The method 'open' is padding the the matrix with the last row.
 }
 \examples{
 
-	# a = matrix(rnorm(9), 3)
-	# extendNBase(a)	## not exposed function
+# a = matrix(rnorm(9), 3)
+# extendNBase(a)	## not exposed function
 
 }
 \seealso{
-\code{\link{extendLength}}
+\code{\link[=extendLength]{extendLength()}}
 }
 \author{
 Pan Du

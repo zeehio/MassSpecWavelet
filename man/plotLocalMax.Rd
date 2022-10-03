@@ -17,7 +17,7 @@ plotLocalMax(
 }
 \arguments{
 \item{localMax}{local maximum matrix of 2-D CWT coefficients returned by
-\code{\link{getLocalMaximumCWT}}}
+\code{\link[=getLocalMaximumCWT]{getLocalMaximumCWT()}}}
 
 \item{wCoefs}{2-D CWT coefficients}
 
@@ -25,13 +25,13 @@ plotLocalMax(
 
 \item{colorMap}{the colormap used in plotting the points}
 
-\item{main}{parameter of \code{\link{plot}}}
+\item{main}{parameter of \code{\link[=plot]{plot()}}}
 
-\item{cex}{parameter of \code{\link{plot}}}
+\item{cex}{parameter of \code{\link[=plot]{plot()}}}
 
-\item{pch}{parameter of \code{\link{plot}}}
+\item{pch}{parameter of \code{\link[=plot]{plot()}}}
 
-\item{\dots}{other parameters of \code{\link{points}}}
+\item{\dots}{other parameters of \code{\link[=points]{points()}}}
 }
 \value{
 No value is returned; this function is called for its side effects
@@ -39,20 +39,20 @@ No value is returned; this function is called for its side effects
 }
 \description{
 Plot the local maximum matrix of 2-D CWT coefficients returned by
-\code{\link{getLocalMaximumCWT}}
+\code{\link[=getLocalMaximumCWT]{getLocalMaximumCWT()}}
 }
 \examples{
 
-	data(exampleMS)
-	scales <- seq(1, 64, 3)
-	wCoefs <- cwt(exampleMS[5000:11000], scales=scales, wavelet='mexh')
-	
-	localMax <- getLocalMaximumCWT(wCoefs)
-	plotLocalMax(localMax)
+data(exampleMS)
+scales <- seq(1, 64, 3)
+wCoefs <- cwt(exampleMS[5000:11000], scales = scales, wavelet = "mexh")
+
+localMax <- getLocalMaximumCWT(wCoefs)
+plotLocalMax(localMax)
 
 }
 \seealso{
-\code{\link{getLocalMaximumCWT}}
+\code{\link[=getLocalMaximumCWT]{getLocalMaximumCWT()}}
 }
 \author{
 Pan Du

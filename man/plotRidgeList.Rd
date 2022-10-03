@@ -16,7 +16,7 @@ plotRidgeList(
 )
 }
 \arguments{
-\item{ridgeList}{returned by \code{\link{getRidge}}}
+\item{ridgeList}{returned by \code{\link[=getRidge]{getRidge()}}}
 
 \item{wCoefs}{2-D CWT coefficients}
 
@@ -24,34 +24,34 @@ plotRidgeList(
 
 \item{colorMap}{colorMap to plot the points of local maximum}
 
-\item{main}{parameter of \code{\link{plot}}}
+\item{main}{parameter of \code{\link[=plot]{plot()}}}
 
-\item{pch}{parameter of \code{\link{plot}}}
+\item{pch}{parameter of \code{\link[=plot]{plot()}}}
 
-\item{cex}{parameter of \code{\link{plot}}}
+\item{cex}{parameter of \code{\link[=plot]{plot()}}}
 
-\item{\dots}{other parameters of \code{\link{points}}}
+\item{\dots}{other parameters of \code{\link[=points]{points()}}}
 }
 \value{
 No value is returned; this function is called for its side effects
 (plot).
 }
 \description{
-Plot the ridge list returned by \code{\link{getRidge}}
+Plot the ridge list returned by \code{\link[=getRidge]{getRidge()}}
 }
 \examples{
 
-	data(exampleMS)
-	scales <- seq(1, 64, 3)
-	wCoefs <- cwt(exampleMS[5000:11000], scales=scales, wavelet='mexh')
-	
-	localMax <- getLocalMaximumCWT(wCoefs)
-	ridgeList <- getRidge(localMax)
-	plotRidgeList(ridgeList)
+data(exampleMS)
+scales <- seq(1, 64, 3)
+wCoefs <- cwt(exampleMS[5000:11000], scales = scales, wavelet = "mexh")
+
+localMax <- getLocalMaximumCWT(wCoefs)
+ridgeList <- getRidge(localMax)
+plotRidgeList(ridgeList)
 
 }
 \seealso{
-\code{\link{getRidge}}
+\code{\link[=getRidge]{getRidge()}}
 }
 \author{
 Pan Du

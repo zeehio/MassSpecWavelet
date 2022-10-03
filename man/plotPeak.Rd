@@ -27,11 +27,11 @@ plotPeak(
 \item{method}{plot method of the identified peaks. method 'p' plot circles
 on the peaks; method 'l' add vertical lines over the peaks.}
 
-\item{main}{parameter of \code{\link{plot}}}
+\item{main}{parameter of \code{\link[=plot]{plot()}}}
 
-\item{log}{parameter of \code{\link{plot}}}
+\item{log}{parameter of \code{\link[=plot]{plot()}}}
 
-\item{\dots}{other parameters of \code{\link{points}}}
+\item{\dots}{other parameters of \code{\link[=points]{points()}}}
 }
 \value{
 No value is returned; this function is called for its side effects
@@ -39,22 +39,21 @@ No value is returned; this function is called for its side effects
 }
 \description{
 Plot the identified peaks over the spectrum. The identified peaks are
-returned by \code{\link{peakDetectionCWT}} or
-\code{\link{identifyMajorPeaks}}
+returned by \code{\link[=peakDetectionCWT]{peakDetectionCWT()}} or
+\code{\link[=identifyMajorPeaks]{identifyMajorPeaks()}}
 }
 \examples{
 
-	data(exampleMS)
-	SNR.Th <- 3
-	peakInfo <- peakDetectionCWT(exampleMS, SNR.Th=SNR.Th)
-	majorPeakInfo = peakInfo$majorPeakInfo
-	peakIndex <- majorPeakInfo$peakIndex
-	plotPeak(exampleMS, peakIndex, main=paste('Identified peaks with SNR >', SNR.Th)) 
-
+data(exampleMS)
+SNR.Th <- 3
+peakInfo <- peakDetectionCWT(exampleMS, SNR.Th = SNR.Th)
+majorPeakInfo <- peakInfo$majorPeakInfo
+peakIndex <- majorPeakInfo$peakIndex
+plotPeak(exampleMS, peakIndex, main = paste("Identified peaks with SNR >", SNR.Th))
 
 }
 \seealso{
-\code{\link{peakDetectionCWT}}, \code{\link{identifyMajorPeaks}}
+\code{\link[=peakDetectionCWT]{peakDetectionCWT()}}, \code{\link[=identifyMajorPeaks]{identifyMajorPeaks()}}
 }
 \author{
 Pan Du

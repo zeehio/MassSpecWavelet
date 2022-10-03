@@ -1,8 +1,8 @@
 #' Plot the identified peaks over the spectrum
 #'
 #' Plot the identified peaks over the spectrum. The identified peaks are
-#' returned by \code{\link{peakDetectionCWT}} or
-#' \code{\link{identifyMajorPeaks}}
+#' returned by [peakDetectionCWT()] or
+#' [identifyMajorPeaks()]
 #'
 #'
 #' @param ms the MS spectrum
@@ -11,14 +11,14 @@
 #' @param range the plot range of m/z value
 #' @param method plot method of the identified peaks. method 'p' plot circles
 #' on the peaks; method 'l' add vertical lines over the peaks.
-#' @param main parameter of \code{\link{plot}}
-#' @param log parameter of \code{\link{plot}}
-#' @param \dots other parameters of \code{\link{points}}
+#' @param main parameter of [plot()]
+#' @param log parameter of [plot()]
+#' @param \dots other parameters of [points()]
 #' @return No value is returned; this function is called for its side effects
 #' (plot).
 #' @author Pan Du
 #' @export
-#' @seealso \code{\link{peakDetectionCWT}}, \code{\link{identifyMajorPeaks}}
+#' @seealso [peakDetectionCWT()], [identifyMajorPeaks()]
 #' @keywords hplot
 #' @examples
 #'

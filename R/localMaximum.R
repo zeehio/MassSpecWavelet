@@ -15,7 +15,7 @@
 #' @return Return a vector with the same length of the input x. The position of
 #' local maximum is set as 1, 0 else where.
 #' @author Pan Du
-#' @seealso \code{\link{getLocalMaximumCWT}}
+#' @seealso [getLocalMaximumCWT()]
 #' @keywords methods
 #' @export
 #' @examples

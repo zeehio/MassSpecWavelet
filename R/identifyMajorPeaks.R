@@ -1,7 +1,7 @@
 #' Identify peaks based on the ridges in 2-D CWT coefficient matrix
 #'
 #' Indentify the peaks based on the ridge list (returned by
-#' \code{\link{getRidge}}) in 2-D CWT coefficient matrix and estimated Signal
+#' [getRidge()]) in 2-D CWT coefficient matrix and estimated Signal
 #' to Noise Ratio (SNR)
 #'
 #' The determination of the peaks is based on three rules: Rule 1: The maximum
@@ -11,7 +11,7 @@
 #' Rule 3: The peak should not appear at the boundaries of the signal.
 #'
 #' @param ms the mass spectrometry spectrum
-#' @param ridgeList returned by \code{\link{getRidge}}
+#' @param ridgeList returned by [getRidge()]
 #' @param wCoefs 2-D CWT coefficients
 #' @param scales scales of CWT, by default it is the colnames of wCoefs
 #' @param SNR.Th threshold of SNR
@@ -45,9 +45,9 @@
 #' peakCenterValue, peakSNR and peakScale.}
 #'
 #' All of these return elements have peak names, which are the same as the
-#' corresponding peak ridges. see \code{\link{getRidge}} for details.
+#' corresponding peak ridges. see [getRidge()] for details.
 #' @author Pan Du, Simon Lin
-#' @seealso \code{\link{peakDetectionCWT}}, \code{\link{tuneInPeakInfo}}
+#' @seealso [peakDetectionCWT()], [tuneInPeakInfo()]
 #' @references Du, P., Kibbe, W.A. and Lin, S.M. (2006) Improved peak detection
 #' in mass spectrum by incorporating continuous wavelet transform-based pattern
 #' matching, Bioinformatics, 22, 2059-2065.

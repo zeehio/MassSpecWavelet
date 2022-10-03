@@ -1,15 +1,15 @@
 #' The main function of peak detection by CWT based pattern matching
 #'
-#' This function is a wrapper of \code{\link{cwt}},
-#' \code{\link{getLocalMaximumCWT}}, \code{\link{getRidge}},
-#' \code{\link{identifyMajorPeaks}}
+#' This function is a wrapper of [cwt()],
+#' [getLocalMaximumCWT()], [getRidge()],
+#' [identifyMajorPeaks()]
 #'
 #'
 #' @param ms the mass spectrometry spectrum
-#' @param scales Scales of CWT. See \code{\link{cwt}} for details.
+#' @param scales Scales of CWT. See [cwt()] for details.
 #' @param SNR.Th SNR (Signal to Noise Ratio) threshold
 #' @param nearbyPeak Determine whether to include the nearby small peaks of
-#' major peaks. \code{TRUE} by default
+#' major peaks. `TRUE` by default
 #' @param peakScaleRange the scale range of the peak. larger than 5 by default.
 #' @param amp.Th the minimum required relative amplitude of the peak (ratio to
 #' the maximum of CWT coefficients)
@@ -18,21 +18,21 @@
 #' coefficient matrix
 #' @param peakThr Minimal absolute intensity (above the baseline) of peaks to
 #' be picked. If this value is provided, then the smoothing function
-#' \code{\link[signal]{sgolayfilt}} will be called to estimate the local
+#' [signal::sgolayfilt()] will be called to estimate the local
 #' intensity.(added based on the suggestion and code of Steffen Neumann)
 #' @param tuneIn determine whether to tune in the parameter estimation of the
 #' detected peaks
-#' @param \dots other parameters used by \code{\link{identifyMajorPeaks}}.
-#' Additionally, \code{fl} (filter length, with a default value of 1001) and
-#' \code{forder} (filter order, with a default value of 2) are set and passed
-#' to \code{\link[signal]{sgolayfilt}} when \code{peakThr} is given.
-#' @return \item{majorPeakInfo}{ return of \code{\link{identifyMajorPeaks}}}
-#' \item{ridgeList}{return of \code{\link{getRidge}}} \item{localMax}{ return
-#' of \code{\link{getLocalMaximumCWT}} } \item{wCoefs}{ 2-D CWT coefficient
-#' matrix, see \code{\link{cwt}} for details.}
+#' @param \dots other parameters used by [identifyMajorPeaks()].
+#' Additionally, `fl` (filter length, with a default value of 1001) and
+#' `forder` (filter order, with a default value of 2) are set and passed
+#' to [signal::sgolayfilt()] when `peakThr` is given.
+#' @return \item{majorPeakInfo}{ return of [identifyMajorPeaks()]}
+#' \item{ridgeList}{return of [getRidge()]} \item{localMax}{ return
+#' of [getLocalMaximumCWT()] } \item{wCoefs}{ 2-D CWT coefficient
+#' matrix, see [cwt()] for details.}
 #' @author Pan Du, Simon Lin
-#' @seealso \code{\link{cwt}}, \code{\link{getLocalMaximumCWT}},
-#' \code{\link{getRidge}}, \code{\link{identifyMajorPeaks}}
+#' @seealso [cwt()], [getLocalMaximumCWT()],
+#' [getRidge()], [identifyMajorPeaks()]
 #' @references Du, P., Kibbe, W.A. and Lin, S.M. (2006) Improved peak detection
 #' in mass spectrum by incorporating continuous wavelet transform-based pattern
 #' matching, Bioinformatics, 22, 2059-2065.

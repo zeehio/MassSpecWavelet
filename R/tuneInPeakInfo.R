@@ -4,23 +4,23 @@
 #' information, i.e., peak position and peak scale, can be got by this
 #' function. The basic idea is to cut the segment of spectrum near the
 #' identified peaks, and then do similar procedures as
-#' \code{\link{peakDetectionCWT}}, but with more detailed scales around the
+#' [peakDetectionCWT()], but with more detailed scales around the
 #' estimated peak scale.
 #'
 #' The majorPeakInfo or peakIndex and peakScale must be provided.
 #'
 #' @param ms the mass spectrometry spectrum
-#' @param majorPeakInfo return of \code{\link{identifyMajorPeaks}}
+#' @param majorPeakInfo return of [identifyMajorPeaks()]
 #' @param peakIndex the m/z index of the identified peaks
 #' @param peakScale the scales of the identified peaks
 #' @param maxScale the maximum scale allowed for the peak
-#' @param \dots other parameters of used by \code{\link{getLocalMaximumCWT}},
-#' \code{\link{getRidge}}, \code{\link{identifyMajorPeaks}}
+#' @param \dots other parameters of used by [getLocalMaximumCWT()],
+#' [getRidge()], [identifyMajorPeaks()]
 #' @return \item{peakCenterIndex}{the updated peak center m/z index}
 #' \item{peakScale}{the updated peak scale} \item{peakValue}{the corresponding
 #' peak value}
 #' @author Pan Du
-#' @seealso \code{\link{peakDetectionCWT}}
+#' @seealso [peakDetectionCWT()]
 #' @references Du, P., Kibbe, W.A. and Lin, S.M. (2006) Improved peak detection
 #' in mass spectrum by incorporating continuous wavelet transform-based pattern
 #' matching, Bioinformatics, 22, 2059-2065.

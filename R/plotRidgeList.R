@@ -1,20 +1,20 @@
 #' Plot the ridge list
 #'
-#' Plot the ridge list returned by \code{\link{getRidge}}
+#' Plot the ridge list returned by [getRidge()]
 #'
 #'
-#' @param ridgeList returned by \code{\link{getRidge}}
+#' @param ridgeList returned by [getRidge()]
 #' @param wCoefs 2-D CWT coefficients
 #' @param range plot range of m/z index
 #' @param colorMap colorMap to plot the points of local maximum
-#' @param main parameter of \code{\link{plot}}
-#' @param pch parameter of \code{\link{plot}}
-#' @param cex parameter of \code{\link{plot}}
-#' @param \dots other parameters of \code{\link{points}}
+#' @param main parameter of [plot()]
+#' @param pch parameter of [plot()]
+#' @param cex parameter of [plot()]
+#' @param \dots other parameters of [points()]
 #' @return No value is returned; this function is called for its side effects
 #' (plot).
 #' @author Pan Du
-#' @seealso \code{\link{getRidge}}
+#' @seealso [getRidge()]
 #' @keywords hplot
 #' @export
 #' @examples

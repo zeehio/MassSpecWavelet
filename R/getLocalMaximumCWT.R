@@ -10,12 +10,12 @@
 #' coefficient at one scale. The column name is the scale.
 #' @param minWinSize The minimum slide window size used.
 #' @param amp.Th The minimum peak amplitude.
-#' @param is_amp_thres_relative Whether \code{amp.Th} is given relative to
-#' \code{max(wCoefs)}.
+#' @param is_amp_thres_relative Whether `amp.Th` is given relative to
+#' `max(wCoefs)`.
 #' @return return a matrix with same dimension as CWT coefficient matrix,
 #' wCoefs. The local maxima are marked as 1, others are 0.
 #' @author Pan Du
-#' @seealso \code{\link{localMaximum}}
+#' @seealso [localMaximum()]
 #' @keywords methods
 #' @export
 #' @examples

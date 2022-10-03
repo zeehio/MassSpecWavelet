@@ -7,7 +7,7 @@
 #' @param error error range
 #' @return return a vector of sorted m/z values
 #' @author Pan Du
-#' @seealso \code{\link{mzV2indRange}}
+#' @seealso [mzV2indRange()]
 #' @keywords methods
 mzInd2vRange <- function(mzInd, error = 0.003) {
     mzVR <- NULL

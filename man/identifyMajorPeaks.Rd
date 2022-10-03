@@ -23,7 +23,7 @@ identifyMajorPeaks(
 \arguments{
 \item{ms}{the mass spectrometry spectrum}
 
-\item{ridgeList}{returned by \code{\link{getRidge}}}
+\item{ridgeList}{returned by \code{\link[=getRidge]{getRidge()}}}
 
 \item{wCoefs}{2-D CWT coefficients}
 
@@ -70,11 +70,11 @@ m/z indexes of all the peaks, whose order is the same as peakCenterIndex,
 peakCenterValue, peakSNR and peakScale.}
 
 All of these return elements have peak names, which are the same as the
-corresponding peak ridges. see \code{\link{getRidge}} for details.
+corresponding peak ridges. see \code{\link[=getRidge]{getRidge()}} for details.
 }
 \description{
 Indentify the peaks based on the ridge list (returned by
-\code{\link{getRidge}}) in 2-D CWT coefficient matrix and estimated Signal
+\code{\link[=getRidge]{getRidge()}}) in 2-D CWT coefficient matrix and estimated Signal
 to Noise Ratio (SNR)
 }
 \details{
@@ -86,19 +86,18 @@ Rule 3: The peak should not appear at the boundaries of the signal.
 }
 \examples{
 
-	data(exampleMS)
-	scales <- seq(1, 64, 3)
-	wCoefs <- cwt(exampleMS, scales=scales, wavelet='mexh')
-	
-	localMax <- getLocalMaximumCWT(wCoefs)
-	ridgeList <- getRidge(localMax)
-	
-	SNR.Th <- 3
-	majorPeakInfo <- identifyMajorPeaks(exampleMS, ridgeList, wCoefs, SNR.Th=SNR.Th)
-	## Plot the identified peaks
-	peakIndex <- majorPeakInfo$peakIndex
-	plotPeak(exampleMS, peakIndex, main=paste('Identified peaks with SNR >', SNR.Th)) 
-	
+data(exampleMS)
+scales <- seq(1, 64, 3)
+wCoefs <- cwt(exampleMS, scales = scales, wavelet = "mexh")
+
+localMax <- getLocalMaximumCWT(wCoefs)
+ridgeList <- getRidge(localMax)
+
+SNR.Th <- 3
+majorPeakInfo <- identifyMajorPeaks(exampleMS, ridgeList, wCoefs, SNR.Th = SNR.Th)
+## Plot the identified peaks
+peakIndex <- majorPeakInfo$peakIndex
+plotPeak(exampleMS, peakIndex, main = paste("Identified peaks with SNR >", SNR.Th))
 
 }
 \references{
@@ -107,7 +106,7 @@ in mass spectrum by incorporating continuous wavelet transform-based pattern
 matching, Bioinformatics, 22, 2059-2065.
 }
 \seealso{
-\code{\link{peakDetectionCWT}}, \code{\link{tuneInPeakInfo}}
+\code{\link[=peakDetectionCWT]{peakDetectionCWT()}}, \code{\link[=tuneInPeakInfo]{tuneInPeakInfo()}}
 }
 \author{
 Pan Du, Simon Lin

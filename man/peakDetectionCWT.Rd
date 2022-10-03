@@ -21,7 +21,7 @@ peakDetectionCWT(
 \arguments{
 \item{ms}{the mass spectrometry spectrum}
 
-\item{scales}{Scales of CWT. See \code{\link{cwt}} for details.}
+\item{scales}{Scales of CWT. See \code{\link[=cwt]{cwt()}} for details.}
 
 \item{SNR.Th}{SNR (Signal to Noise Ratio) threshold}
 
@@ -40,42 +40,42 @@ coefficient matrix}
 
 \item{peakThr}{Minimal absolute intensity (above the baseline) of peaks to
 be picked. If this value is provided, then the smoothing function
-\code{\link[signal]{sgolayfilt}} will be called to estimate the local
+\code{\link[signal:sgolayfilt]{signal::sgolayfilt()}} will be called to estimate the local
 intensity.(added based on the suggestion and code of Steffen Neumann)}
 
 \item{tuneIn}{determine whether to tune in the parameter estimation of the
 detected peaks}
 
-\item{\dots}{other parameters used by \code{\link{identifyMajorPeaks}}.
+\item{\dots}{other parameters used by \code{\link[=identifyMajorPeaks]{identifyMajorPeaks()}}.
 Additionally, \code{fl} (filter length, with a default value of 1001) and
 \code{forder} (filter order, with a default value of 2) are set and passed
-to \code{\link[signal]{sgolayfilt}} when \code{peakThr} is given.}
+to \code{\link[signal:sgolayfilt]{signal::sgolayfilt()}} when \code{peakThr} is given.}
 }
 \value{
-\item{majorPeakInfo}{ return of \code{\link{identifyMajorPeaks}}}
-\item{ridgeList}{return of \code{\link{getRidge}}} \item{localMax}{ return
-of \code{\link{getLocalMaximumCWT}} } \item{wCoefs}{ 2-D CWT coefficient
-matrix, see \code{\link{cwt}} for details.}
+\item{majorPeakInfo}{ return of \code{\link[=identifyMajorPeaks]{identifyMajorPeaks()}}}
+\item{ridgeList}{return of \code{\link[=getRidge]{getRidge()}}} \item{localMax}{ return
+of \code{\link[=getLocalMaximumCWT]{getLocalMaximumCWT()}} } \item{wCoefs}{ 2-D CWT coefficient
+matrix, see \code{\link[=cwt]{cwt()}} for details.}
 }
 \description{
-This function is a wrapper of \code{\link{cwt}},
-\code{\link{getLocalMaximumCWT}}, \code{\link{getRidge}},
-\code{\link{identifyMajorPeaks}}
+This function is a wrapper of \code{\link[=cwt]{cwt()}},
+\code{\link[=getLocalMaximumCWT]{getLocalMaximumCWT()}}, \code{\link[=getRidge]{getRidge()}},
+\code{\link[=identifyMajorPeaks]{identifyMajorPeaks()}}
 }
 \examples{
 
-	data(exampleMS)
-	SNR.Th <- 3
-	peakInfo <- peakDetectionCWT(exampleMS, SNR.Th=SNR.Th)
-	majorPeakInfo = peakInfo$majorPeakInfo
-	peakIndex <- majorPeakInfo$peakIndex
-	plotPeak(exampleMS, peakIndex, main=paste('Identified peaks with SNR >', SNR.Th)) 
-	
-	## In some cases, users may want to add peak filtering based on the absolute peak amplitude
-	peakInfo <- peakDetectionCWT(exampleMS, SNR.Th=SNR.Th, peakThr=500)
-	majorPeakInfo = peakInfo$majorPeakInfo
-	peakIndex <- majorPeakInfo$peakIndex
-	plotPeak(exampleMS, peakIndex, main=paste('Identified peaks with SNR >', SNR.Th)) 	
+data(exampleMS)
+SNR.Th <- 3
+peakInfo <- peakDetectionCWT(exampleMS, SNR.Th = SNR.Th)
+majorPeakInfo <- peakInfo$majorPeakInfo
+peakIndex <- majorPeakInfo$peakIndex
+plotPeak(exampleMS, peakIndex, main = paste("Identified peaks with SNR >", SNR.Th))
+
+## In some cases, users may want to add peak filtering based on the absolute peak amplitude
+peakInfo <- peakDetectionCWT(exampleMS, SNR.Th = SNR.Th, peakThr = 500)
+majorPeakInfo <- peakInfo$majorPeakInfo
+peakIndex <- majorPeakInfo$peakIndex
+plotPeak(exampleMS, peakIndex, main = paste("Identified peaks with SNR >", SNR.Th))
 
 }
 \references{
@@ -84,8 +84,8 @@ in mass spectrum by incorporating continuous wavelet transform-based pattern
 matching, Bioinformatics, 22, 2059-2065.
 }
 \seealso{
-\code{\link{cwt}}, \code{\link{getLocalMaximumCWT}},
-\code{\link{getRidge}}, \code{\link{identifyMajorPeaks}}
+\code{\link[=cwt]{cwt()}}, \code{\link[=getLocalMaximumCWT]{getLocalMaximumCWT()}},
+\code{\link[=getRidge]{getRidge()}}, \code{\link[=identifyMajorPeaks]{identifyMajorPeaks()}}
 }
 \author{
 Pan Du, Simon Lin

@@ -18,7 +18,7 @@ return a vector of sorted m/z indexes
 Match m/z value to m/z index with a certain error range
 }
 \seealso{
-\code{\link{mzInd2vRange}}
+\code{\link[=mzInd2vRange]{mzInd2vRange()}}
 }
 \author{
 Pan Du

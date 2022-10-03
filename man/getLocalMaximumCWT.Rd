@@ -34,16 +34,16 @@ increases with the column index.
 }
 \examples{
 
-	data(exampleMS)
-	scales <- seq(1, 64, 3)
-	wCoefs <- cwt(exampleMS[5000:11000], scales=scales, wavelet='mexh')
-	
-	localMax <- getLocalMaximumCWT(wCoefs)
-	plotLocalMax(localMax)
+data(exampleMS)
+scales <- seq(1, 64, 3)
+wCoefs <- cwt(exampleMS[5000:11000], scales = scales, wavelet = "mexh")
+
+localMax <- getLocalMaximumCWT(wCoefs)
+plotLocalMax(localMax)
 
 }
 \seealso{
-\code{\link{localMaximum}}
+\code{\link[=localMaximum]{localMaximum()}}
 }
 \author{
 Pan Du

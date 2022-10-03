@@ -16,7 +16,7 @@ getRidge(
 }
 \arguments{
 \item{localMax}{The local maximum matrix is returned from
-\code{\link{getLocalMaximumCWT}} with 1 represents maximum, others are 0.}
+\code{\link[=getLocalMaximumCWT]{getLocalMaximumCWT()}} with 1 represents maximum, others are 0.}
 
 \item{iInit}{The start column to search ridge. By default, it starts from
 the coarsest scale level.}
@@ -42,17 +42,17 @@ ends at the CWT scale 1 with m/z index 653 at scale 1.
 \description{
 Identify ridges by connecting the local maximum of 2-D CWT coefficients from
 the coarse scale to detail scale. The local maximum matrix is returned from
-\code{\link{getLocalMaximumCWT}}
+\code{\link[=getLocalMaximumCWT]{getLocalMaximumCWT()}}
 }
 \examples{
 
-	data(exampleMS)
-	scales <- seq(1, 64, 3)
-	wCoefs <- cwt(exampleMS[5000:11000], scales=scales, wavelet='mexh')
-	
-	localMax <- getLocalMaximumCWT(wCoefs)
-	ridgeList <- getRidge(localMax)
-	plotRidgeList(ridgeList)
+data(exampleMS)
+scales <- seq(1, 64, 3)
+wCoefs <- cwt(exampleMS[5000:11000], scales = scales, wavelet = "mexh")
+
+localMax <- getLocalMaximumCWT(wCoefs)
+ridgeList <- getRidge(localMax)
+plotRidgeList(ridgeList)
 
 }
 \references{
@@ -61,7 +61,7 @@ in mass spectrum by incorporating continuous wavelet transform-based pattern
 matching, Bioinformatics, 22, 2059-2065.
 }
 \seealso{
-\code{\link{getLocalMaximumCWT}}, \code{\link{identifyMajorPeaks}}
+\code{\link[=getLocalMaximumCWT]{getLocalMaximumCWT()}}, \code{\link[=identifyMajorPeaks]{identifyMajorPeaks()}}
 }
 \author{
 Pan Du, Simon Lin

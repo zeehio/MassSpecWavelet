@@ -10,7 +10,7 @@
 #' @param direction three options available: c("right", "left", "both")
 #' @return return the extended vector or matrix.
 #' @author Pan Du
-#' @seealso \code{\link{extendNBase}}
+#' @seealso [extendNBase()]
 #' @keywords methods
 #' @examples
 #'

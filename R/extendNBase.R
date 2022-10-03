@@ -8,10 +8,10 @@
 #' @param nLevel the level of DWT decomposition. Basically, it is equivalent to
 #' changing the 'base' as base\^nLevel
 #' @param base the base, 2 by default
-#' @param \dots other parameters of used by \code{\link{extendLength}}
+#' @param \dots other parameters of used by [extendLength()]
 #' @return Return a extended matrix
 #' @author Pan Du
-#' @seealso \code{\link{extendLength}}
+#' @seealso [extendLength()]
 #' @keywords methods
 #' @examples
 #'

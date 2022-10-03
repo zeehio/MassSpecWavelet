@@ -11,15 +11,15 @@
 #' The \eqn{\sigma} of the mother Mexican Hat is of one x unit.
 #'
 #' The scaled wavelet is a downsampled version of the mother wavelet. The
-#' \code{scale} determines how many samples per \eqn{x} unit are taken. For
-#' instance, with the default Mexican Hat wavelet, a \code{scales = 2} will
+#' `scale` determines how many samples per \eqn{x} unit are taken. For
+#' instance, with the default Mexican Hat wavelet, a `scales = 2` will
 #' evaluate the [-8, 8] range sampling twice per \eqn{x} unit, this is with a
 #' step of 0.5. This generates a 33 points long scaled wavelet. Choosing this
 #' type of scaling is convenient because the scaled wavelet becomes a wavelet
-#' of \eqn{\sigma = \code{scales}} points. Using the default wavelet, a
-#' \code{scales} smaller than 1 will show sampling issues, while a
-#' \code{scales} larger than 64 will resample points from the original mother
-#' wavelet. If you need to use \code{scales} larger than 64, consider providing
+#' of \eqn{\sigma = `scales`} points. Using the default wavelet, a
+#' `scales` smaller than 1 will show sampling issues, while a
+#' `scales` larger than 64 will resample points from the original mother
+#' wavelet. If you need to use `scales` larger than 64, consider providing
 #' your own mother wavelet. See the examples.
 #'
 #' According to c("\\Sexpr[results=rd]{tools:::Rd_expr_doi(\"#1\")}",

@@ -32,12 +32,12 @@ increase the efficiency of the algorithm.
 x <- rnorm(200)
 lmax <- localMaximum(x, 5)
 maxInd <- which(lmax > 0)
-plot(x, type='l')
-points(maxInd, x[maxInd], col='red')
+plot(x, type = "l")
+points(maxInd, x[maxInd], col = "red")
 
 }
 \seealso{
-\code{\link{getLocalMaximumCWT}}
+\code{\link[=getLocalMaximumCWT]{getLocalMaximumCWT()}}
 }
 \author{
 Pan Du

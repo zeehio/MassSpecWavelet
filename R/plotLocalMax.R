@@ -1,22 +1,22 @@
 #' Plot the local maximum matrix
 #'
 #' Plot the local maximum matrix of 2-D CWT coefficients returned by
-#' \code{\link{getLocalMaximumCWT}}
+#' [getLocalMaximumCWT()]
 #'
 #'
 #' @param localMax local maximum matrix of 2-D CWT coefficients returned by
-#' \code{\link{getLocalMaximumCWT}}
+#' [getLocalMaximumCWT()]
 #' @param wCoefs 2-D CWT coefficients
 #' @param range plot range of m/z index
 #' @param colorMap the colormap used in plotting the points
-#' @param main parameter of \code{\link{plot}}
-#' @param cex parameter of \code{\link{plot}}
-#' @param pch parameter of \code{\link{plot}}
-#' @param \dots other parameters of \code{\link{points}}
+#' @param main parameter of [plot()]
+#' @param cex parameter of [plot()]
+#' @param pch parameter of [plot()]
+#' @param \dots other parameters of [points()]
 #' @return No value is returned; this function is called for its side effects
 #' (plot).
 #' @author Pan Du
-#' @seealso \code{\link{getLocalMaximumCWT}}
+#' @seealso [getLocalMaximumCWT()]
 #' @keywords hplot
 #' @export
 #' @examples

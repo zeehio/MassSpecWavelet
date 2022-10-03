@@ -56,7 +56,7 @@ smoothDWT <- function(ms, nLevel = 6, wf = "la8", localNoiseTh = seq(1, 0, by = 
             ind.global <- which(abs(coef.i) > globalTh.i)
 
             ## Transform the vector as a matrix with column length equals winSize
-            ## 		and find the maximum position at each row.
+            ## and find the maximum position at each row.
             len <- length(coef.i)
             temp <- matrix(extendNBase(abs(coef.i), base = localWinSize, nLevel = 1, method = "open", direction = "right"), nrow = localWinSize)
 

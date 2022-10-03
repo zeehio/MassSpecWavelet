@@ -63,7 +63,7 @@ plotRidgeList <- function(ridgeList, wCoefs = NULL, range = NULL, colorMap = "RY
     if (!is.null(wCoefs)) {
         if (length(scales) != ncol(wCoefs)) stop('The length of "scales" does not match with "wCoefs"!')
         # if (!is.null(skip)) {
-        # 	wCoefs <- wCoefs[, -skip]
+        #     wCoefs <- wCoefs[, -skip]
         # }
         range <- round(range)
         maxSelV <- max(wCoefs[range[1]:range[2], ])

@@ -31,7 +31,7 @@ localMaximum <- function(x, winSize = 5) {
     rNum <- ceiling(len / winSize)
 
     ## Transform the vector as a matrix with column length equals winSize
-    ## 		and find the maximum position at each row.
+    ## and find the maximum position at each row.
     y <- matrix(c(x, rep(x[len], rNum * winSize - len)), nrow = winSize)
     y.maxInd <- apply(y, 2, which.max)
     ## Only keep the maximum value larger than the boundary values

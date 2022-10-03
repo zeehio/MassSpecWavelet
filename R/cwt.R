@@ -22,8 +22,7 @@
 #' wavelet. If you need to use `scales` larger than 64, consider providing
 #' your own mother wavelet. See the examples.
 #'
-#' According to c("\\Sexpr[results=rd]{tools:::Rd_expr_doi(\"#1\")}",
-#' "10.1063/1.3505103")\Sexpr{tools:::Rd_expr_doi("10.1063/1.3505103")}, if
+#' According to \doi{10.1063/1.3505103"}, if
 #' your spectrum has a gaussian peak shape of variance \eqn{m^2} points then
 #' the scales range should cover \eqn{[1, 1.9 m]}. If your spectrum has a
 #' Lorentzian peak shape of half-width-half-maximum \eqn{L} points then the
@@ -108,11 +107,10 @@ cwt <- function(ms, scales = 1, wavelet = "mexh") {
     }
 
     oldLen <- length(ms)
-    ## To increase the computation effeciency of FFT, extend it as the power of 2
+    ## To increase the computation efficiency of FFT, extend it as the power of 2
     ## because of a strange signal length 21577 makes the FFT very slow!
     ms <- extendNBase(ms, nLevel = NULL, base = 2)
     len <- length(ms)
-    nbscales <- length(scales)
     wCoefs <- NULL
 
     psi_xval <- psi_xval - psi_xval[1]

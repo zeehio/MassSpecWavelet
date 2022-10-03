@@ -27,3 +27,4 @@ License: LGPL (>= 2)
 Suggests: signal, waveslim, BiocStyle, knitr, rmarkdown
 biocViews: ImmunoOncology, MassSpectrometry, Proteomics
 VignetteBuilder: knitr
+RoxygenNote: 7.2.1

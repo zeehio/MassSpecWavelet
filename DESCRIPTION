@@ -24,7 +24,7 @@ Description: Processing Mass Spectrometry spectrum by using wavelet based algori
 URL: https://github.com/zeehio/MassSpecWavelet
 BugReports: http://github.com/zeehio/MassSpecWavelet/issues
 License: LGPL (>= 2)
-Suggests: signal, waveslim, BiocStyle, knitr, rmarkdown
+Suggests: signal, waveslim, BiocStyle, knitr, rmarkdown, RUnit
 biocViews: ImmunoOncology, MassSpectrometry, Proteomics
 VignetteBuilder: knitr
 RoxygenNote: 7.2.1

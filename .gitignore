@@ -1,3 +1,6 @@
 *.o
 *.so
 vignettes/*.html
+*.Rproj
+.Rproj.user
+.Rhistory

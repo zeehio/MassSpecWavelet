@@ -1,6 +1,6 @@
 Package: MassSpecWavelet
 Type: Package
-Title: Mass spectrum processing by wavelet-based algorithms
+Title: Peak Detection for Mass Spectrometry data using wavelet-based algorithms
 Version: 1.63.2
 Encoding: UTF-8
 Date: 2022-09-29
@@ -20,7 +20,14 @@ Authors@R: c(
            role = c("cre"),
            comment = c(ORCID = "0000-0002-8994-1549"))
     )
-Description: Processing Mass Spectrometry spectrum by using wavelet based algorithm.
+Description: Peak Detection in Mass Spectrometry data is one of the important
+ preprocessing steps. The performance of peak detection affects subsequent
+ processes, including protein identification, profile alignment and biomarker
+ identification. Using Continuous Wavelet Transform (CWT), this package provides
+ a reliable algorithm for peak detection that does not require any type of
+ smoothing or previous baseline correction method, providing more consistent
+ results for different spectra. See <doi:10.1093/bioinformatics/btl355} for further
+ details.
 URL: https://github.com/zeehio/MassSpecWavelet
 BugReports: http://github.com/zeehio/MassSpecWavelet/issues
 License: LGPL (>= 2)

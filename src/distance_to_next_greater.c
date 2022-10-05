@@ -17,6 +17,12 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
     int peak_center = 0;
     int winsize;
     int j;
+    if (xlength == 0) {
+        return;
+    } else if (xlength == 1) {
+        outi[0] = 0;
+        return;
+    }
     int *stack_prev = (int*) R_alloc(xlength, sizeof(int));
     int *stack_next = (int*) R_alloc(xlength, sizeof(int));
     int stack_prev_size = 0;

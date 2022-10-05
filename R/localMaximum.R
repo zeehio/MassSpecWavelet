@@ -7,7 +7,7 @@
 #' Instead of find the local maximum by a slide window, which slide all
 #' possible positions, we find local maximum by transform the vector as matrix,
 #' then get the the maximum of each column. This operation is performed twice
-#' with vecctor shifted half of the winSize. The main purpose of this is to
+#' with vector shifted half of the winSize. The main purpose of this is to
 #' increase the efficiency of the algorithm.
 #'
 #' @param x a vector represents a signal profile

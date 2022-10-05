@@ -31,7 +31,7 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
     int prev_diff = -2;
     int curr_diff = -2;
     for (int i=0; i < xlength-1; i++) {
-        curr_diff = sign_d((x[i+1] - x[i]) > 0);
+        curr_diff = sign_d(x[i+1] - x[i]);
         for (j = stack_next_starts; j < stack_next_ends; j++) {
             if (stack_next[j] > i) {
                 stack_next_starts = j;
@@ -104,12 +104,13 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                     // to the left:
                     for (j = stack_prev_size-1; j >= 0; j--) {
                         if (x[stack_prev[j]] > x[peak_center]) {
-                            if (MASSSPECWAVELET_DEBUG) printf("  winsize_left: %d\n", peak_center - stack_prev[j] - 1);
+                            if (MASSSPECWAVELET_DEBUG) printf("  winsize_left: %d (a)\n", peak_center - stack_prev[j] - 1);
                             winsize += peak_center - stack_prev[j] - 1;
                             break;
                         }
                     }
                     if (j == -1) {
+                        if (MASSSPECWAVELET_DEBUG) printf("  winsize_left: %d (c)\n", peak_center);
                         winsize += peak_center; // CHECK: -1?
                     }
                     // to the right:
@@ -172,10 +173,14 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                 for (j = stack_prev_size-1; j >= 0; j--) {
                     if (MASSSPECWAVELET_DEBUG) printf("   stack_prev[%d]: %d\n", j, stack_prev[j]);
                     if (x[stack_prev[j]] > x[peak_center]) {
-                        if (MASSSPECWAVELET_DEBUG) printf("       winsize_left: %d\n", peak_center - stack_prev[j] - 1);
+                        if (MASSSPECWAVELET_DEBUG) printf("       winsize_left: %d (a)\n", peak_center - stack_prev[j] - 1);
                         winsize += peak_center - stack_prev[j] - 1;
                         break;
                     }
+                }
+                if (j == -1) {
+                    if (MASSSPECWAVELET_DEBUG) printf("       winsize_left: %d (c)\n", peak_center);
+                    winsize += peak_center;
                 }
                 // to the right:
                 for (j = stack_next_starts; j < stack_next_ends; j++) {

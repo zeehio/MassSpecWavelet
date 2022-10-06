@@ -1,0 +1,191 @@
+---
+title: "Finding local maxima with MassSpecWavelet"
+author:
+- name: Sergio Oller
+  affiliation:
+  - &id Institute for Bioengineering of Catalonia, Barcelona, Spain
+package: MassSpecWavelet
+output:
+  BiocStyle::html_document
+vignette: >
+  %\VignetteIndexEntry{Finding local maxima}
+  %\VignetteKeywords{Peak Detection}
+  %\VignetteKeywords{Wavelet}
+  %\VignetteKeywords{MassSpecWavelet}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+As described in the introductory vignette, one of the steps of the peak detection
+process in the MassSpecWavelet package relies on the detection of local maxima
+on the wavelet coefficients.
+
+MassSpecWavelet version 1.63.3 introduced a new algorithm for detecting local
+maxima that addressed some issues from the former algorithm. In this vignette:
+
+- We show the issues of the classic `localMaximum()` detection algorithm, as well
+  as how to switch between both algorithms, if you need to
+- We describe the new algorithm
+- We compare the performance of both
+
+
+If you want to keep using the "classic" algorithm, because you care that much
+about reproducibility, you can use
+`options("MassSpecWavelet.localMaximum.algorithm" = "classic")`.
+
+```{r}
+library(MassSpecWavelet)
+```
+
+
+# Problems with the classic algorithm
+
+The `"classic"` `localMaximum` algorithm implements the local maxima detection
+using a two partially overlapping non-sliding windows: One that starts at the beginning of
+the signal, and another one starting at half the window size.
+
+The documentation reflected this behavior in the Details section:
+
+> Instead of find the local maximum by a slide window, which slide all possible
+> positions, we find local maximum by transform the vector as matrix, then get
+> the the maximum of each column. This operation is performed twice with 
+> vecctor shifted half of the winSize. The main purpose of this is
+> to increase the efficiency of the algorithm.
+
+While it's true that this makes the algorithm faster, it does so at the expense of
+missing some peak detections. See for instance the following artificial signal:
+
+
+```{r}
+peak <- c(1,2,3)
+x <- c(0, peak, peak, 0, 0, 0, peak, 1, peak, peak, 0)
+plot(x, type = "o", main = "Five peaks are expected")
+```
+If we use a sliding window of four points we can detect the five peaks (if you
+actually look at each maximum you will be able to draw some window that contains
+the maximum and it has at least four points inside). So when we
+use the new algorithm:
+
+```{r}
+options("MassSpecWavelet.localMaximum.algorithm" = "new")
+local_max <- which(localMaximum(x, winSize = 4) > 0)
+plot(x, type = "o", main = "With the new algorithm, 5/5 peaks are found")
+points(local_max, x[local_max], col = "red", pch = 20)
+
+```
+However with the classic algorithm, there are two peaks we are missing:
+
+```{r}
+options("MassSpecWavelet.localMaximum.algorithm" = "classic")
+local_max <- which(localMaximum(x, winSize = 4) > 0)
+plot(x, type = "o", main = "With the classic algorithm, 3/5 peaks are found")
+points(local_max, x[local_max], col = "red", pch = 20)
+```
+
+While this is less likely to happen with longer window sizes, and the default window
+size in the peak detection is `2*scale+1`, this efficiency shortcut may have 
+some actual impact on the peak detection of MassSpecWavelet.
+
+I haven't measured how often this happens in real mass spectrometry samples. Feel
+free to compare the results and get back to me, I guess the impact will be rather
+small, otherwise this issue would have been noticed earlier.
+
+Benchmarking the performance of the MassSpecWavelet peak detection algorithm, this
+local maximum detection was also the most computationally intensive part in my
+tests, so finding a more efficient (and more correct) algorithm seemed a worth
+pursuing goal to improve the package.
+
+# The new local maximum algorithm
+
+We want an algorithm to detect local maximum using a sliding window. Since we
+are putting effort in correctness, we want to define it properly.
+
+A point in the signal will be reported as a local maximum if one of these
+conditions are met:
+
+- We can draw some window of size `winSize` that (a) contains our point (b) our
+  point is not in the border of the window and (c) is the largest value of the
+  window.
+
+- If a point is part of a plateau of constant values, the center of the plateau
+  will be considered as the maximum. If the plateau has an even size, it will be
+  the first of the two points that could be the center of the plateau.
+
+To give an example of these plateaus (very unlikely to happen with floating point
+values) see this synthetic example and how the two algorithms behave:
+
+```{r}
+x <- c(0, 1, 2, 3, 3, 3, 3, 2, 1, 0, 3, 0, 3, 3, 3, 3, 3, 0)
+x <- c(x, 0, 1, 2, 3, 3, 3, 2, 1, 0, 3, 0, 0, 0, 3, 3, 3, 0, 0)
+options("MassSpecWavelet.localMaximum.algorithm" = "classic")
+local_max_classic <- which(localMaximum(x, winSize = 5) > 0)
+options("MassSpecWavelet.localMaximum.algorithm" = "new")
+local_max_new <- which(localMaximum(x, winSize = 5) > 0)
+par(mfrow = c(2, 1))
+plot(x, type = "o", main = "With the classic algorithm, 2/6 peaks are found")
+points(local_max_classic, x[local_max_classic], col = "red", pch = 20)
+plot(x, type = "o", main = "With the new algorithm, 6/6 peaks are found")
+points(local_max_new, x[local_max_new], col = "blue", pch = 20)
+
+```
+
+While these plateaus are corner cases in real scenarios very unlikely to happen,
+it is worth having a well-defined and well-behaved implementation.
+
+Since we want the algorithm to be as fast as possible, and we want to avoid
+memory copies and R interpreter overhead, the algorithm is implemented in C.
+
+We added 
+
+```{r}
+# Run this interactively
+set.seed(5413L)
+winSizes <- c(5, 31, 301)
+xlengths <- c(20, 200, 2000, 20000, 200000)
+out <- vector("list", length(winSizes) * length(xlengths))
+i <- 0L
+for (winSize in winSizes) {
+    for (xlength in xlengths) {
+        i <- i + 1L
+        x <- round(10*runif(xlength), 1)*10
+        bm <- as.data.frame(
+                bench::mark(
+                old = {
+                    options(MassSpecWavelet.localMaximum.algorithm = "classic")
+                    localMaximum(x, winSize = winSize)
+                    
+                },
+                new = {
+                    options(MassSpecWavelet.localMaximum.algorithm = "new")
+                    localMaximum(x, winSize = winSize)
+                    
+                },
+                check = FALSE,
+                time_unit = "ms"
+            )
+        )
+        out[[i]] <- data.frame(
+            algorithm = as.character(bm$expression),
+            median_cpu_time_ms = as.numeric(bm$median),
+            xlength = xlength,
+            winSize = winSize
+        )
+    }
+}
+out2 <- do.call(rbind, out)
+library(ggplot2)
+ggplot(out2) +
+    geom_point(aes(x = xlength, y = median_cpu_time_ms, color = algorithm, shape = as.factor(winSize))) +
+    scale_x_log10() +
+    scale_y_log10() +
+    labs(x = "signal length", y = "median cpu time (ms)", color = "Algorithm", shape = "winSize")
+
+```
+
+
+
+# Session Information
+
+```{r}
+sessionInfo()
+```

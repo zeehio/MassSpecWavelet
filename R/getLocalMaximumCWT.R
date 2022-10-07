@@ -45,7 +45,7 @@ getLocalMaximumCWT <- function(wCoefs, minWinSize = 5, amp.Th = 0, is_amp_thres_
         localMax <- cbind(localMax, temp)
     }
     # Set the values less than peak threshold as 0
-    localMax[wCoefs < amp.Th] <- 0
+    localMax[wCoefs < amp.Th] <- 0L
     colnames(localMax) <- colnames(wCoefs)
     rownames(localMax) <- rownames(wCoefs)
     return(localMax)

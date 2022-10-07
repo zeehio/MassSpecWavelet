@@ -1,5 +1,10 @@
 #include "MassSpecWavelet.h"
 
+#ifndef MASSSPECWAVELET_DEBUG
+#define MASSSPECWAVELET_DEBUG 0
+#endif
+
+
 static inline int sign_d(double x) {
     if (x > 0) return 1;
     if (x < 0) return -1;
@@ -8,9 +13,6 @@ static inline int sign_d(double x) {
 
 static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
 
-#ifndef MASSSPECWAVELET_DEBUG
-  #define MASSSPECWAVELET_DEBUG 0
-#endif
     int in_plateau = 0;
     int peak_starts = 0;
     int peak_ends = 0;

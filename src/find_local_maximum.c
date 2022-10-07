@@ -256,6 +256,7 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                                     not_a_peak[j] = 1;
                                     break;
                                 }
+                                break;
                             case 0: // holds
                                 switch(peek_curr_diff) {
                                 case -1: // and decreases
@@ -272,6 +273,7 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                                     not_a_peak[j] = 0;
                                     break;
                                 }
+                                break;
                             case 1: // increases
                                 switch(peek_curr_diff) {
                                 case -1: // and decreases
@@ -290,6 +292,7 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                                     not_a_peak[j] = 1;
                                     break;
                                 }
+                                break;
                             }
                             peek_prev_diff = peek_curr_diff;
                             if (x[j] > x[peak_center]) {
@@ -424,6 +427,7 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                                 }
                                 break;
                             }
+                            break;
                         case 0: // holds
                             switch(peek_curr_diff) {
                             case -1: // and decreases
@@ -440,6 +444,7 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                                 not_a_peak[j] = 0;
                                 break;
                             }
+                            break;
                         case 1: // increases
                             switch(peek_curr_diff) {
                             case -1: // and decreases
@@ -457,6 +462,7 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                                 not_a_peak[j] = 1;
                                 break;
                             }
+                            break;
                         }
                         peek_prev_diff = peek_curr_diff;
                         if (x[j] > x[peak_center]) {

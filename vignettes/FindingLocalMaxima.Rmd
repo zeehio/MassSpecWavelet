@@ -166,20 +166,30 @@ for (winSize in winSizes) {
         )
         out[[i]] <- data.frame(
             algorithm = as.character(bm$expression),
-            median_cpu_time_ms = as.numeric(bm$median),
+            min_cpu_time_ms = as.numeric(bm$min),
             xlength = xlength,
             winSize = winSize
         )
     }
 }
 out2 <- do.call(rbind, out)
-library(ggplot2)
-ggplot(out2) +
-    geom_point(aes(x = xlength, y = median_cpu_time_ms, color = algorithm, shape = as.factor(winSize))) +
-    scale_x_log10() +
-    scale_y_log10() +
-    labs(x = "signal length", y = "median cpu time (ms)", color = "Algorithm", shape = "winSize")
-
+plot(
+    x = out2$xlength,
+    y = out2$min_cpu_time_ms,
+    col = ifelse(out2$algorithm == "new", "red", "blue"),
+    pch = ifelse(out2$winSize == 5, 1, ifelse(out2$winSize == 31, 2, 3)),
+    log = "xy",
+    xlab = "Signal length",
+    ylab = "Min CPU time (ms)"
+)
+legend(
+    "topleft",
+    legend = c("New algorithm", "Classic algorithm",
+               "winSize = 5", "winSize = 31", "winSize = 301"),
+    lty = c(1,1, 0, 0, 0),
+    pch = c(NA, NA, 1, 2, 3),
+    col = c("red", "blue", "black", "black", "black")
+)
 ```
 
 

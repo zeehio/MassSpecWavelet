@@ -37,9 +37,22 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
     int prev_diff = -2;
     int curr_diff = -2;
     for (int i=0; i < xlength-1; i++) {
+        #if (MASSSPECWAVELET_DEBUG > 0)
+            printf("plateau limits:\n");
+            for (j = 0; j< stack_plateau_size; j++) {
+                printf(" - %s: %d\n", (j%2 == 0) ? "starts": "ends", stack_plateau[j]);
+            }
+            printf("plateau summary ends:\n");
+        #endif
+        #if (MASSSPECWAVELET_DEBUG > 0) 
+            printf("i: %d (stack_prev_size: %d). ", i, stack_prev_size);
+        #endif
         if (not_a_peak[i]) {
             outi[i] = 0;
             prev_diff = sign_d(x[i+1] - x[i]);
+            #if (MASSSPECWAVELET_DEBUG > 0)
+                printf("Skipping\n");
+            #endif
             continue;
         }
         curr_diff = sign_d(x[i+1] - x[i]);
@@ -84,13 +97,16 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
             }
         }
         
-        if (MASSSPECWAVELET_DEBUG) printf("i: %d (stack_prev_size: %d). ", i, stack_prev_size);
         switch(prev_diff) {
         case -2:
-            if (MASSSPECWAVELET_DEBUG) printf("signal starts ");
+            #if (MASSSPECWAVELET_DEBUG > 0)
+                printf("signal starts ");
+            #endif
             switch (curr_diff) {
             case -1:
-                if (MASSSPECWAVELET_DEBUG) printf("and decreases\n");
+                #if (MASSSPECWAVELET_DEBUG > 0)
+                    printf("and decreases\n");
+                #endif
                 // signal starts decreasing
                 outi[i] = 0;
                 if (stack_prev_size == 0 || stack_prev[stack_prev_size-1] < i) {
@@ -98,7 +114,9 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                 }
                 break;
             case  0:
-                if (MASSSPECWAVELET_DEBUG) printf("and holds\n");
+                #if (MASSSPECWAVELET_DEBUG > 0)
+                    printf("and holds\n");
+                #endif
                 // signal starts constant
                 if (stack_prev_size == 0 || stack_prev[stack_prev_size-1] < i) {
                     stack_prev[stack_prev_size++] = i;
@@ -106,7 +124,9 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                 outi[i] = 0;
                 break;
             case  1:
-                if (MASSSPECWAVELET_DEBUG) printf("and increases\n");
+                #if (MASSSPECWAVELET_DEBUG > 0)
+                    printf("and increases\n");
+                #endif
                 // signal starts increasing
                 outi[i] = 0;
                 if (stack_prev_size == 0 || stack_prev[stack_prev_size-1] < i) {
@@ -116,11 +136,15 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
             }
             break;
         case -1:
-            if (MASSSPECWAVELET_DEBUG) printf("signal decreases ");
+            #if (MASSSPECWAVELET_DEBUG > 0)
+                printf("signal decreases ");
+            #endif
             switch (curr_diff) {
             case -1:
                 // signal was decreasing and is decreasing. 
-                if (MASSSPECWAVELET_DEBUG) printf("and decreases\n");
+                #if (MASSSPECWAVELET_DEBUG > 0)
+                    printf("and decreases\n");
+                #endif
                 outi[i] = 0;
                 if (stack_prev_size == 0 || stack_prev[stack_prev_size-1] < i) {
                     stack_prev[stack_prev_size++] = i;
@@ -128,7 +152,9 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                 break;
             case  0:
                 // signal was decreasing and is stable
-                if (MASSSPECWAVELET_DEBUG) printf("and holds\n");
+                #if (MASSSPECWAVELET_DEBUG > 0)
+                    printf("and holds\n");
+                #endif
                 outi[i] = 0;
                 if (stack_prev_size == 0 || stack_prev[stack_prev_size-1] < i) {
                     stack_prev[stack_prev_size++] = i;
@@ -136,7 +162,9 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                 break;
             case  1:
                 // signal was decreasing and is increasing (minimum)
-                if (MASSSPECWAVELET_DEBUG) printf("and increases\n");
+                #if (MASSSPECWAVELET_DEBUG > 0)
+                    printf("and increases\n");
+                #endif
                 outi[i] = 0;
                 if (stack_prev_size == 0 || stack_prev[stack_prev_size-1] < i) {
                     stack_prev[stack_prev_size++] = i;
@@ -145,10 +173,14 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
             }
             break;
         case 0:
-            if (MASSSPECWAVELET_DEBUG) printf("signal holds ");
+            #if (MASSSPECWAVELET_DEBUG > 0)
+                printf("signal holds ");
+            #endif
             switch (curr_diff) {
             case -1:
-                if (MASSSPECWAVELET_DEBUG) printf("and decreases\n");
+                #if (MASSSPECWAVELET_DEBUG > 0)
+                    printf("and decreases\n");
+                #endif
                 // signal was stable and decreases. If peak, set center and peak ends now.
                 // future points will need to check this one for the border:
                 if (stack_prev_size == 0 || stack_prev[stack_prev_size-1] < i) {
@@ -158,6 +190,9 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                     outi[i] = 0;
                 } else {
                     peak_ends = i;
+                    #if (MASSSPECWAVELET_DEBUG > 0)
+                        printf("  peak_starts: %d, peak_ends: %d\n", peak_starts, peak_ends);
+                    #endif
                     peak_center = (peak_starts+peak_ends)/2;
                     winsize = 1;
                     // to the left:
@@ -169,13 +204,17 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                         }
                     }
                     if (j == -1) {
-                        if (MASSSPECWAVELET_DEBUG) printf("  winsize_left: %d (c)\n", peak_center);
-                        winsize += peak_center; // CHECK: -1?
+                        #if (MASSSPECWAVELET_DEBUG > 0)
+                            printf("  winsize_left: %d (c)\n", peak_center);
+                        #endif
+                        winsize += peak_center;
                     }
                     // to the right:
                     for (j = stack_next_starts; j < stack_next_ends; j++) {
                         if (x[stack_next[j]] > x[peak_center]) {
-                            if (MASSSPECWAVELET_DEBUG) printf("  winsize_right: %d (a)\n", stack_next[j] - peak_center-1);
+                            #if (MASSSPECWAVELET_DEBUG > 0)
+                                printf("  winsize_right: %d (a)\n", stack_next[j] - peak_center-1);
+                            #endif
                             winsize += stack_next[j] - peak_center-1;
                             break;
                         }
@@ -183,11 +222,17 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                     if (j == stack_next_ends) {
                         // we reached the end of the stack, keep looking
                         int last_checked = (stack_next_ends == stack_next_starts) ? i: stack_next[stack_next_ends-1];
+                        #if (MASSSPECWAVELET_DEBUG > 0)
+                            printf("    reached end of stack_next, last_checked: %d\n", last_checked);
+                        #endif
                         int peek_prev_diff;
                         int peek_curr_diff;
                         peek_prev_diff = sign_d(x[last_checked+1] - x[last_checked]);
                         for (j = last_checked+1; j<xlength;j++) {
                             peek_curr_diff = sign_d(x[j+1] - x[j]);
+                            #if (MASSSPECWAVELET_DEBUG > 0)
+                                printf("    peeking %d (%d, %d)\n", j, peek_prev_diff, peek_curr_diff);
+                            #endif
                             // FIXME: Performance: Append to stack_next if convenient so next time the stack_next is larger:
                             switch(peek_prev_diff) {
                             case -1: // decreasing
@@ -248,13 +293,17 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                             }
                             peek_prev_diff = peek_curr_diff;
                             if (x[j] > x[peak_center]) {
-                                if (MASSSPECWAVELET_DEBUG) printf("  winsize_right: %d (b)\n", j - peak_center-1);
+                                #if (MASSSPECWAVELET_DEBUG > 0)
+                                    printf("  winsize_right: %d (b)\n", j - peak_center-1);
+                                #endif
                                 winsize += j - peak_center-1;
                                 break;
                             }
                         }
                         if (j == xlength) {
-                            if (MASSSPECWAVELET_DEBUG) printf("  winsize_right: %ld (c)\n", xlength - peak_center-1);
+                            #if (MASSSPECWAVELET_DEBUG > 0)
+                                printf("  winsize_right: %ld (c)\n", xlength - peak_center-1);
+                            #endif
                             winsize += xlength - peak_center-1;
                         }
                     }
@@ -267,15 +316,22 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                 }
                 break;
             case  0:
-                if (MASSSPECWAVELET_DEBUG) printf("and holds\n");
+                #if (MASSSPECWAVELET_DEBUG > 0)
+                    printf("and holds\n");
+                #endif
                 outi[i] = 0;
                 // signal was stable and is stable. Maybe peak.
                 break;
             case  1:
-                if (MASSSPECWAVELET_DEBUG) printf("and increases\n");
+                #if (MASSSPECWAVELET_DEBUG > 0)
+                    printf("and increases\n");
+                #endif
                 // signal was stable and increases. If peak, cancel peak.
                 outi[i] = 0;
                 if (in_plateau && stack_plateau_size > 0) {
+                    #if (MASSSPECWAVELET_DEBUG > 0)
+                        printf("  -> removing %d from stack_plateau\n",stack_plateau[stack_plateau_size-1]);
+                    #endif
                     stack_plateau[stack_plateau_size-1] = 0;
                     stack_plateau_size--;
                 }
@@ -283,10 +339,14 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
             }
             break;
         case 1:
-            if (MASSSPECWAVELET_DEBUG) printf("signal increases and ");
+            #if (MASSSPECWAVELET_DEBUG > 0)
+                printf("signal increases and ");
+            #endif
             switch (curr_diff) {
             case -1:
-                if (MASSSPECWAVELET_DEBUG) printf("decreases\n");
+                #if (MASSSPECWAVELET_DEBUG > 0)
+                    printf("decreases\n");
+                #endif
                 if (stack_prev_size == 0 || stack_prev[stack_prev_size-1] <= i) {
                     stack_prev[stack_prev_size++] = i;
                 }
@@ -297,21 +357,29 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                 winsize = 1;
                 // to the left:
                 for (j = stack_prev_starts; j >= 0; j--) {
-                    if (MASSSPECWAVELET_DEBUG) printf("   stack_prev[%d]: %d\n", j, stack_prev[j]);
+                    #if (MASSSPECWAVELET_DEBUG > 0)
+                        printf("   stack_prev[%d]: %d\n", j, stack_prev[j]);
+                    #endif
                     if (x[stack_prev[j]] > x[peak_center]) {
-                        if (MASSSPECWAVELET_DEBUG) printf("       winsize_left: %d (a)\n", peak_center - stack_prev[j] - 1);
+                        #if (MASSSPECWAVELET_DEBUG > 0)
+                            printf("       winsize_left: %d (a)\n", peak_center - stack_prev[j] - 1);
+                        #endif
                         winsize += peak_center - stack_prev[j] - 1;
                         break;
                     }
                 }
                 if (j == -1) {
-                    if (MASSSPECWAVELET_DEBUG) printf("       winsize_left: %d (c)\n", peak_center);
+                    #if (MASSSPECWAVELET_DEBUG > 0)
+                        printf("       winsize_left: %d (c)\n", peak_center);
+                    #endif
                     winsize += peak_center;
                 }
                 // to the right:
                 for (j = stack_next_starts; j < stack_next_ends; j++) {
                     if (x[stack_next[j]] > x[peak_center]) {
-                        if (MASSSPECWAVELET_DEBUG) printf("       winsize_right: %d (a)\n", stack_next[j] - peak_center-1);
+                        #if (MASSSPECWAVELET_DEBUG > 0)
+                            printf("       winsize_right: %d (a)\n", stack_next[j] - peak_center-1);
+                        #endif
                         winsize += stack_next[j] - peak_center-1;
                         break;
                     }
@@ -327,18 +395,30 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                         // FIXME: Performance: Append to stack_next if convenient so next time the stack_next is larger:
                         switch(peek_prev_diff) {
                         case -1: // decreasing
+                            #if (MASSSPECWAVELET_DEBUG > 0) 
+                                printf("  -> peek %d. decreases and ", j);
+                            #endif
                             switch(peek_curr_diff) {
                             case -1: // keeps decreasing
+                                #if (MASSSPECWAVELET_DEBUG > 0) 
+                                    printf("decreases\n");
+                                #endif
                                 if (stack_prev_size == 0 || stack_prev[stack_prev_size-1] < j) {
                                     stack_prev[stack_prev_size++] = j;
                                 }
                                 break;
                             case 0: // stabilizes
+#if (MASSSPECWAVELET_DEBUG > 0) 
+                                printf("holds\n");
+#endif
                                 if (stack_prev_size == 0 || stack_prev[stack_prev_size-1] < j) {
                                     stack_prev[stack_prev_size++] = j;
                                 }
                                 break;
                             case 1: // increases
+#if (MASSSPECWAVELET_DEBUG > 0) 
+                                printf("increases\n");
+#endif
                                 if (stack_prev_size == 0 || stack_prev[stack_prev_size-1] < j) {
                                     stack_prev[stack_prev_size++] = j;
                                 }
@@ -380,29 +460,40 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                         }
                         peek_prev_diff = peek_curr_diff;
                         if (x[j] > x[peak_center]) {
-                            if (MASSSPECWAVELET_DEBUG) printf("       winsize_right: %d (b)\n", j - peak_center-1);
+                            #if (MASSSPECWAVELET_DEBUG >0)
+                                printf("       winsize_right: %d (b)\n", j - peak_center-1);
+                            #endif
                             winsize += j - peak_center-1;
                             break;
                         }
                     }
                     if (j == xlength) {
-                        if (MASSSPECWAVELET_DEBUG) printf("       winsize_right: %ld (c)\n", xlength - peak_center-1);
+                        #if (MASSSPECWAVELET_DEBUG >0)
+                            printf("       winsize_right: %ld (c)\n", xlength - peak_center-1);
+                        #endif
                         winsize += xlength - peak_center-1;  // CHECK: -1?
                     }
                 }
                 outi[peak_center] = winsize;
                 break;
             case  0:
-                if (MASSSPECWAVELET_DEBUG) printf("holds\n");
+                #if (MASSSPECWAVELET_DEBUG > 0) 
+                    printf("holds\n");
+                #endif
                 // signal increased and stabilizes
                 peak_starts = i;
                 if (stack_plateau_size == 0 || stack_plateau[stack_plateau_size-1] < i) {
+                    #if (MASSSPECWAVELET_DEBUG > 0)
+                        printf("  -> adding %d to stack_plateau\n",i);
+                    #endif
                     stack_plateau[stack_plateau_size++] = i;
                 }
                 outi[i] = 0;
                 break;
             case  1:
-                if (MASSSPECWAVELET_DEBUG) printf("increases\n");
+                #if (MASSSPECWAVELET_DEBUG > 0)
+                    printf("increases\n");
+                #endif
                 // signal is increasing
                 outi[i] = 0;
                 break;
@@ -413,7 +504,14 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
     }
     if (xlength > 0)
         outi[xlength-1] = 0;
-    fflush(stdout);
+    #if (MASSSPECWAVELET_DEBUG > 0)
+        printf("final plateau limits:\n");
+        for (j = 0; j< stack_plateau_size; j++) {
+            printf(" - %s: %d\n", (j%2 == 0) ? "starts": "ends", stack_plateau[j]);
+        }
+        printf("final plateau summary ends:\n");
+        fflush(stdout);
+    #endif
     return;
 }
 

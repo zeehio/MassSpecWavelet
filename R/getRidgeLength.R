@@ -16,7 +16,7 @@
 #' @examples 
 #' stopifnot(getRidgeLength(list(c(5,4,3,2,1), c(5,3,1))) == c(3,2))
 getRidgeLength <- function(ridgeList, Th = 0.5) {
-    ridgeLen <- vapply(ridgeList, function(x) {
+    ridgeLen <- sapply(ridgeList, function(x) {
         m <- max(x)
         l <- length(x)
         while (l > 1) {
@@ -24,6 +24,6 @@ getRidgeLength <- function(ridgeList, Th = 0.5) {
             l <- l - 1
         }
         return(l)
-    }, integer(1L))
+    })
     return(ridgeLen)
 }

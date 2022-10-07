@@ -133,7 +133,7 @@ getRidge <- function(localMax, iInit = ncol(localMax), step = -1, iFinal = 1, mi
             removeInd <- NULL
             for (dupPeak.jk in dupPeak.j) {
                 selInd <- which(selPeak.j == dupPeak.jk)
-                selLen <- vapply(ridgeList[selInd], length,integer(1L))
+                selLen <- sapply(ridgeList[selInd], length)
                 removeInd.jk <- which.max(selLen)
                 removeInd <- c(removeInd, selInd[-removeInd.jk])
                 orphanRidgeList <- c(orphanRidgeList, ridgeList[removeInd.jk])

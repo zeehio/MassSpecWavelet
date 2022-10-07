@@ -98,17 +98,17 @@ identifyMajorPeaks <- function(ms, ridgeList, wCoefs, scales = as.numeric(colnam
 
     ## Get the peak values
     # mzInd <- as.numeric(names(ridgeList))
-    ridgeLen <- vapply(ridgeList, length, integer(1L))
+    ridgeLen <- sapply(ridgeList, length)
     ridgeName <- names(ridgeList)
     ridgeInfo <- matrix(as.numeric(unlist(strsplit(ridgeName, "_"))), nrow = 2)
     ridgeLevel <- ridgeInfo[1, ]
-    # mzInd <- vapply(ridgeList, function(x) x[1], integer(1L))
-    notnull <- vapply(ridgeList, function(x) {
+    # mzInd <- sapply(ridgeList, function(x) x[1])
+    notnull <- sapply(ridgeList, function(x) {
         !is.null(x[1])
-    }, logical(1L)) # fixed by Steffen Neumann
-    mzInd <- vapply(ridgeList[notnull], function(x) {
+    }) # fixed by Steffen Neumann
+    mzInd <- sapply(ridgeList[notnull], function(x) {
         x[1]
-    }, integer(1L)) # fixed by Steffen Neumann
+    }) # fixed by Steffen Neumann
     # mzInd <- ridgeInfo[2,]
 
     ## Reorder them by m/z index
@@ -205,5 +205,13 @@ identifyMajorPeaks <- function(ms, ridgeList, wCoefs, scales = as.numeric(colnam
 
     names(peakSNR) <- names(peakScale) <- names(peakCenterInd) <- names(peakValue) <- names(mzInd) <- ridgeName
 
-    return(list(peakIndex = mzInd[selInd], peakValue = peakValue, peakCenterIndex = peakCenterInd, peakSNR = peakSNR, peakScale = peakScale, potentialPeakIndex = mzInd[selInd1 & selInd3], allPeakIndex = mzInd))
+    list(
+        peakIndex = mzInd[selInd],
+        peakValue = peakValue,
+        peakCenterIndex = peakCenterInd,
+        peakSNR = peakSNR,
+        peakScale = peakScale,
+        potentialPeakIndex = mzInd[selInd1 & selInd3],
+        allPeakIndex = mzInd
+    )
 }

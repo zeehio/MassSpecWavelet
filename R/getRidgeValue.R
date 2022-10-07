@@ -11,7 +11,7 @@
 #' @author Pan Du
 #' @keywords methods
 getRidgeValue <- function(ridgeList, wCoefs, skip = 0) {
-    ridgeLen <- vapply(ridgeList, length, integer(1L))
+    ridgeLen <- sapply(ridgeList, length)
     ridgeName <- names(ridgeList)
     ridgeInfo <- matrix(as.numeric(unlist(strsplit(ridgeName, "_"))), nrow = 2)
     ridgeLevel <- ridgeInfo[1, ]

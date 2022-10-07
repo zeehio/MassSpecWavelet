@@ -72,30 +72,19 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
             stack_prev_starts = stack_prev_size - 1;
         }
         
-        for (j = stack_plateau_starts; j < stack_plateau_size; j++) {
-            if (stack_plateau[j] > i) {
-                if (stack_plateau[j-1] == i) {
-                    in_plateau = 1;
-                }
-                // start - end - start - end...
-                //  even - odd - even  - odd...
-                // stack_plateau[j-1] < i < stack_plateau[j]
-                if ((j-1) % 2 == 0) {
-                    in_plateau = 1;
-                } else {
-                    in_plateau = 0;
-                }
-                stack_plateau_starts = j-1;
+        for (j = stack_plateau_starts; j < stack_plateau_size-1; j = j+2) {
+            if (i >= stack_plateau[j] && i <= stack_plateau[j+1]) {
+                in_plateau = 1;
+                stack_plateau_starts = j;
                 break;
             }
         }
-        if (j == stack_plateau_size) {
-            if (j %2 == 0) {
-                in_plateau = 0;
-            } else {
-                in_plateau = 1;
-            }
+        if (stack_plateau_size % 2 == 1 && j >=stack_plateau_size-1) {
+            in_plateau = 1;
+            stack_plateau_starts = j;
         }
+        if (MASSSPECWAVELET_DEBUG) printf("in_plateau: %d. ",in_plateau);
+        
         
         switch(prev_diff) {
         case -2:
@@ -189,6 +178,18 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                 if (!in_plateau) {
                     outi[i] = 0;
                 } else {
+                    if (stack_plateau_size % 2 == 1 && stack_plateau[stack_plateau_size-1] < i) {
+                        #if (MASSSPECWAVELET_DEBUG > 0) 
+                            printf("  -> adding %d to stack_plateau ends (a)\n",i);
+                        #endif
+                        if (stack_plateau_size %2 == 0) {
+                            fflush(stdout);
+                            Rf_error("We are adding a plateau end at a beginning position (hd)");
+                        }
+                        stack_plateau[stack_plateau_size++] = i;
+                    }
+                    
+                    peak_starts = stack_plateau[stack_plateau_starts];
                     peak_ends = i;
                     #if (MASSSPECWAVELET_DEBUG > 0)
                         printf("  peak_starts: %d, peak_ends: %d\n", peak_starts, peak_ends);
@@ -263,14 +264,31 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                                     if (stack_prev_size == 0 || stack_prev[stack_prev_size-1] < j) {
                                         stack_prev[stack_prev_size++] = j;
                                     }
+                                    if (stack_plateau_size % 2 == 1 && stack_plateau[stack_plateau_size-1] < j) {
+                                        #if (MASSSPECWAVELET_DEBUG > 0)
+                                            printf("  -> adding %d to stack_plateau (hd)\n",j);
+                                        #endif
+                                        if (stack_plateau_size %2 == 0) {
+                                            fflush(stdout);
+                                            Rf_error("We are adding a plateau end at a beginning position (hd1)");
+                                        }
+                                        stack_plateau[stack_plateau_size++] = j;
+                                    }
                                     not_a_peak[j] = 0; // if it's the end of a plateau, we set the peak at the plateau center here
                                     break;
                                 case 0: // and keeps holding
                                     not_a_peak[j] = 1; // centers of plateaus are checked at the end
                                     break;
                                 case 1: // and increases
-                                    // it's not a peak, but I have to explore this to cancel the plateau (is_plateau = 0)
-                                    not_a_peak[j] = 0;
+                                    // it's not a peak, cancel the plateau
+                                    if (stack_plateau_size > 0 && stack_plateau_size %2 == 1) {
+                                        #if (MASSSPECWAVELET_DEBUG > 0)
+                                            printf("  -> removing %d from stack_plateau (hi)\n",stack_plateau[stack_plateau_size-1]);
+                                        #endif
+                                        stack_plateau[stack_plateau_size-1] = 0;
+                                        stack_plateau_size--;
+                                    }
+                                    not_a_peak[j] = 1;
                                     break;
                                 }
                                 break;
@@ -284,9 +302,17 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                                     not_a_peak[j] = 0;
                                     break;
                                 case 0: // and holds
-                                    // plateaus are checked when the end, this is a possible start, so we need to explore it
-                                    // in order to set is_plateau = 1
-                                    not_a_peak[j] = 0;
+                                    if (stack_plateau_size == 0 || stack_plateau[stack_plateau_size-1] < j) {
+                                        #if (MASSSPECWAVELET_DEBUG > 0)
+                                            printf("  -> adding %d to stack_plateau (ih)\n",j);
+                                        #endif
+                                        if (stack_plateau_size %2 == 1) {
+                                            fflush(stdout);
+                                            Rf_error("We are adding a plateau start at a end position");
+                                        }
+                                        stack_plateau[stack_plateau_size++] = j;
+                                    }
+                                    not_a_peak[j] = 1;
                                     break;
                                 case 1: // and increases
                                     not_a_peak[j] = 1;
@@ -313,9 +339,6 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                     // set winsize
                     outi[i] = 0;
                     outi[peak_center] = winsize;
-                    if (stack_plateau_size == 0 || stack_plateau[stack_plateau_size-1] < i) {
-                        stack_plateau[stack_plateau_size++] = i;
-                    }
                 }
                 break;
             case  0:
@@ -354,8 +377,6 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                     stack_prev[stack_prev_size++] = i;
                 }
                 // signal increased and decreases
-                peak_starts = i;
-                peak_ends = i;
                 peak_center = i;
                 winsize = 1;
                 // to the left:
@@ -434,6 +455,17 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                                 if (stack_prev_size == 0 || stack_prev[stack_prev_size-1] < j) {
                                     stack_prev[stack_prev_size++] = j;
                                 }
+                                if (stack_plateau_size % 2 == 1 && stack_plateau[stack_plateau_size-1] < j) {
+                                #if (MASSSPECWAVELET_DEBUG > 0)
+                                    printf("  -> adding %d to stack_plateau (hd)\n",j);
+                                #endif
+                                    if (stack_plateau_size %2 == 0) {
+                                        fflush(stdout);
+                                        Rf_error("We are adding a plateau end at a beginning position (hd1)");
+                                    }
+                                    stack_plateau[stack_plateau_size++] = j;
+                                }
+                                
                                 not_a_peak[j] = 0; // if it's the end of a plateau, we set the peak at the plateau center here
                                 break;
                             case 0: // and keeps holding
@@ -441,7 +473,14 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                                 break;
                             case 1: // and increases
                                 // it's not a peak, but I have to explore this to cancel the plateau (is_plateau = 0)
-                                not_a_peak[j] = 0;
+                                if (stack_plateau_size > 0 && stack_plateau_size %2 == 1) {
+                                    #if (MASSSPECWAVELET_DEBUG > 0)
+                                        printf("  -> removing %d from stack_plateau\n",stack_plateau[stack_plateau_size-1]);
+                                    #endif
+                                    stack_plateau[stack_plateau_size-1] = 0;
+                                    stack_plateau_size--;
+                                }
+                                not_a_peak[j] = 1;
                                 break;
                             }
                             break;
@@ -456,7 +495,13 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                             case 0: // and holds
                                 // plateaus are checked when the end, this is a possible start, so we need to explore it
                                 // in order to set is_plateau = 1
-                                not_a_peak[j] = 0;
+                                if (stack_plateau_size == 0 || stack_plateau[stack_plateau_size-1] < j) {
+                                    #if (MASSSPECWAVELET_DEBUG > 0)
+                                        printf("  -> adding %d to stack_plateau\n",j);
+                                    #endif
+                                    stack_plateau[stack_plateau_size++] = j;
+                                }
+                                not_a_peak[j] = 1;
                                 break;
                             case 1: // and increases
                                 not_a_peak[j] = 1;
@@ -487,7 +532,6 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                     printf("holds\n");
                 #endif
                 // signal increased and stabilizes
-                peak_starts = i;
                 if (stack_plateau_size == 0 || stack_plateau[stack_plateau_size-1] < i) {
                     #if (MASSSPECWAVELET_DEBUG > 0)
                         printf("  -> adding %d to stack_plateau\n",i);

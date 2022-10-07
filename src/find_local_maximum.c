@@ -293,6 +293,9 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                                 }
                                 break;
                             case 1: // increases
+                                if (stack_next_ends == 0 || stack_next[stack_next_ends-1] < j) {
+                                    stack_next[stack_next_ends++] = j;
+                                }
                                 switch(peek_curr_diff) {
                                 case -1: // and decreases
                                     // that's a peak
@@ -485,6 +488,9 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi) {
                             }
                             break;
                         case 1: // increases
+                            if (stack_next_ends == 0 || stack_next[stack_next_ends-1] < j) {
+                                stack_next[stack_next_ends++] = j;
+                            }
                             switch(peek_curr_diff) {
                             case -1: // and decreases
                                 if (stack_prev_size == 0 || stack_prev[stack_prev_size-1] < j) {

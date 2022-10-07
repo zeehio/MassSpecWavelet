@@ -18,6 +18,7 @@
 #' peakIndex <- majorPeakInfo$peakIndex
 #' plotPeak(exampleMS, peakIndex, main = paste("Identified peaks with SNR >", SNR.Th))
 #'
+#' @useDynLib MassSpecWavelet, .registration=TRUE
 "_PACKAGE"
 
 

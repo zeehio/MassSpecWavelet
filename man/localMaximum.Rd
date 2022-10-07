@@ -13,19 +13,10 @@ localMaximum(x, winSize = 5)
 }
 \value{
 Return a vector with the same length of the input x. The position of
-local maximum is set as 1, 0 else where.
+local maximum is set as 1L, 0L else where.
 }
 \description{
-Find local maximum by transform the vector as matrix, then get the the
-maximum of each column. This operation is performed twice with vecctor
-shifted half of the winSize.
-}
-\details{
-Instead of find the local maximum by a slide window, which slide all
-possible positions, we find local maximum by transform the vector as matrix,
-then get the the maximum of each column. This operation is performed twice
-with vector shifted half of the winSize. The main purpose of this is to
-increase the efficiency of the algorithm.
+Identify local maximum within a slide window.
 }
 \examples{
 
@@ -40,6 +31,6 @@ points(maxInd, x[maxInd], col = "red")
 \code{\link[=getLocalMaximumCWT]{getLocalMaximumCWT()}}
 }
 \author{
-Pan Du
+Pan Du and Sergio Oller
 }
 \keyword{methods}

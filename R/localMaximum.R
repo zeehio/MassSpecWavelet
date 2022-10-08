@@ -1,5 +1,15 @@
 #' Identify local maximum within a slide window.
 #'
+#' Find local maximum by transform the vector as matrix, then get the the
+#' maximum of each column. This operation is performed twice with vector
+#' shifted half of the `winSize`.
+#'
+#' Instead of find the local maximum by a slide window, which slide all
+#' possible positions, we find local maximum by transform the vector as matrix,
+#' then get the the maximum of each column. This operation is performed twice
+#' with vector shifted half of the `winSize`. The main purpose of this is to
+#' increase the efficiency of the algorithm.
+#'
 #' @param x a vector represents a signal profile
 #' @param winSize the slide window size, 5 by default.
 #' @return Return a vector with the same length of the input x. The position of

@@ -16,7 +16,16 @@ Return a vector with the same length of the input x. The position of
 local maximum is set as 1L, 0L else where.
 }
 \description{
-Identify local maximum within a slide window.
+Find local maximum by transform the vector as matrix, then get the the
+maximum of each column. This operation is performed twice with vector
+shifted half of the \code{winSize}.
+}
+\details{
+Instead of find the local maximum by a slide window, which slide all
+possible positions, we find local maximum by transform the vector as matrix,
+then get the the maximum of each column. This operation is performed twice
+with vector shifted half of the \code{winSize}. The main purpose of this is to
+increase the efficiency of the algorithm.
 }
 \examples{
 

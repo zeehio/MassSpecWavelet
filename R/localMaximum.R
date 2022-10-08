@@ -19,8 +19,8 @@
 localMaximum <- function(x, winSize = 5) {
     algo <- getOption("MassSpecWavelet.localMaximum.algorithm", "new")
     if (!algo %in% c("new", "classic")) {
-        warning('Invalid algorithm "', algo, '". Use either "new" or "classic". Assuming "new".')
-        algo <- "new"
+        warning('Invalid algorithm "', algo, '". Use either "new" or "classic". Assuming "classic".')
+        algo <- "classic"
     }
     if (algo == "new") {
         local_max <- findLocalMaximum(x, capWinSize = winSize)

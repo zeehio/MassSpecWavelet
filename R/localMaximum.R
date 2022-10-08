@@ -33,7 +33,7 @@ localMaximum <- function(x, winSize = 5) {
         algo <- "classic"
     }
     if (algo == "new") {
-        local_max <- findLocalMaximum(x, capWinSize = winSize)
+        local_max <- findLocalMaxWinSize(x, capWinSize = winSize)
         return(as.integer(local_max >= winSize))
     }
     len <- length(x)

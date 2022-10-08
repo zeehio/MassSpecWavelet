@@ -402,13 +402,12 @@ static void findLocalMaximum_impl_d(double *x, R_xlen_t xlength, int *outi, int 
     return;
 }
 
-SEXP findLocalMaximum(SEXP s_x, SEXP s_capWinSize) {
+SEXP findLocalMaxWinSize(SEXP s_x, SEXP s_capWinSize) {
     double *xd;
-    int *xi;
     R_xlen_t xlength = Rf_length(s_x);
     int is_int = TYPEOF(s_x) == INTSXP;
     if (is_int) {
-        xi = INTEGER(s_x);
+        Rf_error("Not yet implemented, please coerce to double");
     } else {
         if (TYPEOF(s_x) != REALSXP) {
             Rf_error("x must be real or integer");

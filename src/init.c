@@ -1,7 +1,7 @@
 #include "MassSpecWavelet.h"
 
 static const R_CallMethodDef callMethods[]  = {
-    {"c_findLocalMaximum", (DL_FUNC) &findLocalMaximum, 2},
+    {"c_findLocalMaxWinSize", (DL_FUNC) &findLocalMaxWinSize, 2},
     {NULL, NULL, 0}
 };
 

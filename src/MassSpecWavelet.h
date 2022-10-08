@@ -2,4 +2,4 @@
 #include <R.h>
 #include <Rinternals.h>
 
-SEXP findLocalMaximum(SEXP s_x, SEXP s_capWinSize);
+SEXP findLocalMaxWinSize(SEXP s_x, SEXP s_capWinSize);

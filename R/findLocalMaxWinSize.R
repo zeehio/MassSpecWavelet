@@ -1,6 +1,5 @@
 #' Find local maxima and return the size of the window where they are maximum.
 #' 
-#' @noRd
 #' @param x A numeric vector.
 #' @return An integer vector `y` of the same length as `x`. `y[i]` will be the
 #' size of the largest window on `x` containing `x[i]` where:
@@ -9,6 +8,10 @@
 #'  Optionally, if `capWinSize` is a positive integer, the maximum window size
 #'  is capped to that value, to increase performance. Use this in case you just
 #'  want to check if there exists a window of that size.
-findLocalMaximum <- function(x, capWinSize = NA) {
-    .Call("c_findLocalMaximum", as.double(x), capWinSize = as.integer(capWinSize))
+#'  @export
+#'  @examples 
+#'  x <- c(1, 2, 3, 2, 1)
+#'  findLocalMaxWinSize(x)
+findLocalMaxWinSize <- function(x, capWinSize = NA) {
+    .Call("c_findLocalMaxWinSize", as.double(x), capWinSize = as.integer(capWinSize))
 }

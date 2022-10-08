@@ -25,5 +25,7 @@ findLocalMaxWinSize(x)
 }
 }
 \description{
-Find local maxima and return the size of the window where they are maximum.
+Compared to the rest of the package, this is a rather experimental function.
+If you plan to use it or are interested in it, please open an issue at
+https://github.com/zeehio/MassSpecWavelet/issues to show your interest.
 }

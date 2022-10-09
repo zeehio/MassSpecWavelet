@@ -34,7 +34,18 @@ localMaximum <- function(x, winSize = 5) {
     }
     if (algo == "new") {
         local_max <- findLocalMaxWinSize(x, capWinSize = winSize)
-        return(as.integer(local_max >= winSize))
+        localMax <- as.integer(local_max >= winSize)
+        ## Check whether there is some local maxima have in between distance less than winSize
+        maxInd <- which(localMax > 0)
+        selInd <- which(diff(maxInd) < winSize)
+        if (length(selInd) > 0) {
+            selMaxInd1 <- maxInd[selInd]
+            selMaxInd2 <- maxInd[selInd + 1L]
+            temp <- x[selMaxInd1] - x[selMaxInd2]
+            localMax[selMaxInd1[temp <= 0]] <- 0L
+            localMax[selMaxInd2[temp > 0]] <- 0L
+        }
+        return(localMax)
     }
     len <- length(x)
     rNum <- ceiling(len / winSize)

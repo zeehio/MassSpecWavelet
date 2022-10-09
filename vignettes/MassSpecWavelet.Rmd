@@ -61,6 +61,12 @@ Load the example data
 data(exampleMS)
 ```
 
+
+```{r}
+plot(exampleMS, xlim = plotRange, type = "l")
+```
+
+
 Continuous wavelet transform with Mexican Hat wavelet. The 2-D CWT coefficients image of MS spectrum in [5000, 11000] is shown in Figure \@ref(fig:cwt)
 
 ```{r}
@@ -87,8 +93,37 @@ axis(2, at=c(1, seq(10, 64, by=10)))
 box()
 ```
 
+The smallest scales can be used for noise estimation, smaller scales are then
+useful for peaks with smaller width. Larger scales can detect wider peaks, at the
+expense of merging narrower peaks together.
+
+```{r}
+plot(exampleMS, xlim = c(8000, 9000), type = "l")
+```
+
+
+```{r}
+matplot(
+    wCoefs[,ncol(wCoefs):1], 
+    type = "l",
+    col = rev(rainbow(max(scales), start = 0.7, end = 0.1, alpha = 0.5)[scales]),
+    lty = 1,
+    xlim = c(8000, 9000),
+    xlab = "m/z index",
+    ylab = "CWT coefficients"
+)
+legend(
+    x = "topright",
+    legend = sprintf("scales = %d", scales[seq(1, length(scales), length.out = 4)]),
+    lty = 1,
+    col = rainbow(max(scales), start = 0.7, end = 0.1)[scales[seq(1, length(scales), length.out = 4)]]
+)
+
+```
+
 
 ## Peak identification process
+
 Identify the ridges by linking the local maxima. The identified local maxima is shown in Figure \@ref(fig:localMax)
 
 ```{r }

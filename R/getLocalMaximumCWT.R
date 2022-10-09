@@ -28,21 +28,20 @@
 #' plotLocalMax(localMax)
 #'
 getLocalMaximumCWT <- function(wCoefs, minWinSize = 5, amp.Th = 0, is_amp_thres_relative = FALSE) {
-    localMax <- NULL
+    localMax <- matrix(NA_integer_, nrow = nrow(wCoefs), ncol = ncol(wCoefs))
     scales <- as.numeric(colnames(wCoefs))
-
+    
     if (isTRUE(is_amp_thres_relative)) {
         amp.Th <- max(wCoefs) * amp.Th
     }
-
+    
     for (i in seq_along(scales)) {
         scale.i <- scales[i]
         winSize.i <- scale.i * 2 + 1
         if (winSize.i < minWinSize) {
             winSize.i <- minWinSize
         }
-        temp <- localMaximum(wCoefs[, i], winSize.i)
-        localMax <- cbind(localMax, temp)
+        localMax[, i] <- localMaximum(wCoefs[, i], winSize.i)
     }
     # Set the values less than peak threshold as 0
     localMax[wCoefs < amp.Th] <- 0L

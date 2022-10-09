@@ -23,15 +23,21 @@ on the wavelet coefficients.
 MassSpecWavelet version 1.63.3 introduced a new algorithm for detecting local
 maxima that addressed some issues from the former algorithm. In this vignette:
 
-- We show the issues of the classic `localMaximum()` detection algorithm, as well
-  as how to switch between both algorithms, if you need to
+- We show the issues of the classic `localMaximum()` detection algorithm
 - We describe the new algorithm
-- We compare the performance of both
+- We compare the required CPU time of both
+
+Finally, we show how this new `localMaxima()` algorithm affects the detection of
+local maxima in wavelet coefficients at the `exampleMS` data.
+
+For now, the peak detection pipeline still uses the `"classic"` algorithm, since
+we want to explore in detail how the changes in the local maxima detection
+impact the whole peak detection pipeline. If you want to test using this new
+local maxima algorithm within the peak detection pipeline, you can set
+`options("MassSpecWavelet.localMaximum.algorithm" = "new")`.
 
 
-If you want to keep using the "classic" algorithm, because you care that much
-about reproducibility, you can use
-`options("MassSpecWavelet.localMaximum.algorithm" = "classic")`.
+
 
 ```{r}
 library(MassSpecWavelet)
@@ -192,6 +198,72 @@ legend(
 )
 ```
 
+# Comparison on a real signal
+
+Load the data, get the wavelet coefficients:
+
+```{r}
+data(exampleMS)
+scales <- seq(1, 64, 1)
+wCoefs <- cwt(exampleMS, scales = scales, wavelet = "mexh")
+```
+
+Let us focus on a small range of our signal, with one peak on the left and two
+peaks on the right, closer to each other:
+
+```{r}
+plotRange <- c(8000, 9000)
+```
+
+```{r}
+plot(exampleMS, xlim = plotRange, type = "l")
+```
+
+When plotting the wavelet coefficients we see that small scales see both peaks
+separated and larger scales merge them together. This is standard behaviour.
+
+```{r}
+matplot(
+    wCoefs[,ncol(wCoefs):1], 
+    type = "l",
+    col = rev(rainbow(64, start = 0.7, end = 0.1, alpha = 0.5)[scales]),
+    lty = 1,
+    xlim = c(8000, 9000),
+    xlab = "m/z index",
+    ylab = "CWT coefficients"
+)
+legend(
+    x = "topright",
+    legend = sprintf("scales = %d", scales[seq(1, length(scales), length.out = 4)]),
+    lty = 1,
+    col = rainbow(64, start = 0.7, end = 0.1)[scales[seq(1, length(scales), length.out = 4)]]
+)
+
+```
+
+Find local maxima on the wavelet coefficients and plot them:
+
+```{r }
+options(MassSpecWavelet.localMaximum.algorithm = "new")
+localMax_new <- getLocalMaximumCWT(wCoefs)
+options(MassSpecWavelet.localMaximum.algorithm = "classic")
+localMax_classic <- getLocalMaximumCWT(wCoefs)
+```
+
+
+```{r localMax, width=10, height=8,fig.align='center',fig.cap="Identified local maxima of CWT coefficients at each scale"}
+par(mfrow = c(2,1))
+plotLocalMax(localMax_classic, NULL, range=c(plotRange[1], plotRange[2]), main = "classic")
+plotLocalMax(localMax_new, NULL, range=c(plotRange[1], plotRange[2]), main = "new")
+```
+
+The new algorithm picks more maxima than the classic one, but for this signal
+there is not much difference in performance for our relevant peaks.
+
+To be explored is how this new algorithm affects the whole pipeline in a larger
+range of mass spectrometry signals, where we may find a larger dynamic range of
+peaks. Once this full exploration is finished, we may discuss whether to change
+the `localMaximum()` algorithm or not.
 
 
 # Session Information

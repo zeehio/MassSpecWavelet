@@ -1,19 +1,26 @@
 #' Identify local maximum within a slide window.
 #'
-#' Find local maximum by transform the vector as matrix, then get the the
-#' maximum of each column. This operation is performed twice with vector
-#' shifted half of the `winSize`.
-#'
-#' Instead of find the local maximum by a slide window, which slide all
-#' possible positions, we find local maximum by transform the vector as matrix,
-#' then get the the maximum of each column. This operation is performed twice
-#' with vector shifted half of the `winSize`. The main purpose of this is to
-#' increase the efficiency of the algorithm.
-#'
+#' The simplest local maximum detection using a sliding window searches for
+#' maxima in a window of a given size, and slides that window across the signal,
+#' shifting it one position at a time.
+#' 
+#' The default implementation found here shifts the window by half of its size
+#' instead of by one position at a time. This makes the implementation faster,
+#' at the expense of not being able to detect peaks that are too close to each other,
+#' if they appear in some positions with respect to the windows.
+#' 
+#' Additionally, this implementation removes all instances of peaks found at
+#' a distance less than the window size
+#' 
+#' Experimentally, we are exploring other algorithms for local maxima detection.
+#' These algorithms can be chosen setting the `"MassSpecWavelet.localMaximum.algorithm"`
+#' option. See the [Finding local maxima] vignette for further details.
+#' 
+#' 
 #' @param x a vector represents a signal profile
 #' @param winSize the slide window size, 5 by default.
 #' @return Return a vector with the same length of the input x. The position of
-#' local maximum is set as 1L, 0L else where.
+#' local maximum is set as `1L`, `0L` else where.
 #' @author Pan Du and Sergio Oller
 #' @seealso [getLocalMaximumCWT()]
 #' @keywords methods
@@ -27,14 +34,27 @@
 #' points(maxInd, x[maxInd], col = "red")
 #'
 localMaximum <- function(x, winSize = 5) {
-    algo <- getOption("MassSpecWavelet.localMaximum.algorithm", "new")
-    if (!algo %in% c("new", "classic")) {
-        warning('Invalid algorithm "', algo, '". Use either "new" or "classic". Assuming "classic".')
-        algo <- "classic"
+    algo <- getOption("MassSpecWavelet.localMaximum.algorithm", "faster")
+    if (!algo %in% c("new", "classic", "faster")) {
+        warning('Invalid algorithm "', algo, '". Use either "new", "faster" or "classic". Assuming "faster".')
+        algo <- "faster"
     }
     if (algo == "new") {
         local_max <- findLocalMaxWinSize(x, capWinSize = winSize)
         localMax <- as.integer(local_max >= winSize)
+        return(localMax)
+    } else if (algo == "faster") {
+        localMax <- localMaximumSlidingWindow(x, winSize)
+        ## Check whether there is some local maxima have in between distance less than winSize
+        maxInd <- which(localMax > 0)
+        selInd <- which(diff(maxInd) < winSize)
+        if (length(selInd) > 0) {
+            selMaxInd1 <- maxInd[selInd]
+            selMaxInd2 <- maxInd[selInd + 1L]
+            temp <- x[selMaxInd1] - x[selMaxInd2]
+            localMax[selMaxInd1[temp <= 0]] <- 0L
+            localMax[selMaxInd2[temp > 0]] <- 0L
+        }
         return(localMax)
     }
     len <- length(x)
@@ -72,4 +92,8 @@ localMaximum <- function(x, winSize = 5) {
     }
 
     return(localMax)
+}
+
+localMaximumSlidingWindow <- function(x, winSize = 5L) {
+    .Call("c_localMaximumSlidingWindow", as.double(x), as.integer(winSize))
 }

@@ -22,7 +22,7 @@ peakDetectionCWT(
 \item{ms}{the mass spectrometry spectrum}
 
 \item{scales}{Scales of CWT. See \code{\link[=cwt]{cwt()}} for details. Additionally, a \code{prepared_wavelets} object
-is also accepted (see \code{\link[=prepare_wavelets]{prepare_wavelets()}}).}
+is also accepted (see \code{\link[=prepareWavelets]{prepareWavelets()}}).}
 
 \item{SNR.Th}{SNR (Signal to Noise Ratio) threshold}
 

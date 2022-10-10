@@ -29,7 +29,7 @@ test02_cwt <- function() {
     scales <- c(1,2,4,8)
     wCoefs_classic <- MassSpecWavelet:::cwt_classic(skinny_peak, scales = scales, wavelet = "mexh")
     wCoefs_new <- cwt(skinny_peak, scales = scales, wavelet = "mexh")
-    prep_wav <- prepare_wavelets(
+    prep_wav <- prepareWavelets(
         length(skinny_peak),
         scales = scales, 
         wavelet = "mexh",

@@ -33,7 +33,7 @@
 #' @param ms Mass Spectrometry spectrum (a vector of MS intensities)
 #' @param scales a vector represents the scales at which to perform CWT. See
 #' the Details section. Additionally, a `prepared_wavelets` object
-#' is also accepted (see [prepare_wavelets()]).
+#' is also accepted (see [prepareWavelets()]).
 #' @param wavelet The wavelet base, Mexican Hat by default. User can provide
 #' wavelet `Psi(x)` as a form of two row matrix. The first row is the `x` value,
 #' and the second row is `Psi(x)` corresponding to `x`.
@@ -90,7 +90,7 @@
 #'
 #' @export
 cwt <- function(ms, scales = 1, wavelet = "mexh") {
-    wavelets <- prepare_wavelets(
+    wavelets <- prepareWavelets(
         mslength = length(ms),
         scales = scales,
         wavelet = wavelet,
@@ -146,10 +146,10 @@ cwt <- function(ms, scales = 1, wavelet = "mexh") {
 #' @examples 
 #' x <- runif(2000)
 #' scales <- c(1, 2, 4, 8)
-#' prep_wavelets <- prepare_wavelets(length(x), scales = scales)
+#' prep_wavelets <- prepareWavelets(length(x), scales = scales)
 #' wCoefs <- cwt(x, prep_wavelets)
 #' @seealso cwt
-prepare_wavelets <- function(mslength, scales = c(1, seq(2, 30, 2), seq(32, 64, 4)), 
+prepareWavelets <- function(mslength, scales = c(1, seq(2, 30, 2), seq(32, 64, 4)), 
                              wavelet = "mexh", wavelet_xlimit = 8,
                              wavelet_length = 1024L, extendLengthScales = TRUE) {
     ## Check for the wavelet format

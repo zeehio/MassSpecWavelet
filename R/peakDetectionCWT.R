@@ -7,7 +7,7 @@
 #'
 #' @param ms the mass spectrometry spectrum
 #' @param scales Scales of CWT. See [cwt()] for details. Additionally, a `prepared_wavelets` object
-#' is also accepted (see [prepare_wavelets()]).
+#' is also accepted (see [prepareWavelets()]).
 #' @param SNR.Th SNR (Signal to Noise Ratio) threshold
 #' @param nearbyPeak Determine whether to include the nearby small peaks of
 #' major peaks. `TRUE` by default
@@ -60,7 +60,7 @@ peakDetectionCWT <- function(ms, scales = c(1, seq(2, 30, 2), seq(32, 64, 4)), S
     otherPar <- list(...)
     if (minNoiseLevel > 1) names(minNoiseLevel) <- "fixed"
     ## Perform Continuous Wavelet Transform
-    prep_wav <- prepare_wavelets(
+    prep_wav <- prepareWavelets(
         mslength = length(ms),
         scales = scales,
         wavelet = "mexh",

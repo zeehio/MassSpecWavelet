@@ -17,7 +17,7 @@ Authors@R: c(
     person(given = "Sergio",
            family = "Oller Moreno",
            email = "sergioller@gmail.com",
-           role = c("cre"),
+           role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-8994-1549"))
     )
 Description: Peak Detection in Mass Spectrometry data is one of the important

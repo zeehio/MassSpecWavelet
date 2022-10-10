@@ -16,27 +16,53 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+# Introduction
+
 As described in the introductory vignette, one of the steps of the peak detection
 process in the MassSpecWavelet package relies on the detection of local maxima
 on the wavelet coefficients.
 
-MassSpecWavelet version 1.63.3 introduced a new algorithm for detecting local
-maxima that addressed some issues from the former algorithm. In this vignette:
+On some benchmarks (not shown), this local maxima detection step accounted for the largest
+computational cost of the MassSpecWavelet peak detection algorithm.
+
+MassSpecWavelet version 1.63.3 provides three algorithms for detecting local
+maxima, named "classic", "faster" and "new".
+
+- "classic" is the algorithm found in previous versions. As a reference implementation.
+- "faster" is a new and faster implementation of the "classic" algorithm. It 
+  gives identical results to "classic" in less time. It's the default algorithm.
+- "new" is a new algorithm for local maxima detection, that has different behaviour
+  and therefore gives different results. It is experimental and not used by default.
+
+You can switch between the algorithms by setting the `"MassSpecWavelet.localMaximum.algorithm"`
+option as follows:
+
+```
+options("MassSpecWavelet.localMaximum.algorithm" = "classic")
+```
+
+In a future version, we may remove "classic", replacing it with "faster" since
+they both use the exact same criteria. The algorithm option is experimental, and in
+future versions we may change the API or the algorithm names. While the
+MassSpecWavelet package has a very stable API, this stability does not apply
+to this option. Feedback is very much welcome on https://github.com/zeehio/MassSpecWavelet/issues/.
+
+
+The `"new"` algorithm addresses some issues found in the "classic" algorithm, as
+well as in its "faster" implementation. In this vignette:
 
 - We show the issues of the classic `localMaximum()` detection algorithm
 - We describe the new algorithm
-- We compare the required CPU time of both
+- We compare the required CPU time of the three implementations
 
-Finally, we show how this new `localMaxima()` algorithm affects the detection of
-local maxima in wavelet coefficients at the `exampleMS` data.
+We are still exploring the impact of this new `localMaxima()` algorithm on the
+peak detection pipeline provided by MassSpecWavelet. For now, the peak
+detection pipeline uses the `"faster"` algorithm.
 
-For now, the peak detection pipeline still uses the `"classic"` algorithm, since
-we want to explore in detail how the changes in the local maxima detection
-impact the whole peak detection pipeline. If you want to test using this new
-local maxima algorithm within the peak detection pipeline, you can set
-`options("MassSpecWavelet.localMaximum.algorithm" = "new")`.
-
-
+If you want to try using the `"new"` local maxima algorithm within the
+peak detection pipeline, you can use
+`options("MassSpecWavelet.localMaximum.algorithm" = "new")`. Consider that
+experimental though.
 
 
 ```{r}
@@ -59,14 +85,15 @@ The documentation reflected this behavior in the Details section:
 > to increase the efficiency of the algorithm.
 
 While it's true that this makes the algorithm faster, it does so at the expense of
-missing some peak detections. See for instance the following artificial signal:
+missing some local maxima under some conditions. See for instance the following artificial signal:
 
 
 ```{r}
-peak <- c(1,2,3)
-x <- c(0, peak, peak, 0, 0, 0, peak, 1, peak, peak, 0)
+onetwothree <- c(1,2,3)
+x <- c(0, onetwothree, onetwothree, 0, 0, 0, onetwothree, 1, onetwothree, onetwothree, 0)
 plot(x, type = "o", main = "Five peaks are expected")
 ```
+
 If we use a sliding window of four points we can detect the five peaks (if you
 actually look at each maximum you will be able to draw some window that contains
 the maximum and it has at least four points inside). So when we
@@ -138,12 +165,13 @@ points(local_max_new, x[local_max_new], col = "blue", pch = 20)
 While these plateaus are corner cases in real scenarios very unlikely to happen,
 it is worth having a well-defined and well-behaved implementation.
 
-Since we want the algorithm to be as fast as possible, and we want to avoid
-memory copies and R interpreter overhead, the algorithm is implemented in C.
+# Computational cost
 
-We added 
+Figure \@ref(fig:benchmark) shows the computational time to find the local maxima
+using the `"new"` algorithm and the `"classic"` algorithm (in both the `"classic"` and
+the `"faster"` implementations).
 
-```{r}
+```{r benchmark, fig.cap="CPU time vs length, for several algorithms and windows"}
 # Run this interactively
 set.seed(5413L)
 winSizes <- c(5, 31, 301)
@@ -154,25 +182,38 @@ for (winSize in winSizes) {
     for (xlength in xlengths) {
         i <- i + 1L
         x <- round(10*runif(xlength), 1)*10
-        bm <- as.data.frame(
+        bm1 <- as.data.frame(
                 bench::mark(
-                old = {
+                classic = {
                     options(MassSpecWavelet.localMaximum.algorithm = "classic")
                     localMaximum(x, winSize = winSize)
                     
                 },
+                faster = {
+                    options(MassSpecWavelet.localMaximum.algorithm = "faster")
+                    localMaximum(x, winSize = winSize)
+                    
+                },
+                check = TRUE,
+                filter_gc = FALSE,
+                time_unit = "ms"
+            )
+        )
+        bm2 <- as.data.frame(
+                bench::mark(
                 new = {
                     options(MassSpecWavelet.localMaximum.algorithm = "new")
                     localMaximum(x, winSize = winSize)
                     
                 },
                 check = FALSE,
+                filter_gc = FALSE,
                 time_unit = "ms"
             )
         )
         out[[i]] <- data.frame(
-            algorithm = as.character(bm$expression),
-            min_cpu_time_ms = as.numeric(bm$min),
+            algorithm = c(as.character(bm1$expression), as.character(bm2$expression)),
+            min_cpu_time_ms = c(as.numeric(bm1$min), as.numeric(bm2$min)),
             xlength = xlength,
             winSize = winSize
         )
@@ -182,7 +223,7 @@ out2 <- do.call(rbind, out)
 plot(
     x = out2$xlength,
     y = out2$min_cpu_time_ms,
-    col = ifelse(out2$algorithm == "new", "red", "blue"),
+    col = ifelse(out2$algorithm == "new", "red", ifelse(out2$algorithm == "faster", "darkgreen", "blue")),
     pch = ifelse(out2$winSize == 5, 1, ifelse(out2$winSize == 31, 2, 3)),
     log = "xy",
     xlab = "Signal length",
@@ -190,11 +231,11 @@ plot(
 )
 legend(
     "topleft",
-    legend = c("New algorithm", "Classic algorithm",
+    legend = c("New algorithm", "Classic algorithm", "Faster algorithm",
                "winSize = 5", "winSize = 31", "winSize = 301"),
-    lty = c(1,1, 0, 0, 0),
-    pch = c(NA, NA, 1, 2, 3),
-    col = c("red", "blue", "black", "black", "black")
+    lty = c(1,1,1, 0, 0, 0),
+    pch = c(NA, NA, NA,1, 2, 3),
+    col = c("red", "blue", "darkgreen", "black", "black", "black")
 )
 ```
 

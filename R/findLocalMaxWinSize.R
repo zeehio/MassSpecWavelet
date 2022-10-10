@@ -5,6 +5,7 @@
 #' https://github.com/zeehio/MassSpecWavelet/issues to show your interest.
 #' 
 #' @param x A numeric vector.
+#' @param capWinSize the maximum window size to report. `NA` means unlimited.
 #' @return An integer vector `y` of the same length as `x`. `y[i]` will be the
 #' size of the largest window on `x` containing `x[i]` where:
 #'  - `x[i]` is a local maximum or a center of a plateau

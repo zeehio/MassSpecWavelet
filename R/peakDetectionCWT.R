@@ -107,11 +107,11 @@ peakDetectionCWT <- function(ms, scales = c(1, seq(2, 30, 2), seq(32, 64, 4)), S
     otherPar <- otherPar[!(names(otherPar) %in% c("fl", "forder", "dorder"))]
 
     ## -----------------------------------------
-    ## Indentify the ridges from coarse level to more detailed levels
+    ## Identify the ridges from coarse level to more detailed levels
     ridgeList <- getRidge(localMax, gapTh = 3, skip = 2)
 
     ## -----------------------------------------
-    ## Indentify the major peaks and their nearby peaks
+    ## Identify the major peaks and their nearby peaks
     majorPeakInfo <- do.call(identifyMajorPeaks, c(list(
         ms = ms, ridgeList = ridgeList, wCoefs = wCoefs, SNR.Th = SNR.Th, peakScaleRange = peakScaleRange,
         nearbyPeak = nearbyPeak, minNoiseLevel = minNoiseLevel, ridgeLength = ridgeLength

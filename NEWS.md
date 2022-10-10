@@ -1,3 +1,21 @@
+# MassSpecWavelet 1.63.4 (2022-10-10)
+
+- The improvements in `localMaxima()` and `cwt()` provide significant speed-ups
+  to `peakDetectionCWT()` as well as better scalability.
+
+- A `prepareWavelets()` function lets the user pre-compute the daughter wavelets
+  for more efficient `cwt()` calculations when applied on multiple spectra. When
+  used transforming 1000 spectra, of 2000 points long each, using 25 different
+  scales, `cwt()` is twice as fast as in previous versions. Further improvements
+  to avoid some memory allocations are still feasible in future versions.
+  
+- Through the `prepareWavelets()` function, we provide the `extendLengthScales`
+  argument, that provides the same functionality than the `extendLengthMSW` argument
+  in `xcms:::MSW.cwt()`.
+
+- The `peakDetectionCWT()` function accepts a `prepared_wavelets` object in the
+  scales argument for better efficiency.
+
 # MassSpecWavelet 1.63.3 (2022-10-10)
 
 - `localMaxima()` has a more efficient implementation of the algorithm, now being

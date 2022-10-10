@@ -1,7 +1,7 @@
 Package: MassSpecWavelet
 Type: Package
 Title: Peak Detection for Mass Spectrometry data using wavelet-based algorithms
-Version: 1.63.3
+Version: 1.63.4
 Encoding: UTF-8
 Date: 2022-10-10
 Authors@R: c(

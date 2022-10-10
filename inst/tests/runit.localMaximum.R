@@ -4,6 +4,9 @@ test01_localMaximum <- function() {
 }
 
 test02_checkIdenticalResults_classic_vs_faster <- function() {
+    on.exit({
+        options(MassSpecWavelet.localMaximum.algorithm = NULL)
+    })
     set.seed(5413L)
     winSizes <- c(5, 31, 301)
     xlengths <- c(20, 200, 2000, 20000)
@@ -28,6 +31,9 @@ test02_checkIdenticalResults_classic_vs_faster <- function() {
 
 
 test03_check_new_does_not_miss_maxima <- function() {
+    on.exit({
+        options(MassSpecWavelet.localMaximum.algorithm = NULL)
+    })
     set.seed(5413L)
     winSizes <- c(5, 31, 301)
     xlengths <- c(20, 200, 2000, 20000)

@@ -1,3 +1,12 @@
+# MassSpecWavelet 1.63.3 (2022-10-10)
+
+- `localMaxima()` has a more efficient implementation of the algorithm, now being
+  10x faster than before, while giving the same results.
+
+- Experimentally, `localMaxima()` can use a new and different algorithm for
+  detecting local maxima. See the new "Finding local maxima" vignette for
+  further details.
+
 # MassSpecWavelet 1.63.2 (2022-09-29)
 
 - Let getLocalMaximumCWT() have a relative amp.Th. Related to #4.

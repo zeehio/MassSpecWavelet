@@ -15,7 +15,8 @@ peakDetectionCWT(
   ridgeLength = 24,
   peakThr = NULL,
   tuneIn = FALSE,
-  ...
+  ...,
+  extendLengthScales = FALSE
 )
 }
 \arguments{
@@ -50,6 +51,11 @@ detected peaks}
 Additionally, \code{fl} (filter length, with a default value of 1001) and
 \code{forder} (filter order, with a default value of 2) are set and passed
 to \code{\link[signal:sgolayfilt]{signal::sgolayfilt()}} when \code{peakThr} is given.}
+
+\item{extendLengthScales}{A logical value. If the signal is too short, we may
+need to pad it to convolve it with larger daughter wavelets. Set this to \code{TRUE} to let
+scales be used to determine the padding length. It's set to \code{FALSE} by default
+to preserve backwards compatibility.}
 }
 \value{
 \item{majorPeakInfo}{ return of \code{\link[=identifyMajorPeaks]{identifyMajorPeaks()}}}

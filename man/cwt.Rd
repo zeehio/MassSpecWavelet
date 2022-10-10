@@ -4,7 +4,14 @@
 \alias{cwt}
 \title{Continuous Wavelet Transform (CWT)}
 \usage{
-cwt(ms, scales = 1, wavelet = "mexh")
+cwt(
+  ms,
+  scales = 1,
+  wavelet = "mexh",
+  wavelet_xlimit = 8,
+  wavelet_length = 1024L,
+  extendLengthScales = FALSE
+)
 }
 \arguments{
 \item{ms}{Mass Spectrometry spectrum (a vector of MS intensities)}
@@ -13,12 +20,23 @@ cwt(ms, scales = 1, wavelet = "mexh")
 the Details section}
 
 \item{wavelet}{The wavelet base, Mexican Hat by default. User can provide
-wavelet Psi(x) as a form of two row matrix. The first row is the x value,
-and the second row is Psi(x) corresponding to x.}
+wavelet \code{Psi(x)} as a form of two row matrix. The first row is the \code{x} value,
+and the second row is \code{Psi(x)} corresponding to \code{x}.}
+
+\item{wavelet_xlimit}{The mother wavelet will be evaluated between these limits. Ignored if \code{wavelet} is a matrix.}
+
+\item{wavelet_length}{The number of points of the mother wavelet. Ignored if \code{wavelet} is a matrix}
+
+\item{extendLengthScales}{A logical value. If the signal is too short, we may
+need to pad it to convolve it with larger daughter wavelets. Set this to \code{TRUE} to let
+scales be used to determine the padding length. It's set to \code{FALSE} by default
+to preserve backwards compatibility.}
 }
 \value{
 The return is the 2-D CWT coefficient matrix, with column names as
-the scale. Each column is the CWT coefficients at that scale.
+the scale. Each column is the CWT coefficients at that scale. If the scales are
+too big for the given signal, the returned matrix may include less columns than
+the given scales.
 }
 \description{
 CWT(Continuous Wavelet Transform) with Mexican Hat wavelet (by default) to

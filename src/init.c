@@ -2,6 +2,7 @@
 
 static const R_CallMethodDef callMethods[]  = {
     {"c_findLocalMaxWinSize", (DL_FUNC) &findLocalMaxWinSize, 2},
+    {"c_localMaximumSlidingWindow", (DL_FUNC) &localMaximumSlidingWindow, 2},
     {NULL, NULL, 0}
 };
 

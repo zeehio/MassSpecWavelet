@@ -3,3 +3,4 @@
 #include <Rinternals.h>
 
 SEXP findLocalMaxWinSize(SEXP s_x, SEXP s_capWinSize);
+SEXP localMaximumSlidingWindow(SEXP s_x, SEXP s_winSize);

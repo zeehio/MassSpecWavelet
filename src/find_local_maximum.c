@@ -429,3 +429,70 @@ SEXP findLocalMaxWinSize(SEXP s_x, SEXP s_capWinSize) {
     Rf_unprotect(1);
     return out;
 }
+
+
+SEXP localMaximumSlidingWindow(SEXP s_x, SEXP s_winSize) {
+    double *x;
+    R_xlen_t xlength = Rf_length(s_x);
+    int is_int = TYPEOF(s_x) == INTSXP;
+    if (is_int) {
+        Rf_error("Not yet implemented, please coerce to double");
+    } else {
+        if (TYPEOF(s_x) != REALSXP) {
+            Rf_error("x must be real or integer");
+        }
+        x = REAL(s_x);
+    }
+    if (TYPEOF(s_winSize) != INTSXP) {
+        Rf_error("winSize must be an integer");
+    }
+    int winSize = INTEGER(s_winSize)[0];
+    
+    int winShift = winSize/2;
+    
+    SEXP out = Rf_protect(Rf_allocVector(INTSXP, xlength));
+    int *outi = INTEGER(out);
+    memset(outi, 0, xlength*sizeof(int));
+
+    for (R_xlen_t i = 0; i < xlength; i += winSize) {
+        int j = i+winSize;
+    
+        double xmax = R_NegInf;
+        int kmax;
+        for (int k = i; k < j; k++) {
+            int k2 = k >= xlength ? xlength-1 : k;
+            if (x[k2] > xmax) {
+                xmax = x[k2];
+                kmax = k2;
+            }
+        }
+        j = j >= xlength ? xlength : j;
+        if (xmax > x[i] && xmax > x[j-1]) {
+            outi[kmax] = 1;
+        }
+    }
+
+    for (R_xlen_t i = -winShift; i < xlength+winShift; i += winSize) {
+        int j = i+winSize;
+
+        double xmax = R_NegInf;
+        int kmax;
+        for (int k = i; k < j; k++) {
+            int k2 = k >= xlength ? xlength-1 : k;
+            k2 = k2 < 0 ? 0 : k2;
+            if (x[k2] > xmax) {
+                xmax = x[k2];
+                kmax = k2;
+            }
+        }
+        int i2 = i;
+        i2 = i2 >= xlength ? xlength : i2;
+        i2 = i2 < 0 ? 0 : i2;
+        j = j > xlength ? xlength : j;
+        if (xmax > x[i2] && xmax > x[j-1]) {
+            outi[kmax] = 1;
+        }
+    }
+    Rf_unprotect(1);
+    return out;
+}

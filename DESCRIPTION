@@ -31,7 +31,7 @@ Description: Peak Detection in Mass Spectrometry data is one of the important
 URL: https://github.com/zeehio/MassSpecWavelet
 BugReports: http://github.com/zeehio/MassSpecWavelet/issues
 License: LGPL (>= 2)
-Suggests: signal, waveslim, BiocStyle, knitr, rmarkdown, RUnit
+Suggests: signal, waveslim, BiocStyle, knitr, rmarkdown, RUnit, bench
 biocViews: ImmunoOncology, MassSpectrometry, Proteomics, PeakDetection
 VignetteBuilder: knitr
 RoxygenNote: 7.2.1

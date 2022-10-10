@@ -14,7 +14,7 @@
 #' 
 #' Experimentally, we are exploring other algorithms for local maxima detection.
 #' These algorithms can be chosen setting the `"MassSpecWavelet.localMaximum.algorithm"`
-#' option. See the [Finding local maxima] vignette for further details.
+#' option. See the `"Finding local maxima"` vignette for further details.
 #' 
 #' 
 #' @param x a vector represents a signal profile

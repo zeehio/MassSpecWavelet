@@ -15,14 +15,14 @@ peakDetectionCWT(
   ridgeLength = 24,
   peakThr = NULL,
   tuneIn = FALSE,
-  ...,
-  extendLengthScales = FALSE
+  ...
 )
 }
 \arguments{
 \item{ms}{the mass spectrometry spectrum}
 
-\item{scales}{Scales of CWT. See \code{\link[=cwt]{cwt()}} for details.}
+\item{scales}{Scales of CWT. See \code{\link[=cwt]{cwt()}} for details. Additionally, a \code{prepared_wavelets} object
+is also accepted (see \code{\link[=prepare_wavelets]{prepare_wavelets()}}).}
 
 \item{SNR.Th}{SNR (Signal to Noise Ratio) threshold}
 

@@ -6,7 +6,8 @@
 #'
 #'
 #' @param ms the mass spectrometry spectrum
-#' @param scales Scales of CWT. See [cwt()] for details.
+#' @param scales Scales of CWT. See [cwt()] for details. Additionally, a `prepared_wavelets` object
+#' is also accepted (see [prepare_wavelets()]).
 #' @param SNR.Th SNR (Signal to Noise Ratio) threshold
 #' @param nearbyPeak Determine whether to include the nearby small peaks of
 #' major peaks. `TRUE` by default

@@ -17,7 +17,8 @@ prepare_wavelets(
 \item{mslength}{Length of the signal to transform}
 
 \item{scales}{a vector represents the scales at which to perform CWT. See
-the Details section}
+the Details section. Additionally, a \code{prepared_wavelets} object
+is also accepted (see \code{\link[=prepare_wavelets]{prepare_wavelets()}}).}
 
 \item{wavelet}{The wavelet base, Mexican Hat by default. User can provide
 wavelet \code{Psi(x)} as a form of two row matrix. The first row is the \code{x} value,
@@ -31,6 +32,9 @@ and the second row is \code{Psi(x)} corresponding to \code{x}.}
 need to pad it to convolve it with larger daughter wavelets. Set this to \code{TRUE} to let
 scales be used to determine the padding length. It's set to \code{FALSE} by default
 to preserve backwards compatibility.}
+}
+\value{
+A \code{prepared_wavelets} object.
 }
 \description{
 Prepare daughter wavelets for faster CWT

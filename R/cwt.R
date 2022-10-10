@@ -32,7 +32,8 @@
 #'
 #' @param ms Mass Spectrometry spectrum (a vector of MS intensities)
 #' @param scales a vector represents the scales at which to perform CWT. See
-#' the Details section
+#' the Details section. Additionally, a `prepared_wavelets` object
+#' is also accepted (see [prepare_wavelets()]).
 #' @param wavelet The wavelet base, Mexican Hat by default. User can provide
 #' wavelet `Psi(x)` as a form of two row matrix. The first row is the `x` value,
 #' and the second row is `Psi(x)` corresponding to `x`.
@@ -140,6 +141,7 @@ cwt <- function(ms, scales = 1, wavelet = "mexh") {
 #' need to pad it to convolve it with larger daughter wavelets. Set this to `TRUE` to let
 #' scales be used to determine the padding length. It's set to `FALSE` by default
 #' to preserve backwards compatibility.
+#' @return A `prepared_wavelets` object.
 #' @export
 #' @examples 
 #' x <- runif(2000)

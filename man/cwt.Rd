@@ -10,7 +10,8 @@ cwt(ms, scales = 1, wavelet = "mexh")
 \item{ms}{Mass Spectrometry spectrum (a vector of MS intensities)}
 
 \item{scales}{a vector represents the scales at which to perform CWT. See
-the Details section}
+the Details section. Additionally, a \code{prepared_wavelets} object
+is also accepted (see \code{\link[=prepare_wavelets]{prepare_wavelets()}}).}
 
 \item{wavelet}{The wavelet base, Mexican Hat by default. User can provide
 wavelet \code{Psi(x)} as a form of two row matrix. The first row is the \code{x} value,

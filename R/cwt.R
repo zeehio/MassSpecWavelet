@@ -270,7 +270,7 @@ cwt_classic <- function(ms, scales=1, wavelet='mexh') {
             lenWave <- length(j)
             f[1:lenWave] <- rev(psi[j]) - mean(psi[j])
             if (length(f) > len) stop(paste('scale', scale.i, 'is too large!'))
-            wCoefs.i <- 1/sqrt(scale.i) * convolve(ms, f)
+            wCoefs.i <- 1/sqrt(scale.i) * stats::convolve(ms, f)
             ## Shift the position with half wavelet width
             wCoefs.i <- c(wCoefs.i[(len-floor(lenWave/2) + 1) : len], wCoefs.i[1:(len-floor(lenWave/2))])
             wCoefs <- cbind(wCoefs, wCoefs.i)

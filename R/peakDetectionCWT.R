@@ -26,7 +26,6 @@
 #' Additionally, `fl` (filter length, with a default value of 1001) and
 #' `forder` (filter order, with a default value of 2) are set and passed
 #' to [signal::sgolayfilt()] when `peakThr` is given.
-#' @inheritParams cwt
 #' @return \item{majorPeakInfo}{ return of [identifyMajorPeaks()]}
 #' \item{ridgeList}{return of [getRidge()]} \item{localMax}{ return
 #' of [getLocalMaximumCWT()] } \item{wCoefs}{ 2-D CWT coefficient
@@ -56,14 +55,21 @@
 #'
 peakDetectionCWT <- function(ms, scales = c(1, seq(2, 30, 2), seq(32, 64, 4)), SNR.Th = 3, nearbyPeak = TRUE,
                              peakScaleRange = 5, amp.Th = 0.01, minNoiseLevel = amp.Th / SNR.Th, ridgeLength = 24,
-                             peakThr = NULL, tuneIn = FALSE, ..., extendLengthScales = FALSE) {
+                             peakThr = NULL, tuneIn = FALSE, ...) {
     otherPar <- list(...)
     if (minNoiseLevel > 1) names(minNoiseLevel) <- "fixed"
     ## Perform Continuous Wavelet Transform
-    wCoefs <- cwt(ms, scales = scales, wavelet = "mexh", extendLengthScales = extendLengthScales)
-    if (ncol(wCoefs) < length(scales)) {
-        scales <- scales[seq_len(ncol(wCoefs))]
-    }
+    prep_wav <- prepare_wavelets(
+        mslength = length(ms),
+        scales = scales,
+        wavelet = "mexh",
+        wavelet_xlimit = 8,
+        wavelet_length = 1024L,
+        extendLengthScales = FALSE
+    )
+
+    wCoefs <- cwt(ms, prep_wav)
+    scales <- prep_wav$scales
 
     ## Attach the raw data as the zero level of decomposition
     ## FIXME: This cbind is a bad idea because `ms` may have a baseline, and that baseline

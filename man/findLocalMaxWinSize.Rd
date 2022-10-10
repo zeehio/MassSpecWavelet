@@ -8,6 +8,8 @@ findLocalMaxWinSize(x, capWinSize = NA)
 }
 \arguments{
 \item{x}{A numeric vector.}
+
+\item{capWinSize}{the maximum window size to report. \code{NA} means unlimited.}
 }
 \value{
 An integer vector \code{y} of the same length as \code{x}. \code{y[i]} will be the

@@ -13,19 +13,25 @@ localMaximum(x, winSize = 5)
 }
 \value{
 Return a vector with the same length of the input x. The position of
-local maximum is set as 1L, 0L else where.
+local maximum is set as \code{1L}, \code{0L} else where.
 }
 \description{
-Find local maximum by transform the vector as matrix, then get the the
-maximum of each column. This operation is performed twice with vector
-shifted half of the \code{winSize}.
+The simplest local maximum detection using a sliding window searches for
+maxima in a window of a given size, and slides that window across the signal,
+shifting it one position at a time.
 }
 \details{
-Instead of find the local maximum by a slide window, which slide all
-possible positions, we find local maximum by transform the vector as matrix,
-then get the the maximum of each column. This operation is performed twice
-with vector shifted half of the \code{winSize}. The main purpose of this is to
-increase the efficiency of the algorithm.
+The default implementation found here shifts the window by half of its size
+instead of by one position at a time. This makes the implementation faster,
+at the expense of not being able to detect peaks that are too close to each other,
+if they appear in some positions with respect to the windows.
+
+Additionally, this implementation removes all instances of peaks found at
+a distance less than the window size
+
+Experimentally, we are exploring other algorithms for local maxima detection.
+These algorithms can be chosen setting the \code{"MassSpecWavelet.localMaximum.algorithm"}
+option. See the \link{Finding local maxima} vignette for further details.
 }
 \examples{
 

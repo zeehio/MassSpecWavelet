@@ -34,10 +34,18 @@
 #' @param scales a vector represents the scales at which to perform CWT. See
 #' the Details section
 #' @param wavelet The wavelet base, Mexican Hat by default. User can provide
-#' wavelet Psi(x) as a form of two row matrix. The first row is the x value,
-#' and the second row is Psi(x) corresponding to x.
+#' wavelet `Psi(x)` as a form of two row matrix. The first row is the `x` value,
+#' and the second row is `Psi(x)` corresponding to `x`.
+#' @param wavelet_xlimit The mother wavelet will be evaluated between these limits. Ignored if `wavelet` is a matrix.
+#' @param wavelet_length The number of points of the mother wavelet. Ignored if `wavelet` is a matrix
+#' @param extendLengthScales A logical value. If the signal is too short, we may
+#' need to pad it to convolve it with larger daughter wavelets. Set this to `TRUE` to let
+#' scales be used to determine the padding length. It's set to `FALSE` by default
+#' to preserve backwards compatibility.
 #' @return The return is the 2-D CWT coefficient matrix, with column names as
-#' the scale. Each column is the CWT coefficients at that scale.
+#' the scale. Each column is the CWT coefficients at that scale. If the scales are
+#' too big for the given signal, the returned matrix may include less columns than
+#' the given scales.
 #' @author Pan Du, Simon Lin
 #' @keywords methods
 #' @examples
@@ -86,12 +94,15 @@
 #' print(scales)
 #'
 #' @export
-cwt <- function(ms, scales = 1, wavelet = "mexh") {
+cwt <- function(ms, scales = 1, wavelet = "mexh", wavelet_xlimit = 8, wavelet_length = 1024L, extendLengthScales = FALSE) {
     ## Check for the wavelet format
     if (identical(wavelet, "mexh")) {
-        psi_xval <- seq(-8, 8, length.out = 1024)
-        psi <- (2 / sqrt(3) * pi^(-0.25)) * (1 - psi_xval^2) * exp(-psi_xval^2 / 2)
+        psi_xval <- seq(-wavelet_xlimit, wavelet_xlimit, length.out = wavelet_length)
+        psi <- mexh(psi_xval)
         # plot(psi_xval, psi)
+    } else if (is.function(wavelet)) {
+        psi_xval <- seq(-wavelet_xlimit, wavelet_xlimit, length.out = wavelet_length)
+        psi <- wavelet(psi_xval)
     } else if (is.matrix(wavelet)) {
         if (nrow(wavelet) == 2) {
             psi_xval <- wavelet[1, ]
@@ -107,11 +118,23 @@ cwt <- function(ms, scales = 1, wavelet = "mexh") {
     }
 
     oldLen <- length(ms)
-    ## To increase the computation efficiency of FFT, extend it as the power of 2
-    ## because of a strange signal length 21577 makes the FFT very slow!
-    ms <- extendNBase(ms, nLevel = NULL, base = 2)
+    
+    # IF extendLengthScales is TRUE:
+    # The new length is determined by the scales argument. See 
+    # https://github.com/sneumann/xcms/issues/445 for more information.
+    # extendLengthScales is now `FALSE` to preserve backwards compatibility,
+    # but it should become `TRUE` in a future edition/version of the package
+    if (extendLengthScales) {
+        newLen <- 2^(ceiling(log2(max(scales)*(2*wavelet_xlimit))))
+        ms <- extendLength(x = ms, addLength = (newLen - length(ms)), 
+                               method = "open")
+    } else {
+        ms <- extendNBase(ms, nLevel = NULL, base = 2)
+    }
+    
+    ms_fft <- stats::fft(ms)
     len <- length(ms)
-    wCoefs <- NULL
+    wCoefs <- matrix(NA_real_, nrow = oldLen, ncol = length(scales))
 
     psi_xval <- psi_xval - psi_xval[1]
     dxval <- psi_xval[2]
@@ -120,17 +143,29 @@ cwt <- function(ms, scales = 1, wavelet = "mexh") {
         scale.i <- scales[i]
         f <- rep(0, len)
         j <- 1 + floor((0:(scale.i * xmax)) / (scale.i * dxval))
-        if (length(j) == 1) j <- c(1, 1)
+        if (length(j) == 1)
+            j <- c(1, 1)
         lenWave <- length(j)
         f[1:lenWave] <- rev(psi[j]) - mean(psi[j])
-        if (length(f) > len) stop("scale ", scale.i, " is too large!")
-        wCoefs.i <- 1 / sqrt(scale.i) * stats::convolve(ms, f)
+        if (length(f) > len) {
+            i <- i - 1
+            break
+        }
+        wCoefs.i <- 1 / sqrt(scale.i) * convol(ms_fft, f)
         ## Shift the position with half wavelet width
         wCoefs.i <- c(wCoefs.i[(len - floor(lenWave / 2) + 1):len], wCoefs.i[1:(len - floor(lenWave / 2))])
-        wCoefs <- cbind(wCoefs, wCoefs.i)
+        wCoefs[, i] <- wCoefs.i[1:oldLen]
     }
-    if (length(scales) == 1) wCoefs <- matrix(wCoefs, ncol = 1)
-    colnames(wCoefs) <- scales
-    wCoefs <- wCoefs[1:oldLen, , drop = FALSE]
+    wCoefs <- wCoefs[,seq_len(i)]
+    colnames(wCoefs) <- scales[seq_len(i)]
     return(wCoefs)
+}
+
+convol <- function(fft_x, y) {
+    n <- length(fft_x)
+    ny <- length(y)
+    if (ny != n)
+        stop("length mismatch in convolution")
+
+    Re(stats::fft(fft_x * Conj(stats::fft(y)), inverse = TRUE))/n
 }

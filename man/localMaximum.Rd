@@ -31,7 +31,7 @@ a distance less than the window size
 
 Experimentally, we are exploring other algorithms for local maxima detection.
 These algorithms can be chosen setting the \code{"MassSpecWavelet.localMaximum.algorithm"}
-option. See the \link{Finding local maxima} vignette for further details.
+option. See the \code{"Finding local maxima"} vignette for further details.
 }
 \examples{
 

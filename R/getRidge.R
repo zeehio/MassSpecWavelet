@@ -15,6 +15,10 @@
 #' @param minWinSize The minimum slide window size used.
 #' @param gapTh The gap allowed during searching for ridge. 3 by default.
 #' @param skip The column to be skipped during search.
+#' @param scaleToWinSize How scales should be mapped to window sizes. Traditionally,
+#' MassSpecWavelet used the `"doubleodd"` mapping (`winSize <- 2*scale+1`). `xcms` switched
+#' this mapping to `"halve"` (`winSize <- floor(scale/2)`). Besides `"doubleodd"` and `"halve"`
+#' this parameter can also be a custom function of the scale.
 #' @return Return a list of ridge. As some ridges may end at the scale larger
 #' than 1, in order to keep the uniqueness of the ridge names, we combined the
 #' smallest scale of the ridge and m/z index of the peak at that scale together
@@ -37,18 +41,18 @@
 #' ridgeList <- getRidge(localMax)
 #' plotRidgeList(ridgeList)
 #'
-getRidge <- function(localMax, iInit = ncol(localMax), step = -1, iFinal = 1, minWinSize = 5, gapTh = 3, skip = NULL) {
+getRidge <- function(localMax, iInit = ncol(localMax), step = -1, iFinal = 1, minWinSize = 5, gapTh = 3, skip = NULL, scaleToWinSize = "doubleodd") {
     scales <- as.numeric(colnames(localMax))
     if (is.null(scales)) scales <- seq_len(ncol(localMax))
-
+    
     maxInd_curr <- which(localMax[, iInit] > 0)
     nMz <- nrow(localMax)
-
+    
     if (is.null(skip)) {
         skip <- iInit + 1
     }
-
-    ## Identify all the peak pathes from the coarse level to detail levels (high column to low column)
+    
+    ## Identify all the peak paths from the coarse level to detail levels (high column to low column)
     ## Only consider the shortest path
     if (ncol(localMax) > 1) { ## fixed by Steffen Neumann
         colInd <- seq(iInit + step, iFinal, step)
@@ -59,17 +63,17 @@ getRidge <- function(localMax, iInit = ncol(localMax), step = -1, iFinal = 1, mi
     names(ridgeList) <- maxInd_curr
     peakStatus <- as.list(rep(0, length(maxInd_curr)))
     names(peakStatus) <- maxInd_curr
-
+    
     ## orphanRidgeList keep the ridges disconnected at certain scale level
     ## Changed by Pan Du 05/11/06
     orphanRidgeList <- NULL
     orphanRidgeName <- NULL
     nLevel <- length(colInd)
-
+    
     for (j in seq_len(nLevel)) {
         col.j <- colInd[j]
         scale.j <- scales[col.j]
-
+        
         if (colInd[j] == skip) {
             oldname <- names(ridgeList)
             ridgeList <- lapply(ridgeList, function(x) c(x, x[length(x)]))
@@ -78,18 +82,29 @@ getRidge <- function(localMax, iInit = ncol(localMax), step = -1, iFinal = 1, mi
             # names(peakStatus) <- oldname
             next
         }
-
+        
         if (length(maxInd_curr) == 0) {
             maxInd_curr <- which(localMax[, col.j] > 0)
             next
         }
-
+        
         ## The slide window size is proportional to the CWT scale
-        winSize.j <- scale.j * 2 + 1
+        if (identical(scaleToWinSize, "doubleodd")) {
+            # classic MassSpecWavelet criteria:
+            winSize.j <- scale.j * 2 + 1
+        } else if (identical(scaleToWinSize, "halve")) {
+            # xcms criteria:
+            winSize.j <- floor(scale.j/2)
+        } else if (is.function(scaleToWinSize)) {
+            winSize.j <- scaleToWinSize(scale.j)
+        } else {
+            stop('Invalid scaleToWinSize. Please use "doubleodd", "halve" or a custom function(scale.j)')
+        }
+        
         if (winSize.j < minWinSize) {
             winSize.j <- minWinSize
         }
-
+        
         selPeak.j <- NULL
         remove.j <- NULL
         for (k in 1:length(maxInd_curr)) {
@@ -126,7 +141,7 @@ getRidge <- function(localMax, iInit = ncol(localMax), step = -1, iFinal = 1, mi
             ridgeList <- ridgeList[-removeInd]
             peakStatus <- peakStatus[-removeInd]
         }
-
+        
         ## Check for duplicated selected peaks and only keep the one with the longest path.
         dupPeak.j <- unique(selPeak.j[duplicated(selPeak.j)])
         if (length(dupPeak.j) > 0) {

@@ -34,6 +34,7 @@
 #' `max(wCoefs)`. The zero-th scale corresponds to the original signal, that may
 #' have a much larger baseline than the wavelet coefficients and can distort the
 #' threshold calculation. The default is `FALSE` to preserve backwards compatibility.
+#' @param getRidgeParams A list with parameters for `getRidge()`.
 #' @return \item{majorPeakInfo}{ return of [identifyMajorPeaks()]}
 #' \item{ridgeList}{return of [getRidge()]} \item{localMax}{ return
 #' of [getLocalMaximumCWT()] } \item{wCoefs}{ 2-D CWT coefficient
@@ -63,7 +64,8 @@
 #'
 peakDetectionCWT <- function(ms, scales = c(1, seq(2, 30, 2), seq(32, 64, 4)), SNR.Th = 3, nearbyPeak = TRUE,
                              peakScaleRange = 5, amp.Th = 0.01, minNoiseLevel = amp.Th / SNR.Th, ridgeLength = 24,
-                             peakThr = NULL, tuneIn = FALSE, ..., exclude0scaleAmpThresh = FALSE) {
+                             peakThr = NULL, tuneIn = FALSE, ..., exclude0scaleAmpThresh = FALSE,
+                             getRidgeParams = list(gapTh = 3, skip = 2)) {
     otherPar <- list(...)
     if (minNoiseLevel > 1) names(minNoiseLevel) <- "fixed"
     ## Perform Continuous Wavelet Transform
@@ -128,7 +130,7 @@ peakDetectionCWT <- function(ms, scales = c(1, seq(2, 30, 2), seq(32, 64, 4)), S
 
     ## -----------------------------------------
     ## Identify the ridges from coarse level to more detailed levels
-    ridgeList <- getRidge(localMax, gapTh = 3, skip = 2)
+    ridgeList <- do.call(getRidge, c(list(localMax), getRidgeParams))
 
     ## -----------------------------------------
     ## Identify the major peaks and their nearby peaks

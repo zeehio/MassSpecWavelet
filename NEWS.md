@@ -1,3 +1,29 @@
+# MassSpecWavelet 1.63.5 (2022-10-11)
+
+- `getRidge()` supports a `scaleToWinSize` parameter. This argument controls how
+  scales get mapped to window sizes. These windows are used to track the local
+  maxima into ridges. MassSpecWavelet had a criteria of `winsize <- 2*scale+1`,
+  while xcms modified it to `winsize <- floor(scale/2)`. This new argument enables
+  xcms maintainers to call MassSpecWavelet's getRidge (if they want to) using their
+  criteria, while it still lets us preserve backwards compatibility in our results.
+  See `?getRidge` for further details.
+  
+- The `getLocalMaximumCWT()` `is_amp_thres_relative` parameter is now `isAmpThreshRelative`,
+  for consistency with other parameter capitalization in the package. Since it
+  was introduced 10 days ago, I don't think there will be more than one user using
+  it.
+
+- `getLocalMaximumCWT()` and `peakDetectionCWT` have a `exclude0scaleAmpThresh`
+  parameter. When computing the relative `amp.Th`, if this parameter is set
+  to `TRUE`, the `amp.Th` will exclude the zero-th scale from the
+  `max(wCoefs)`. The zero-th scale corresponds to the original signal, that may
+  have a much larger baseline than the wavelet coefficients and can distort the
+  threshold calculation. The default value is `FALSE` to preserve backwards
+  compatibility.
+
+- `peakDetectionCWT` lets the user pass custom arguments to `getRidge()`.
+
+
 # MassSpecWavelet 1.63.4 (2022-10-10)
 
 - The improvements in `localMaxima()` and `cwt()` provide significant speed-ups

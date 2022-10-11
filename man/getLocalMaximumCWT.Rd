@@ -8,7 +8,8 @@ getLocalMaximumCWT(
   wCoefs,
   minWinSize = 5,
   amp.Th = 0,
-  is_amp_thres_relative = FALSE
+  isAmpThreshRelative = FALSE,
+  exclude0scaleAmpThresh = FALSE
 )
 }
 \arguments{
@@ -19,8 +20,14 @@ coefficient at one scale. The column name is the scale.}
 
 \item{amp.Th}{The minimum peak amplitude.}
 
-\item{is_amp_thres_relative}{Whether \code{amp.Th} is given relative to
+\item{isAmpThreshRelative}{Whether \code{amp.Th} is given relative to
 \code{max(wCoefs)}.}
+
+\item{exclude0scaleAmpThresh}{When computing the relative \code{amp.Th}, if
+this is set to \code{TRUE}, the \code{amp.Th} will exclude the zero-th scale from the
+\code{max(wCoefs)}. The zero-th scale corresponds to the original signal, that may
+have a much larger baseline than the wavelet coefficients and can distort the
+threshold calculation. The default is \code{FALSE} to preserve backwards compatibility.}
 }
 \value{
 return a matrix with same dimension as CWT coefficient matrix,

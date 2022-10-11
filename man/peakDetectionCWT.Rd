@@ -15,7 +15,9 @@ peakDetectionCWT(
   ridgeLength = 24,
   peakThr = NULL,
   tuneIn = FALSE,
-  ...
+  ...,
+  exclude0scaleAmpThresh = FALSE,
+  getRidgeParams = list(gapTh = 3, skip = 2)
 )
 }
 \arguments{
@@ -53,6 +55,14 @@ so it may not be that useful to you if you are using custom wavelets or threshol
 Additionally, \code{fl} (filter length, with a default value of 1001) and
 \code{forder} (filter order, with a default value of 2) are set and passed
 to \code{\link[signal:sgolayfilt]{signal::sgolayfilt()}} when \code{peakThr} is given.}
+
+\item{exclude0scaleAmpThresh}{When computing the relative \code{amp.Th}, if
+this is set to \code{TRUE}, the \code{amp.Th} will exclude the zero-th scale from the
+\code{max(wCoefs)}. The zero-th scale corresponds to the original signal, that may
+have a much larger baseline than the wavelet coefficients and can distort the
+threshold calculation. The default is \code{FALSE} to preserve backwards compatibility.}
+
+\item{getRidgeParams}{A list with parameters for \code{getRidge()}.}
 }
 \value{
 \item{majorPeakInfo}{ return of \code{\link[=identifyMajorPeaks]{identifyMajorPeaks()}}}
@@ -68,6 +78,14 @@ This function is a wrapper of \code{\link[=cwt]{cwt()}},
 \examples{
 
 data(exampleMS)
+
+# Detect peaks with prepared wavelets:
+prep_wav <- prepareWavelets(length(exampleMS))
+SNR.Th <- 3
+peakInfo <- peakDetectionCWT(exampleMS, prep_wav, SNR.Th = SNR.Th, exclude0scaleAmpThresh=TRUE)
+peakIndex <- peakInfo$majorPeakInfo$peakIndex
+plotPeak(exampleMS, peakIndex, main = paste("Identified peaks with SNR >", SNR.Th))
+
 SNR.Th <- 3
 peakInfo <- peakDetectionCWT(exampleMS, SNR.Th = SNR.Th)
 majorPeakInfo <- peakInfo$majorPeakInfo

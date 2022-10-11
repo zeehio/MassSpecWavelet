@@ -50,6 +50,14 @@
 #' @examples
 #'
 #' data(exampleMS)
+#' 
+#' # Detect peaks with prepared wavelets:
+#' prep_wav <- prepareWavelets(length(exampleMS))
+#' SNR.Th <- 3
+#' peakInfo <- peakDetectionCWT(exampleMS, prep_wav, SNR.Th = SNR.Th, exclude0scaleAmpThresh=TRUE)
+#' peakIndex <- peakInfo$majorPeakInfo$peakIndex
+#' plotPeak(exampleMS, peakIndex, main = paste("Identified peaks with SNR >", SNR.Th))
+#' 
 #' SNR.Th <- 3
 #' peakInfo <- peakDetectionCWT(exampleMS, SNR.Th = SNR.Th)
 #' majorPeakInfo <- peakInfo$majorPeakInfo

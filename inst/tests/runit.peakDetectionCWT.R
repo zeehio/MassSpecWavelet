@@ -12,7 +12,8 @@ test01_peakDetection <- function() {
     peak1 <- peakDetectionCWT(
         skinny_peak,
         prep_wavelets,
-        excludeBoundariesSize = 0
+        excludeBoundariesSize = 0,
+        exclude0scaleAmpThresh = TRUE
     )$majorPeakInfo$peakIndex
     checkEquals(1, length(peak1), msg = "Peak found in skinny_peak")
 
@@ -20,7 +21,8 @@ test01_peakDetection <- function() {
     peak2 <- peakDetectionCWT(
         c(rep(0, 256), skinny_peak, rep(0, 256)),
         prep_wavelets,
-        excludeBoundariesSize = 0
+        excludeBoundariesSize = 0,
+        exclude0scaleAmpThresh = TRUE
     )$majorPeakInfo$peakIndex
     checkEquals(1, length(peak2), msg = "Peak found in skinny_peak padded")
     checkEquals(unname(peak2), unname(peak1) + 256, msg = "Peaks do not match")
@@ -42,7 +44,8 @@ test02_peakDetection <- function() {
     peak1 <- peakDetectionCWT(
         wider_peak,
         prep_wavelets,
-        excludeBoundariesSize = 0
+        excludeBoundariesSize = 0,
+        exclude0scaleAmpThresh = TRUE
     )
     
     checkEquals(30, unname(peak1$majorPeakInfo$peakIndex), msg = "Peak not found at index 30")
@@ -51,7 +54,8 @@ test02_peakDetection <- function() {
     peak2 <- peakDetectionCWT(
         c(rep(0, 256), wider_peak, rep(0, 256)),
         prep_wavelets,
-        excludeBoundariesSize = 0
+        excludeBoundariesSize = 0,
+        exclude0scaleAmpThresh = TRUE
     )
     checkEquals(30 + 256, unname(peak2$majorPeakInfo$peakIndex), msg = "Peak not found at index 30+256")
     

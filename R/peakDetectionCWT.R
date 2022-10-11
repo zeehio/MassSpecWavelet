@@ -29,6 +29,11 @@
 #' Additionally, `fl` (filter length, with a default value of 1001) and
 #' `forder` (filter order, with a default value of 2) are set and passed
 #' to [signal::sgolayfilt()] when `peakThr` is given.
+#' @param exclude0scaleAmpThresh When computing the relative `amp.Th`, if
+#' this is set to `TRUE`, the `amp.Th` will exclude the zero-th scale from the
+#' `max(wCoefs)`. The zero-th scale corresponds to the original signal, that may
+#' have a much larger baseline than the wavelet coefficients and can distort the
+#' threshold calculation. The default is `FALSE` to preserve backwards compatibility.
 #' @return \item{majorPeakInfo}{ return of [identifyMajorPeaks()]}
 #' \item{ridgeList}{return of [getRidge()]} \item{localMax}{ return
 #' of [getLocalMaximumCWT()] } \item{wCoefs}{ 2-D CWT coefficient
@@ -58,7 +63,7 @@
 #'
 peakDetectionCWT <- function(ms, scales = c(1, seq(2, 30, 2), seq(32, 64, 4)), SNR.Th = 3, nearbyPeak = TRUE,
                              peakScaleRange = 5, amp.Th = 0.01, minNoiseLevel = amp.Th / SNR.Th, ridgeLength = 24,
-                             peakThr = NULL, tuneIn = FALSE, ...) {
+                             peakThr = NULL, tuneIn = FALSE, ..., exclude0scaleAmpThresh = FALSE) {
     otherPar <- list(...)
     if (minNoiseLevel > 1) names(minNoiseLevel) <- "fixed"
     ## Perform Continuous Wavelet Transform
@@ -75,8 +80,6 @@ peakDetectionCWT <- function(ms, scales = c(1, seq(2, 30, 2), seq(32, 64, 4)), S
     scales <- prep_wav$scales
 
     ## Attach the raw data as the zero level of decomposition
-    ## FIXME: This cbind is a bad idea because `ms` may have a baseline, and that baseline
-    ##        affects max(wCoefs), impacting amp.Th if it is relative
     wCoefs <- cbind(as.vector(ms), wCoefs)
     colnames(wCoefs) <- c(0, scales)
 
@@ -85,10 +88,10 @@ peakDetectionCWT <- function(ms, scales = c(1, seq(2, 30, 2), seq(32, 64, 4)), S
     ## The size of slide window changes over different levels, with the coarse level have bigger window size
     if (is.null(amp.Th)) {
         amp.Th <- 0
-    } else {
-        if (is.null(names(amp.Th))) {
-            amp.Th <- max(wCoefs) * amp.Th
-        } else if (names(amp.Th) != "fixed") {
+    } else if (is.null(names(amp.Th)) || names(amp.Th) != "fixed") {
+        if (isTRUE(exclude0scaleAmpThresh)) {
+            amp.Th <- max(wCoefs[,colnames(wCoefs) != "0", drop = FALSE]) * amp.Th
+        } else {
             amp.Th <- max(wCoefs) * amp.Th
         }
     }

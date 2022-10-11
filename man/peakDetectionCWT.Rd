@@ -45,7 +45,9 @@ be picked. If this value is provided, then the smoothing function
 intensity.(added based on the suggestion and code of Steffen Neumann)}
 
 \item{tuneIn}{determine whether to tune in the parameter estimation of the
-detected peaks}
+detected peaks. If \code{TRUE}, peak detection is run again on a segment of the spectrum
+with more detailed scales. This tuning happens with the default wavelet and settings
+so it may not be that useful to you if you are using custom wavelets or thresholds.}
 
 \item{\dots}{other parameters used by \code{\link[=identifyMajorPeaks]{identifyMajorPeaks()}}.
 Additionally, \code{fl} (filter length, with a default value of 1001) and

@@ -11,7 +11,8 @@ getRidge(
   iFinal = 1,
   minWinSize = 5,
   gapTh = 3,
-  skip = NULL
+  skip = NULL,
+  scaleToWinSize = "doubleodd"
 )
 }
 \arguments{
@@ -31,6 +32,11 @@ scale to detail scale column by column.}
 \item{gapTh}{The gap allowed during searching for ridge. 3 by default.}
 
 \item{skip}{The column to be skipped during search.}
+
+\item{scaleToWinSize}{How scales should be mapped to window sizes. Traditionally,
+MassSpecWavelet used the \code{"doubleodd"} mapping (\code{winSize <- 2*scale+1}). \code{xcms} switched
+this mapping to \code{"halve"} (\code{winSize <- floor(scale/2)}). Besides \code{"doubleodd"} and \code{"halve"}
+this parameter can also be a custom function of the scale.}
 }
 \value{
 Return a list of ridge. As some ridges may end at the scale larger

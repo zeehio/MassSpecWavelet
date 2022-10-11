@@ -39,7 +39,7 @@
 #'
 tuneInPeakInfo <- function(ms, majorPeakInfo = NULL, peakIndex = NULL, peakScale = NULL, maxScale = 128, ...) {
     if (!is.null(majorPeakInfo)) {
-        if (!all(c("peakIndex", "peakCenterIndex", "peakScale") %in% names(majorPeakInfo))) stop("Format of majorPeakInfo is incorret!")
+        if (!all(c("peakIndex", "peakCenterIndex", "peakScale") %in% names(majorPeakInfo))) stop("Format of majorPeakInfo is incorrect!")
         peakIndex <- majorPeakInfo$peakIndex
         peakScale <- majorPeakInfo$peakScale[names(peakIndex)]
         peakCenterIndex <- majorPeakInfo$peakCenterIndex[names(peakIndex)]
@@ -106,7 +106,7 @@ tuneInPeakInfo <- function(ms, majorPeakInfo = NULL, peakIndex = NULL, peakScale
         colnames(localMax.i) <- colnames(wCoefs.i)
 
         ## -----------------------------------------
-        ## Indentify the ridges from coarse level to more detailed levels
+        ## Identify the ridges from coarse level to more detailed levels
         ridgeList.i <- getRidge(localMax.i, gapTh = 3, skip = NULL, ...)
 
         ridgeName.i <- names(ridgeList.i)

@@ -143,13 +143,13 @@ getRidge <- function(localMax, iInit = ncol(localMax), step = -1, iFinal = 1, mi
             ridgeList <- ridgeList[-removeInd]
             peakStatus <- peakStatus[-removeInd]
         }
-
+        
         ## Update the names of the ridgeList as the new selected peaks
         # if (scale.j >= 2) {
-        names(ridgeList) <- selPeak.j
-        names(peakStatus) <- selPeak.j
+        if (length(ridgeList) > 0) names(ridgeList) <- selPeak.j
+        if (length(peakStatus) > 0) names(peakStatus) <- selPeak.j
         # }
-
+        
         ## If the level is larger than 3, expand the peak list by including other unselected peaks at that level
         if (scale.j >= 2) {
             maxInd_next <- which(localMax[, col.j] > 0)
@@ -171,19 +171,21 @@ getRidge <- function(localMax, iInit = ncol(localMax), step = -1, iFinal = 1, mi
     if (length(ridgeList) > 0) {
         names(ridgeList) <- paste(1, names(ridgeList), sep = "_")
     }
-    names(orphanRidgeList) <- orphanRidgeName
+    if (length(orphanRidgeList) > 0) {
+        names(orphanRidgeList) <- orphanRidgeName
+    }
     ## Combine ridgeList and orphanRidgeList
     ridgeList <- c(ridgeList, orphanRidgeList)
-
+    
     ## Reverse the order as from the low level to high level.
     ridgeList <- lapply(ridgeList, rev)
     ## order the ridgeList in increasing order
     # ord <- order(selPeak.j)
     # ridgeList <- ridgeList[ord]
-
+    
     ## Remove possible duplicated ridges
     ridgeList <- ridgeList[!duplicated(names(ridgeList))]
-
+    
     attr(ridgeList, "class") <- "ridgeList"
     attr(ridgeList, "scales") <- scales
     return(ridgeList)

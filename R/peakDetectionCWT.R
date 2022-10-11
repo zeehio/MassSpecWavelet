@@ -22,7 +22,9 @@
 #' [signal::sgolayfilt()] will be called to estimate the local
 #' intensity.(added based on the suggestion and code of Steffen Neumann)
 #' @param tuneIn determine whether to tune in the parameter estimation of the
-#' detected peaks
+#' detected peaks. If `TRUE`, peak detection is run again on a segment of the spectrum
+#' with more detailed scales. This tuning happens with the default wavelet and settings
+#' so it may not be that useful to you if you are using custom wavelets or thresholds.
 #' @param \dots other parameters used by [identifyMajorPeaks()].
 #' Additionally, `fl` (filter length, with a default value of 1001) and
 #' `forder` (filter order, with a default value of 2) are set and passed

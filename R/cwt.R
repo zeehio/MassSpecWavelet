@@ -126,7 +126,7 @@ cwt <- function(ms, scales = 1, wavelet = "mexh") {
         wCoefs.i <- c(wCoefs.i[(len - floor(lenWave / 2) + 1):len], wCoefs.i[1:(len - floor(lenWave / 2))])
         wCoefs[, i] <- wCoefs.i[1:oldLen]
     }
-    wCoefs <- wCoefs[,seq_len(i)]
+    wCoefs <- wCoefs[,seq_len(i), drop = FALSE]
     colnames(wCoefs) <- scales[seq_len(i)]
     return(wCoefs)
 }

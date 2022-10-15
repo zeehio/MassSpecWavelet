@@ -1,3 +1,7 @@
+# MassSpecWavelet 1.63.6 (2022-10-15)
+
+- Fix regression in `cwt()` when scales has length 1.
+
 # MassSpecWavelet 1.63.5 (2022-10-11)
 
 - `getRidge()` supports a `scaleToWinSize` parameter. This argument controls how

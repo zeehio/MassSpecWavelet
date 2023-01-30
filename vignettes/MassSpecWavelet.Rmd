@@ -63,6 +63,7 @@ data(exampleMS)
 
 
 ```{r}
+plotRange <- c(5000, 11000)
 plot(exampleMS, xlim = plotRange, type = "l")
 ```
 

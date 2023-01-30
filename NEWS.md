@@ -1,3 +1,7 @@
+# MassSpecWavelet 1.64.1 (2023-01-30)
+
+- Fix undefined variable in MassSpecWavelet.Rmd
+
 # MassSpecWavelet 1.63.6 (2022-10-15)
 
 - Fix regression in `cwt()` when scales has length 1.

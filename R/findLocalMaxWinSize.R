@@ -18,5 +18,5 @@
 #'  x <- c(1, 2, 3, 2, 1)
 #'  findLocalMaxWinSize(x)
 findLocalMaxWinSize <- function(x, capWinSize = NA) {
-    .Call("c_findLocalMaxWinSize", as.double(x), capWinSize = as.integer(capWinSize))
+    .Call(c_findLocalMaxWinSize, as.double(x), capWinSize = as.integer(capWinSize))
 }

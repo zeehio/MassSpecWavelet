@@ -95,5 +95,5 @@ localMaximum <- function(x, winSize = 5) {
 }
 
 localMaximumSlidingWindow <- function(x, winSize = 5L) {
-    .Call("c_localMaximumSlidingWindow", as.double(x), as.integer(winSize))
+    .Call(c_localMaximumSlidingWindow, as.double(x), as.integer(winSize))
 }

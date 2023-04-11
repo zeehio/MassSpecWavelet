@@ -3,7 +3,7 @@ Type: Package
 Title: Peak Detection for Mass Spectrometry data using wavelet-based algorithms
 Version: 1.65.1
 Encoding: UTF-8
-Date: 2022-10-15
+Date: 2023-04-11
 Authors@R: c(
     person(given = "Pan",
            family = "Du",

@@ -1,6 +1,6 @@
 # MassSpecWavelet 1.65.1 (2023-04-07)
 
-- Fix .Call()ing
+- Fix .Call() for R-4.3. Thanks to Steffen Neumann. Closes #5
 
 # MassSpecWavelet 1.64.1 (2023-01-30)
 

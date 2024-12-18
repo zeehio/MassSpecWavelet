@@ -1,3 +1,11 @@
+# MassSpecWavelet 1.72.1 (2024-12-18)
+
+- Fix off-by-one error. Thanks to Aixiang Jiang,
+  Ivan Krylov, Lluís Revilla,
+  Duncan Murdoch and Vincent Carey for
+  reporting, suggesting a fix and
+  reaching out.
+
 # MassSpecWavelet 1.65.1 (2023-04-07)
 
 - Fix .Call() for R-4.3. Thanks to Steffen Neumann. Closes #5

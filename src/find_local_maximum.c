@@ -458,7 +458,7 @@ SEXP localMaximumSlidingWindow(SEXP s_x, SEXP s_winSize) {
         int j = i+winSize;
     
         double xmax = R_NegInf;
-        int kmax;
+        int kmax = -1;
         for (int k = i; k < j; k++) {
             int k2 = k >= xlength ? xlength-1 : k;
             if (x[k2] > xmax) {
@@ -467,7 +467,7 @@ SEXP localMaximumSlidingWindow(SEXP s_x, SEXP s_winSize) {
             }
         }
         j = j >= xlength ? xlength : j;
-        if (xmax > x[i] && xmax > x[j-1]) {
+        if (kmax != -1 && xmax > x[i] && xmax > x[j-1]) {
             outi[kmax] = 1;
         }
     }
@@ -476,7 +476,7 @@ SEXP localMaximumSlidingWindow(SEXP s_x, SEXP s_winSize) {
         int j = i+winSize;
 
         double xmax = R_NegInf;
-        int kmax;
+        int kmax = -1;
         for (int k = i; k < j; k++) {
             int k2 = k >= xlength ? xlength-1 : k;
             k2 = k2 < 0 ? 0 : k2;
@@ -489,7 +489,7 @@ SEXP localMaximumSlidingWindow(SEXP s_x, SEXP s_winSize) {
         i2 = i2 >= xlength ? xlength - 1: i2;
         i2 = i2 < 0 ? 0 : i2;
         j = j > xlength ? xlength : j;
-        if (xmax > x[i2] && xmax > x[j-1]) {
+        if (kmax != -1 && xmax > x[i2] && xmax > x[j-1]) {
             outi[kmax] = 1;
         }
     }

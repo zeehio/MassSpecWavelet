@@ -195,11 +195,19 @@ identifyMajorPeaks <- function(ms, ridgeList, wCoefs, scales = as.numeric(colnam
     }
 
     ## Rule 2: Based on the peak SNR
-    selInd2 <- (peakSNR > SNR.Th)
+    if (SNR.Th > 0) {
+    	selInd2 <- (peakSNR > SNR.Th)
+    } else {
+    	selInd2 <- rep(TRUE, length(peakSNR))
+    }
 
     ## Because of the boundary effects,
     ## remove the peaks (half of the excludeBoundariesSize) at both ends of the signal profile if exists
-    selInd3 <- !(mzInd %in% c(1:excludeBoundariesSize, (nrow(wCoefs) - excludeBoundariesSize + 1):nrow(wCoefs)))
+    if (excludeBoundariesSize > 0) {
+    	selInd3 <- !(mzInd %in% c(1:excludeBoundariesSize, (nrow(wCoefs) - excludeBoundariesSize + 1):nrow(wCoefs)))
+    } else {
+    	selInd3 <- rep(TRUE, length(mzInd))
+    }
 
     ## combine SNR and peak length rule and other rules
     selInd <- (selInd1 & selInd2 & selInd3)

@@ -10,7 +10,7 @@ extendNBase(x, nLevel = 1, base = 2, ...)
 \item{x}{data matrix}
 
 \item{nLevel}{the level of DWT decomposition. Basically, it is equivalent to
-changing the 'base' as base\^nLevel}
+changing the 'base' as base^nLevel}
 
 \item{base}{the base, 2 by default}
 

@@ -171,7 +171,8 @@ identifyMajorPeaks <- function(ms, ridgeList, wCoefs, scales = as.numeric(colnam
             sd = stats::sd(noise[start.k:end.k]),
             mad = stats::mad(noise[start.k:end.k], center = 0),
             data.mean = mean(ms.int), # (data.mean and data.mean.quant were added by Steffen Neumann)
-            data.mean.quant = mean(ms.int[ms.int < stats::quantile(ms.int, probs = .95)])
+            data.mean.quant = mean(ms.int[ms.int < stats::quantile(ms.int, probs = .95)]),
+            stop("Invalid SNR.method. Please use one of 'quantile', 'sd', 'mad', 'data.mean', 'data.mean.quant'.")
         )
         ## Limit the minNoiseLevel to avoid the case of very low noise level, e.g., smoothed spectrum
         if (noiseLevel.k < minNoiseLevel) noiseLevel.k <- minNoiseLevel

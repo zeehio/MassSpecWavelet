@@ -230,6 +230,23 @@ prepareWavelets <- function(mslength, scales = c(1, seq(2, 30, 2), seq(32, 64, 4
     prepwavelet
 }
 
+#' @export
+print.prepared_wavelets <- function(x, ...) {
+	cat(format(x, ...), "\n")
+	invisible(x)
+}
+
+
+#' @export
+format.prepared_wavelets <- function(x, ...) {
+	paste0(
+		"Prepared wavelets for a spectrum of length ",
+		x$mslength,
+		", using scales: ",
+		paste0(x$scales, collapse = ", "),
+		"."
+	)
+}
 
 cwt_classic <- function(ms, scales=1, wavelet='mexh') {
         ## Check for the wavelet format

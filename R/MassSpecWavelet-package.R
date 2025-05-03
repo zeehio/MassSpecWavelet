@@ -25,7 +25,7 @@
 #' An example mass spectrum
 #'
 #' An example mass spectrum from CAMDA 2006. All-in-1 Protein Standard II
-#' (Ciphergen Cat. \# C100-0007) were measured on Ciphergen NP20 chips. There
+#' (Ciphergen Cat. # C100-0007) were measured on Ciphergen NP20 chips. There
 #' are 7 polypeptides in the sample with m/z values of 7034, 12230, 16951,
 #' 29023, 46671, 66433, 147300.
 #'

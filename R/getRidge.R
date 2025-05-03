@@ -22,7 +22,7 @@
 #' @return Return a list of ridge. As some ridges may end at the scale larger
 #' than 1, in order to keep the uniqueness of the ridge names, we combined the
 #' smallest scale of the ridge and m/z index of the peak at that scale together
-#' to name the ridges. For example the ridge name "1\_653" means the peak ridge
+#' to name the ridges. For example the ridge name "1_653" means the peak ridge
 #' ends at the CWT scale 1 with m/z index 653 at scale 1.
 #' @author Pan Du, Simon Lin
 #' @seealso [getLocalMaximumCWT()], [identifyMajorPeaks()]

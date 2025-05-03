@@ -75,8 +75,15 @@ level}
 satisfy all requirements of a peak without considering its SNR. Useful, if
 you want to change to a lower SNR threshold later.}
 \item{allPeakIndex}{the m/z indexes of all the peaks, whose order is the
-same as \code{peakCenterIndex}, \code{peakCenterValue}, \code{peakSNR} and \code{peakScale}.}
+same as \code{peakCenterIndex}, \code{peakCenterValue}, \code{peakSNR} \code{peakScale} and \code{peakRidgeLengthScale}.}
+\item{peakRidgeLengthScale}{The largest scale value found for each ridge.}
+\item{peakNoise}{The estimated noise on each peak, used to compute the SNR.}
+\item{selInd}{Three logical vectors, one for each rule, determining which peak fullfills which rules.}
 }
+
+\code{peakRidgeLengthScale}, \code{peakNoise} and \code{selInd} are meant for debugging and there is
+no guarantee they will appear in future versions. Please open an issue if
+you depend on them for any calculation if you find them useful.
 
 All of these return elements have peak names, which are the same as the
 corresponding peak ridges. see \code{\link[=getRidge]{getRidge()}} for details.

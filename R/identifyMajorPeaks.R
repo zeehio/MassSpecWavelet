@@ -95,8 +95,15 @@
 #' satisfy all requirements of a peak without considering its SNR. Useful, if
 #' you want to change to a lower SNR threshold later.}
 #' \item{allPeakIndex}{the m/z indexes of all the peaks, whose order is the 
-#' same as `peakCenterIndex`, `peakCenterValue`, `peakSNR` and `peakScale`.}
+#' same as `peakCenterIndex`, `peakCenterValue`, `peakSNR` `peakScale` and `peakRidgeLengthScale`.}
+#' \item{peakRidgeLengthScale}{The largest scale value found for each ridge.}
+#' \item{peakNoise}{The estimated noise on each peak, used to compute the SNR.}
+#' \item{selInd}{Three logical vectors, one for each rule, determining which peak fullfills which rules.}
 #' }
+#'
+#' `peakRidgeLengthScale`, `peakNoise` and `selInd` are meant for debugging and there is
+#' no guarantee they will appear in future versions. Please open an issue if
+#' you depend on them for any calculation if you find them useful.
 #' 
 #' All of these return elements have peak names, which are the same as the
 #' corresponding peak ridges. see [getRidge()] for details.
@@ -156,7 +163,7 @@ identifyMajorPeaks <- function(ms, ridgeList, wCoefs, scales = as.numeric(colnam
     ridgeLen <- sapply(ridgeList, length)
     ridgeName <- names(ridgeList)
     ridgeInfo <- matrix(as.numeric(unlist(strsplit(ridgeName, "_"))), nrow = 2)
-    ridgeLevel <- ridgeInfo[1, ]
+    ridgeLevel <- ridgeInfo[1, ] # the index of the lowest scale touched by the ridge
     # mzInd <- sapply(ridgeList, function(x) x[1])
     notnull <- sapply(ridgeList, function(x) {
         !is.null(x[1])
@@ -173,13 +180,22 @@ identifyMajorPeaks <- function(ms, ridgeList, wCoefs, scales = as.numeric(colnam
     ridgeLevel <- ridgeLevel[ord]
     ridgeList <- ridgeList[ord]
     mzInd <- mzInd[ord]
+    
+    ## Compute SNR of each peak
+    
+    
+    noise <- abs(wCoefs[, "1"])
+    
+    
+    nMz <- nrow(wCoefs) # The length of ms signal
+    peakScale <- numeric(length(ridgeList))
+    peakCenterInd <- numeric(length(ridgeList))
+    peakValue <- numeric(length(ridgeList))
+    peakNoise <- numeric(length(ridgeList))
 
-    peakScale <- NULL
-    peakCenterInd <- NULL
-    peakValue <- NULL
     # ridgeValue <- NULL
     ## Get the ridge values within the provided peakScaleRange
-    for (i in 1:length(ridgeList)) {
+    for (i in seq_along(ridgeList)) {
         ridge.i <- ridgeList[[i]]
         level.i <- ridgeLevel[i]
         levels.i <- level.i:(level.i + ridgeLen[i] - 1)
@@ -187,9 +203,10 @@ identifyMajorPeaks <- function(ms, ridgeList, wCoefs, scales = as.numeric(colnam
         # Only keep the scales within the peakScaleRange
         selInd.i <- which(scales.i %in% peakScaleRange)
         if (length(selInd.i) == 0) {
-            peakScale <- c(peakScale, scales.i[1])
-            peakCenterInd <- c(peakCenterInd, ridge.i[1])
-            peakValue <- c(peakValue, 0)
+            peakScale[i] <- scales.i[1]
+            peakCenterInd[i] <- ridge.i[1]
+            peakValue[i] <- 0
+            peakNoise[i] <- 0
             next
         }
 
@@ -203,49 +220,40 @@ identifyMajorPeaks <- function(ms, ridgeList, wCoefs, scales = as.numeric(colnam
         }
         ridgeValue.i <- wCoefs[ind.i]
         maxInd.i <- which.max(ridgeValue.i)
-        peakScale <- c(peakScale, scales.i[maxInd.i])
-        peakCenterInd <- c(peakCenterInd, ridge.i[maxInd.i])
-        peakValue <- c(peakValue, ridgeValue.i[maxInd.i])
-        # ridgeValue <- c(ridgeValue, list(ridgeValue))
-    }
-    # names(ridgeValue) <- names(ridgeList)
-    # ridgeLen <- get.ridgeLength(ridgeValue, Th=0.5)
+        peakScale[i] <- scales.i[maxInd.i]
+        peakCenterInd[i] <- ridge.i[maxInd.i]
+        peakValue[i] <- ridgeValue.i[maxInd.i]
 
-    ## Compute SNR of each peak
-    noise <- abs(wCoefs[, "1"])
-    peakSNR <- NULL
-    nMz <- nrow(wCoefs) # The length of ms signal
-
-    for (k in 1:length(ridgeList)) {
-        ind.k <- mzInd[k]
+        ind.k <- mzInd[i]
         start.k <- ifelse(ind.k - winSize.noise < 1, 1, ind.k - winSize.noise)
         end.k <- ifelse(ind.k + winSize.noise > nMz, nMz, ind.k + winSize.noise)
-        ms.int <- ms[start.k:end.k] ## m/z intensity values in ind.k + /- winSize.noise (Added by Steffen Neumann)
-        noiseLevel.k <- switch(SNR.method,
-            quantile = stats::quantile(noise[start.k:end.k], probs = 0.95),
-            sd = stats::sd(noise[start.k:end.k]),
-            mad = stats::mad(noise[start.k:end.k], center = 0),
-            data.mean = mean(ms.int), # (data.mean and data.mean.quant were added by Steffen Neumann)
-            data.mean.quant = mean(ms.int[ms.int < stats::quantile(ms.int, probs = .95)]),
-            stop("Invalid SNR.method. Please use one of 'quantile', 'sd', 'mad', 'data.mean', 'data.mean.quant'.")
+        peakNoise[i] <- computeNoiseLevel(
+        	ms_int_region = ms[start.k:end.k],
+        	noise_region = noise[start.k:end.k],
+        	SNR.method = SNR.method,
+        	minNoiseLevel = minNoiseLevel
         )
-        ## Limit the minNoiseLevel to avoid the case of very low noise level, e.g., smoothed spectrum
-        if (noiseLevel.k < minNoiseLevel) noiseLevel.k <- minNoiseLevel
-        peakSNR <- c(peakSNR, peakValue[k] / noiseLevel.k)
     }
+    peakSNR <- numeric(length(ridgeList))
+    withScalesInRange <- peakValue != 0 & peakNoise != 0
+    peakSNR[withScalesInRange] <- peakValue[withScalesInRange] / peakNoise[withScalesInRange]
+
 
     ## Rule 1: ridge length should larger than a certain threshold
     # selInd1 <- (scales[ridgeLen] >= ridgeLength)
-    selInd1 <- (scales[ridgeLevel + ridgeLen - 1] >= ridgeLength)
+    peakRidgeLengthScale <- scales[ridgeLevel + ridgeLen - 1]
+    selInd1 <- (peakRidgeLengthScale >= ridgeLength)
 
     ## In the case of nearbyPeak mode, it will include the nearby peaks within a certain range
     if (nearbyPeak) {
         selInd1 <- which(selInd1)
         index <- 1:length(mzInd)
-        tempInd <- NULL
-        for (ind.i in selInd1) {
-            tempInd <- c(tempInd, index[mzInd >= mzInd[ind.i] - nearbyWinSize & mzInd <= mzInd[ind.i] + nearbyWinSize])
+        tempInd <- vector("list", length=length(selInd1))
+        for (i in seq_along(selInd1)) {
+        	  ind.i <- selInd1[i]
+          	tempInd[[i]] <- index[mzInd >= mzInd[ind.i] - nearbyWinSize & mzInd <= mzInd[ind.i] + nearbyWinSize]
         }
+        tempInd <- unlist(tempInd)
         selInd1 <- (index %in% tempInd)
     }
 
@@ -267,7 +275,12 @@ identifyMajorPeaks <- function(ms, ridgeList, wCoefs, scales = as.numeric(colnam
     ## combine SNR and peak length rule and other rules
     selInd <- (selInd1 & selInd2 & selInd3)
 
-    names(peakSNR) <- names(peakScale) <- names(peakCenterInd) <- names(peakValue) <- names(mzInd) <- ridgeName
+    names(peakSNR) <- ridgeName
+    names(peakScale) <- ridgeName
+    names(peakCenterInd) <- ridgeName
+    names(peakValue) <- ridgeName
+    names(mzInd) <- ridgeName
+    names(peakRidgeLengthScale) <- ridgeName
 
     list(
         peakIndex = mzInd[selInd],
@@ -276,6 +289,28 @@ identifyMajorPeaks <- function(ms, ridgeList, wCoefs, scales = as.numeric(colnam
         peakSNR = peakSNR,
         peakScale = peakScale,
         potentialPeakIndex = mzInd[selInd1 & selInd3],
-        allPeakIndex = mzInd
+        allPeakIndex = mzInd,
+        peakRidgeLengthScale = peakRidgeLengthScale,
+        peakNoise = peakNoise,
+        selInd = list(
+        	selInd1 = selInd1,
+        	selInd2 = selInd2,
+        	selInd3 = selInd3
+        )
     )
+}
+
+computeNoiseLevel <- function(ms_int_region, noise_region, SNR.method, minNoiseLevel) {
+	noiseLevel.k <- switch(
+		SNR.method,
+		quantile = stats::quantile(noise_region, probs = 0.95),
+		sd = stats::sd(noise_region),
+		mad = stats::mad(noise_region, center = 0),
+		data.mean = mean(ms_int_region), # (data.mean and data.mean.quant were added by Steffen Neumann)
+		data.mean.quant = mean(ms_int_region[ms_int_region < stats::quantile(ms_int_region, probs = .95)]),
+		stop("Invalid SNR.method. Please use one of 'quantile', 'sd', 'mad', 'data.mean', 'data.mean.quant'.")
+	)
+	## Limit the minNoiseLevel to avoid the case of very low noise level, e.g., smoothed spectrum
+	if (noiseLevel.k < minNoiseLevel) noiseLevel.k <- minNoiseLevel
+	noiseLevel.k
 }

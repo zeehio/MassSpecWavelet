@@ -1,3 +1,9 @@
+# MassSpecWavelet 1.75.1 (2025-05-03)
+
+- `identifyMajorPeaks()`: Properly handle `SNR.Th=0` and `excludeBoundariesSize=0`
+   cases to bypass those filtering criteria.
+- Fix NOTE on escaping special LaTeX characters
+
 # MassSpecWavelet 1.73.1 (2024-12-18)
 
 - Fix off-by-one error. Thanks to Aixiang Jiang,

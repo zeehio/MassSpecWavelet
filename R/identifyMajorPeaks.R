@@ -1,51 +1,106 @@
 #' Identify peaks based on the ridges in 2-D CWT coefficient matrix
 #'
-#' Indentify the peaks based on the ridge list (returned by
+#' Identify the peaks based on the ridge list (returned by
 #' [getRidge()]) in 2-D CWT coefficient matrix and estimated Signal
-#' to Noise Ratio (SNR)
+#' to Noise Ratio (SNR). The criteria for peak identification is described in
+#' the Details section.
 #'
-#' The determination of the peaks is based on three rules: Rule 1: The maximum
-#' ridge scale of the peak should larger than a certain threshold Rule 1.1:
-#' Based on the scale of the peak (corresponding to the maximum value of the
-#' peak ridge) should be within certain range Rule 2: Based on the peak SNR
-#' Rule 3: The peak should not appear at the boundaries of the signal.
+#' The ridge list may return peaks than have to be filtered out. This function
+#' filters the peaks according to the following rules. All rules must pass for a
+#' peak to be identified as such.
+#' 
+#' \itemize{
+#'   \item{The maximum scale of the peak ridge should be larger than `ridgeLength`. 
+#'   If `nearbyPeak=TRUE`, all peaks at less than `nearbyWinSize` points from a
+#'   peak that fullfills this rule are also considered.}
+#'   \item{The SNR of the peak must be larger than `SNR.Th`.}
+#'   \item{The peak should not appear at the first or last `excludeBoundariesSize` points.}
+#' }
+#' 
+#' To debug and diagnose why good peaks get filtered, you may want to set `ridgeLength=0`,
+#' `SNR.Th=0` and/or `excludeBoundariesSize=0` to disable each of the filtering
+#' criteria.
+#' 
+#' ## SNR estimation
+#' 
+#' The SNR is defined as \eqn{SNR = \frac{signal}{noise}}{SNR=signal/noise}. Both
+#' signal and noise values need to be estimated for each peak.
+#' 
+#' The "signal" is estimated as the maximum wavelet coefficient obtained in the
+#' corresponding peak ridge, considering all the scales within `peakScaleRange`.
+#' 
+#' The "noise" is estimated differently depending on the `SNR.method`. All methods
+#' use a window of data points of size `2 * winSize.noise + 1` centered at the peak
+#' to make the noise estimation. Here is how the noise is estimated depending on
+#' the `SNR.method` value:
+#' 
+#' \itemize{
+#'   \item{`"quantile"`: The "noise" is the 95% quantile of the absolute value of the wavelet 
+#'   coefficients at scale 1 in the window.}
+#'   \item{`"sd"`: The "noise" is the standard deviation of the absolute value of the wavelet
+#'   coefficients at scale 1 in the window.}
+#'   \item{`"mad"`: The "noise" is the [mad()] with `center=0` of the absolute value of the
+#'   wavelet coefficients at scale 1 in the window.}
+#'   \item{`"data.mean"`: The "noise" is the mean value of the ms spectrum in the window.}
+#'   \item{`"data.mean.quant"`: The "noise" is the mean value of the ms spectrum in the window,
+#'   but only considering values below the 95% quantile in the window.}
+#' }
+#' 
+#' 
+#' If the obtained noise estimation is below the minimum noise level, that minimum
+#' is used as the noise estimation instead. Check `minNoiseLevel` for further details
+#' on how the minimum noise level is defined.
+#' 
+#' Using the estimated "signal" and "noise", we compute the `peakSNR` value for each peak.
+#' 
 #'
 #' @param ms the mass spectrometry spectrum
 #' @param ridgeList returned by [getRidge()]
-#' @param wCoefs 2-D CWT coefficients
+#' @param wCoefs 2-D CWT coefficients as obtained by [cwt()].
 #' @param scales scales of CWT, by default it is the colnames of wCoefs
 #' @param SNR.Th threshold of SNR
-#' @param peakScaleRange the CWT scale range of the peak.
+#' @param peakScaleRange the CWT scale range of the peak, used to estimate the
+#' signal of the SNR. See Details. If a single value is given then
+#' all scales larger than the value will be considered. If two values are given
+#' only the scales between those values will be considered.
 #' @param ridgeLength the maximum ridge scale of the major peaks.
 #' @param nearbyPeak determine whether to include the small peaks close to
-#' large major peaks
+#' large major peaks. See Details.
 #' @param nearbyWinSize the window size to determine the nearby peaks. Only
-#' effective when nearbyPeak is true.
+#' effective when `nearbyPeak=TRUE`.
 #' @param winSize.noise the local window size to estimate the noise level.
-#' @param SNR.method method to estimate noise level. Currently, only 95
-#' percentage quantile is supported.
-#' @param minNoiseLevel the minimum noise level used in calculating SNR, i.e.,
-#' if the estimated noise level is less than "minNoiseLevel", it will use
-#' "minNoiseLevel" instead. If the noise level is less than 0.5, it will be
-#' treated as the ratio to the maximum amplitude of the spectrum.
+#' @param SNR.method method to estimate the noise level. See Details.
+#' @param minNoiseLevel the minimum noise level used in calculating SNR.
+#' This value should be zero or positive. If the number is smaller than one, it
+#' is assumed to be a fraction of the largest wavelet coefficient in the data.
+#' Otherwise it is assumed to be the actual noise level. If you want to fix the
+#' actual noise level to a value smaller than one, you should name the value as fixed
+#' as in `minNoiseLevel = c("fixed"= 0.5)`. See details.
 #' @param excludeBoundariesSize number of points at each boundary of the ms
 #' signal that will be excluded in search for peaks to avoid boundary effects.
-#' @return Return a list with following elements: \item{peakIndex}{the m/z
-#' indexes of the identified peaks} \item{peakCenterIndex}{the m/z indexes of
-#' peak centers, which correspond to the maximum on the ridge. peakCenterIndex
-#' includes all the peaks, not just the identified major peaks.}
-#' \item{peakCenterValue}{the CWT coefficients (the maximum on the ridge)
-#' corresponding to peakCenterIndex} \item{peakSNR}{the SNR of the peak, which
-#' is the ratio of peakCenterValue and noise level} \item{peakScale}{the
-#' estimated scale of the peak, which corresponds to the peakCenerIndex}
+#' 
+#' @return Return a list with following elements:
+#' 
+#' \describe{
+#' \item{peakIndex}{the m/z indexes of the identified peaks}
+#' \item{peakCenterIndex}{the m/z indexes of peak centers, which correspond to
+#' the maximum on the ridge. `peakCenterIndex` includes all the peaks, not just
+#' the identified major peaks.}
+#' \item{peakValue}{the CWT coefficients (the maximum on the ridge)
+#' corresponding to peakCenterIndex}
+#' \item{peakSNR}{the SNR of the peak, which is the ratio of peakValue and noise
+#' level}
+#' \item{peakScale}{the estimated scale of the peak, which corresponds to the `peakCenterIndex`}
 #' \item{potentialPeakIndex}{the m/z indexes of all potential peaks, which
 #' satisfy all requirements of a peak without considering its SNR. Useful, if
-#' you want to change to a lower SNR threshold later.} \item{allPeakIndex}{the
-#' m/z indexes of all the peaks, whose order is the same as peakCenterIndex,
-#' peakCenterValue, peakSNR and peakScale.}
-#'
+#' you want to change to a lower SNR threshold later.}
+#' \item{allPeakIndex}{the m/z indexes of all the peaks, whose order is the 
+#' same as `peakCenterIndex`, `peakCenterValue`, `peakSNR` and `peakScale`.}
+#' }
+#' 
 #' All of these return elements have peak names, which are the same as the
 #' corresponding peak ridges. see [getRidge()] for details.
+#' 
 #' @author Pan Du, Simon Lin
 #' @seealso [peakDetectionCWT()], [tuneInPeakInfo()]
 #' @references Du, P., Kibbe, W.A. and Lin, S.M. (2006) Improved peak detection

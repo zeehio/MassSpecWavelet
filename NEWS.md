@@ -1,7 +1,13 @@
 # MassSpecWavelet 1.75.1 (2025-05-03)
 
-- `identifyMajorPeaks()`: Properly handle `SNR.Th=0` and `excludeBoundariesSize=0`
-   cases to bypass those filtering criteria.
+- `identifyMajorPeaks()`: 
+   * Properly handle `SNR.Th=0` and `excludeBoundariesSize=0`
+     cases to bypass those filtering criteria.
+   * Refactor and include additional peak details such as peakRidgeLengthScale,
+     that can be used to tune ridgeLength; peakNoise, useful to understand
+     the role of w.g. the winSize.noise argument; and selInd, useful to understand
+     which filtering rule is impacting a potential peak from not being identified.
+
 - Fix NOTE on escaping special LaTeX characters
 
 # MassSpecWavelet 1.73.1 (2024-12-18)

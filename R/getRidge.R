@@ -42,16 +42,27 @@
 #' plotRidgeList(ridgeList)
 #'
 getRidge <- function(localMax, iInit = ncol(localMax), step = -1, iFinal = 1, minWinSize = 5, gapTh = 3, skip = NULL, scaleToWinSize = "doubleodd") {
+    ## Numeric indices are used as list names/keys throughout this function to
+    ## track ridges. R's default numeric-to-character coercion switches to
+    ## scientific notation for large doubles (e.g. 200000 -> "2e+05") but never
+    ## for integers, and indices here get promoted from integer to double
+    ## partway through the tracing loop. Without a single, representation-
+    ## independent formatting function, the same peak index can end up keyed
+    ## under two different strings, causing lookups to silently miss and
+    ## ridges to be dropped or duplicated (see issue #8). Force plain decimal
+    ## notation everywhere a numeric index becomes a name or a lookup key.
+    num2str <- function(x) format(x, scientific = FALSE, trim = TRUE)
+
     scales <- as.numeric(colnames(localMax))
     if (is.null(scales)) scales <- seq_len(ncol(localMax))
-    
+
     maxInd_curr <- which(localMax[, iInit] > 0)
     nMz <- nrow(localMax)
-    
+
     if (is.null(skip)) {
         skip <- iInit + 1
     }
-    
+
     ## Identify all the peak paths from the coarse level to detail levels (high column to low column)
     ## Only consider the shortest path
     if (ncol(localMax) > 1) { ## fixed by Steffen Neumann
@@ -60,9 +71,9 @@ getRidge <- function(localMax, iInit = ncol(localMax), step = -1, iFinal = 1, mi
         colInd <- 1
     }
     ridgeList <- as.list(maxInd_curr)
-    names(ridgeList) <- maxInd_curr
+    names(ridgeList) <- num2str(maxInd_curr)
     peakStatus <- as.list(rep(0, length(maxInd_curr)))
-    names(peakStatus) <- maxInd_curr
+    names(peakStatus) <- num2str(maxInd_curr)
     
     ## orphanRidgeList keep the ridges disconnected at certain scale level
     ## Changed by Pan Du 05/11/06
@@ -109,30 +120,31 @@ getRidge <- function(localMax, iInit = ncol(localMax), step = -1, iFinal = 1, mi
         remove.j <- NULL
         for (k in 1:length(maxInd_curr)) {
             ind.k <- maxInd_curr[k]
+            ind.k.name <- num2str(ind.k)
             start.k <- ifelse(ind.k - winSize.j < 1, 1, ind.k - winSize.j)
             end.k <- ifelse(ind.k + winSize.j > nMz, nMz, ind.k + winSize.j)
             ind.curr <- which(localMax[start.k:end.k, col.j] > 0) + start.k - 1
             # ind.curr <- which(localMax[, col.j] > 0)
             if (length(ind.curr) == 0) {
-                status.k <- peakStatus[[as.character(ind.k)]]
+                status.k <- peakStatus[[ind.k.name]]
                 ## bug  work-around (fixed by Steffen Neumann)
                 if (is.null(status.k)) status.k <- gapTh + 1
                 ##
                 if (status.k > gapTh & scale.j >= 2) {
-                    temp <- ridgeList[[as.character(ind.k)]]
+                    temp <- ridgeList[[ind.k.name]]
                     orphanRidgeList <- c(orphanRidgeList, list(temp[1:(length(temp) - status.k)]))
-                    orphanRidgeName <- c(orphanRidgeName, paste(col.j + status.k + 1, ind.k, sep = "_"))
-                    remove.j <- c(remove.j, as.character(ind.k))
+                    orphanRidgeName <- c(orphanRidgeName, paste(num2str(col.j + status.k + 1), ind.k.name, sep = "_"))
+                    remove.j <- c(remove.j, ind.k.name)
                     next
                 } else {
                     ind.curr <- ind.k
-                    peakStatus[[as.character(ind.k)]] <- status.k + 1
+                    peakStatus[[ind.k.name]] <- status.k + 1
                 }
             } else {
-                peakStatus[[as.character(ind.k)]] <- 0
+                peakStatus[[ind.k.name]] <- 0
                 if (length(ind.curr) >= 2) ind.curr <- ind.curr[which.min(abs(ind.curr - ind.k))]
             }
-            ridgeList[[as.character(ind.k)]] <- c(ridgeList[[as.character(ind.k)]], ind.curr)
+            ridgeList[[ind.k.name]] <- c(ridgeList[[ind.k.name]], ind.curr)
             selPeak.j <- c(selPeak.j, ind.curr)
         }
         ## Remove the disconnected lines from the currrent list
@@ -152,31 +164,31 @@ getRidge <- function(localMax, iInit = ncol(localMax), step = -1, iFinal = 1, mi
                 removeInd.jk <- which.max(selLen)
                 removeInd <- c(removeInd, selInd[-removeInd.jk])
                 orphanRidgeList <- c(orphanRidgeList, ridgeList[removeInd.jk])
-                orphanRidgeName <- c(orphanRidgeName, paste(col.j, selPeak.j[removeInd.jk], sep = "_"))
+                orphanRidgeName <- c(orphanRidgeName, paste(num2str(col.j), num2str(selPeak.j[removeInd.jk]), sep = "_"))
             }
             selPeak.j <- selPeak.j[-removeInd]
             ridgeList <- ridgeList[-removeInd]
             peakStatus <- peakStatus[-removeInd]
         }
-        
+
         ## Update the names of the ridgeList as the new selected peaks
         # if (scale.j >= 2) {
-        if (length(ridgeList) > 0) names(ridgeList) <- selPeak.j
-        if (length(peakStatus) > 0) names(peakStatus) <- selPeak.j
+        if (length(ridgeList) > 0) names(ridgeList) <- num2str(selPeak.j)
+        if (length(peakStatus) > 0) names(peakStatus) <- num2str(selPeak.j)
         # }
-        
+
         ## If the level is larger than 3, expand the peak list by including other unselected peaks at that level
         if (scale.j >= 2) {
             maxInd_next <- which(localMax[, col.j] > 0)
             unSelPeak.j <- maxInd_next[!(maxInd_next %in% selPeak.j)]
             newPeak.j <- as.list(unSelPeak.j)
-            names(newPeak.j) <- unSelPeak.j
+            names(newPeak.j) <- num2str(unSelPeak.j)
             ## Update ridgeList
             ridgeList <- c(ridgeList, newPeak.j)
             maxInd_curr <- c(selPeak.j, unSelPeak.j)
             ## Update peakStatus
             newPeakStatus <- as.list(rep(0, length(newPeak.j)))
-            names(newPeakStatus) <- newPeak.j
+            names(newPeakStatus) <- num2str(unSelPeak.j)
             peakStatus <- c(peakStatus, newPeakStatus)
         } else {
             maxInd_curr <- selPeak.j

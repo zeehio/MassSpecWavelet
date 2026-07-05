@@ -58,6 +58,18 @@ test02_peakDetection <- function() {
         exclude0scaleAmpThresh = TRUE
     )
     checkEquals(30 + 256, unname(peak2$majorPeakInfo$peakIndex), msg = "Peak not found at index 30+256")
-    
-    
+
+
+}
+
+test03_peakDetection_flatSignal <- function() {
+    # A perfectly constant signal produces no ridges. This used to crash with
+    # "Error in strsplit(ridgeName, "_") : non-character argument".
+    flat_signal <- rep(5, 2001)
+    peakInfo <- peakDetectionCWT(
+        flat_signal,
+        scales = c(1, seq(2, 30, 2), seq(32, 64, 4)),
+        exclude0scaleAmpThresh = TRUE
+    )
+    checkEquals(0, length(peakInfo$majorPeakInfo$peakIndex), msg = "No peaks should be found in a flat signal")
 }

@@ -158,6 +158,28 @@ identifyMajorPeaks <- function(ms, ridgeList, wCoefs, scales = as.numeric(colnam
         }
     }
 
+    ## No ridges were found (e.g. a flat/constant signal produces no local maxima),
+    ## so return an empty (but well-formed) result instead of crashing below.
+    if (length(ridgeList) == 0) {
+        empty <- structure(numeric(0), names = character(0))
+        return(list(
+            peakIndex = empty,
+            peakValue = empty,
+            peakCenterIndex = empty,
+            peakSNR = empty,
+            peakScale = empty,
+            potentialPeakIndex = empty,
+            allPeakIndex = empty,
+            peakRidgeLengthScale = empty,
+            peakNoise = empty,
+            selInd = list(
+                selInd1 = logical(0),
+                selInd2 = logical(0),
+                selInd3 = logical(0)
+            )
+        ))
+    }
+
     ## Get the peak values
     # mzInd <- as.numeric(names(ridgeList))
     ridgeLen <- sapply(ridgeList, length)

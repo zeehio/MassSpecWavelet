@@ -1,3 +1,20 @@
+# MassSpecWavelet 1.78.1 (2026-07-05)
+
+- `identifyMajorPeaks()`: Fix `Error in strsplit(ridgeName, "_") : non-character
+  argument` crash when no ridges are found (e.g. for a flat/constant input
+  signal). An empty (but well-formed) result is now returned instead.
+
+- `getRidge()`: Fix ridge name/lookup mismatches on high resolution spectra
+  (m/z indices at or above 1e5). Ridge indices were internally promoted from
+  integer to double partway through the tracing loop, and R's default
+  number-to-string coercion uses scientific notation for large "round"
+  doubles (e.g. `200000` -> `"2e+05"`) but never for integers. The same peak
+  could therefore end up keyed under two different strings, causing the
+  internal ridge lookup to silently miss and ridges to be dropped or
+  duplicated. Ridge names are now always built with a representation-
+  independent formatting helper. Thanks to drobertsicl for reporting the
+  issue and suggesting the fix. Closes #8
+
 # MassSpecWavelet 1.75.1 (2025-05-03)
 
 - `identifyMajorPeaks()`: 

@@ -56,11 +56,11 @@ tuneInPeakInfo <- function(ms, majorPeakInfo = NULL, peakIndex = NULL, peakScale
 
     peakName <- names(peakIndex)
     if (is.null(peakIndex)) peakName <- as.character(peakIndex)
-    peakCenterIndex.new <- NULL
-    peakScale.new <- NULL
-    peakValue.new <- NULL
-    unProcessedInd <- NULL
-    for     (i in 1:length(peakIndex)) {
+    peakCenterIndex.new <- numeric(0)
+    peakScale.new <- numeric(0)
+    peakValue.new <- numeric(0)
+    unProcessedInd <- integer(0)
+    for     (i in seq_along(peakIndex)) {
         peak.i <- peakIndex[i]
         # peak.i <- peakCenterIndex[i]
         peakScale.i <- peakScale[i]
@@ -90,7 +90,7 @@ tuneInPeakInfo <- function(ms, majorPeakInfo = NULL, peakIndex = NULL, peakScale
         }
         if (length(scales.i) <= 1) {
             peakScale.new <- c(peakScale.new, peakScale[i])
-            peakValue.new <- c(peakValue.new, peakValue[i])
+            peakValue.new <- c(peakValue.new, if (is.null(peakValue)) NA_real_ else peakValue[i])
             peakCenterIndex.new <- c(peakCenterIndex.new, peakCenterIndex[i])
             unProcessedInd <- c(unProcessedInd, i)
             next
@@ -108,6 +108,17 @@ tuneInPeakInfo <- function(ms, majorPeakInfo = NULL, peakIndex = NULL, peakScale
         ## -----------------------------------------
         ## Identify the ridges from coarse level to more detailed levels
         ridgeList.i <- getRidge(localMax.i, gapTh = 3, skip = NULL, ...)
+
+        ## No ridges were found in this peak's local refinement window (e.g.
+        ## a quiet/flat neighborhood), so keep the original peak information
+        ## instead of crashing on strsplit(NULL, "_").
+        if (length(ridgeList.i) == 0) {
+            peakScale.new <- c(peakScale.new, peakScale[i])
+            peakValue.new <- c(peakValue.new, if (is.null(peakValue)) NA_real_ else peakValue[i])
+            peakCenterIndex.new <- c(peakCenterIndex.new, peakCenterIndex[i])
+            unProcessedInd <- c(unProcessedInd, i)
+            next
+        }
 
         ridgeName.i <- names(ridgeList.i)
         ridgeInfo.i <- matrix(as.numeric(unlist(strsplit(ridgeName.i, "_"))), nrow = 2)

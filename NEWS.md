@@ -1,3 +1,9 @@
+# MassSpecWavelet development version
+
+- `identifyMajorPeaks()`: Fix `Error in strsplit(ridgeName, "_") : non-character
+  argument` crash when no ridges are found (e.g. for a flat/constant input
+  signal). An empty (but well-formed) result is now returned instead.
+
 # MassSpecWavelet 1.75.1 (2025-05-03)
 
 - `identifyMajorPeaks()`: 

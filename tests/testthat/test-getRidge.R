@@ -1,4 +1,4 @@
-test01_getRidge_largeIndicesDoNotUseScientificNotation <- function() {
+test_that("getRidge() never uses scientific notation for large m/z indices (#8)", {
     # Regression test for issue #8: ridge names are built by pasting numeric
     # m/z indices together (e.g. "1_653"). R's default numeric-to-character
     # coercion switches to scientific notation for large "round" doubles
@@ -29,15 +29,9 @@ test01_getRidge_largeIndicesDoNotUseScientificNotation <- function() {
     ridgeList <- getRidge(localMax, gapTh = 3, skip = 2)
 
     ridgeName <- names(ridgeList)
-    checkTrue(length(ridgeList) > 0, msg = "Some ridges should have been found")
-    checkTrue(
-        !any(grepl("e[+-]", ridgeName, ignore.case = TRUE)),
-        msg = "Ridge names must never use scientific notation"
-    )
-    checkTrue(
-        all(grepl("^[0-9]+_[0-9]+$", ridgeName)),
-        msg = "Ridge names must be of the form '<level>_<mzIndex>' using plain digits"
-    )
+    expect_gt(length(ridgeList), 0)
+    expect_false(any(grepl("e[+-]", ridgeName, ignore.case = TRUE)))
+    expect_true(all(grepl("^[0-9]+_[0-9]+$", ridgeName)))
 
     # The m/z index encoded in the ridge name must match the first element of
     # the ridge itself: if a lookup mismatch had split/duplicated a ridge
@@ -45,13 +39,13 @@ test01_getRidge_largeIndicesDoNotUseScientificNotation <- function() {
     ridgeInfo <- matrix(as.numeric(unlist(strsplit(ridgeName, "_"))), nrow = 2)
     mzIndFromName <- ridgeInfo[2, ]
     mzIndFromRidge <- sapply(ridgeList, function(x) x[1])
-    checkEquals(unname(mzIndFromName), unname(mzIndFromRidge), msg = "Ridge name m/z index must match the ridge's own first element")
+    expect_equal(unname(mzIndFromRidge), unname(mzIndFromName))
 
     # Each synthetic peak should be found by exactly one ridge, reaching the
     # finest scale (i.e. not truncated/orphaned because of a name mismatch).
     for (mu in centers) {
         nearby <- which(abs(mzIndFromRidge - mu) <= 5)
-        checkEquals(1, length(nearby), msg = paste("Expected exactly one ridge near m/z index", mu))
-        checkTrue(length(ridgeList[[nearby]]) >= length(scales) - 3, msg = paste("Ridge near", mu, "looks truncated"))
+        expect_length(nearby, 1)
+        expect_gte(length(ridgeList[[nearby]]), length(scales) - 3)
     }
-}
+})

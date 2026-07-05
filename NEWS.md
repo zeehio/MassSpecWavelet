@@ -1,3 +1,9 @@
+# MassSpecWavelet 1.79.2 (2026-07-05)
+
+- Migrated the unit test suite from RUnit to testthat (3rd edition). Tests now
+  live in `tests/testthat/` instead of `inst/tests/`, following the standard
+  testthat package layout.
+
 # MassSpecWavelet 1.79.1 (2026-07-05)
 
 - `identifyMajorPeaks()`: Fix `Error in strsplit(ridgeName, "_") : non-character

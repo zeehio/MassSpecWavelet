@@ -1,7 +1,7 @@
 Package: MassSpecWavelet
 Type: Package
 Title: Peak Detection for Mass Spectrometry data using wavelet-based algorithms
-Version: 1.79.1
+Version: 1.79.2
 Encoding: UTF-8
 Date: 2026-07-05
 Authors@R: c(
@@ -31,8 +31,9 @@ Description: Peak Detection in Mass Spectrometry data is one of the important
 URL: https://github.com/zeehio/MassSpecWavelet
 BugReports: http://github.com/zeehio/MassSpecWavelet/issues
 License: LGPL (>= 2)
-Suggests: signal, waveslim, BiocStyle, knitr, rmarkdown, RUnit, bench
+Suggests: signal, waveslim, BiocStyle, knitr, rmarkdown, testthat (>= 3.0.0), bench
 biocViews: ImmunoOncology, MassSpectrometry, Proteomics, PeakDetection
 VignetteBuilder: knitr
 RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
+Config/testthat/edition: 3

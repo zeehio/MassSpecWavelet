@@ -1,9 +1,8 @@
+test_that("localMaximum works on a short vector", {
+    expect_equal(localMaximum(c(1, 2, 3, 4, 2, 1), winSize = 5), c(0, 0, 0, 1, 0, 0))
+})
 
-test01_localMaximum <- function() {
-    checkEquals(localMaximum(c(1,2,3,4,2,1), winSize = 5), c(0,0,0,1,0,0), msg = "Check localMaximum on a short vector")
-}
-
-test02_checkIdenticalResults_classic_vs_faster <- function() {
+test_that("faster and classic algorithms give identical results", {
     on.exit({
         options(MassSpecWavelet.localMaximum.algorithm = NULL)
     })
@@ -14,23 +13,18 @@ test02_checkIdenticalResults_classic_vs_faster <- function() {
     for (winSize in winSizes) {
         for (xlength in xlengths) {
             for (simulation in simulations) {
-                x <- round(10*runif(xlength), 1)*10
+                x <- round(10 * runif(xlength), 1) * 10
                 options(MassSpecWavelet.localMaximum.algorithm = "classic")
                 localmax_classic <- localMaximum(x, winSize = winSize)
                 options(MassSpecWavelet.localMaximum.algorithm = "faster")
                 localmax_faster <- localMaximum(x, winSize = winSize)
-                checkEquals(
-                    localmax_classic,
-                    localmax_faster,
-                    msg = "faster and classic do not give identical results"
-                )
+                expect_equal(localmax_faster, localmax_classic)
             }
         }
     }
-}
+})
 
-
-test03_check_new_does_not_miss_maxima <- function() {
+test_that("new algorithm does not miss any local maxima found by the faster algorithm", {
     on.exit({
         options(MassSpecWavelet.localMaximum.algorithm = NULL)
     })
@@ -41,7 +35,7 @@ test03_check_new_does_not_miss_maxima <- function() {
     for (winSize in winSizes) {
         for (xlength in xlengths) {
             for (simulation in simulations) {
-                x <- round(10*runif(xlength), 1)*10
+                x <- round(10 * runif(xlength), 1) * 10
                 options(MassSpecWavelet.localMaximum.algorithm = "faster")
                 localmax_faster <- localMaximum(x, winSize = winSize)
                 options(MassSpecWavelet.localMaximum.algorithm = "new")
@@ -50,11 +44,11 @@ test03_check_new_does_not_miss_maxima <- function() {
                 localmax_new <- which(localmax_new > 0)
                 missing <- setdiff(localmax_faster, localmax_new)
                 # Remove borders because classic&faster have false positives in them
-                missing <- missing[-which(missing < winSize/2 | missing > (xlength - winSize/2))]
+                missing <- missing[-which(missing < winSize / 2 | missing > (xlength - winSize / 2))]
                 # Remove plateaus because we have another criteria
                 missing <- setdiff(missing, missing[x[missing] == x[missing + 1L]])
-                checkEquals(0, length(missing), msg = sprintf("new algorithm misses some peaks"))
+                expect_length(missing, 0)
             }
         }
     }
-}
+})

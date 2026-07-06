@@ -5,8 +5,10 @@
 ## default combination (method = "reflection", direction = "right") is ever
 ## exercised indirectly through cwt(); the other 8 method/direction
 ## combinations had no coverage at all.
-extendLength <- MassSpecWavelet:::extendLength
-extendNBase <- MassSpecWavelet:::extendNBase
+##
+## Both functions are unexported, but testthat's test environment is a clone
+## of the package namespace (see testthat:::test_env()), so they resolve here
+## by their bare name, same as exported functions.
 
 test_that("extendLength() pads to the right with each method", {
     x <- 1:5

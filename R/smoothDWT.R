@@ -2,6 +2,10 @@
 #'
 #' Smooth (denoise) the spectrum by DWT (Discrete Wavelet Transform)
 #'
+#' **Deprecated**: this function appears to be unused, both internally in
+#' MassSpecWavelet and by known downstream packages, and is scheduled for
+#' removal in a future release. If you rely on it, please open an issue at
+#' <https://github.com/zeehio/MassSpecWavelet/issues> within the next year.
 #'
 #' @param ms a vector representing the mass spectrum
 #' @param nLevel the level of DWT decomposition
@@ -19,6 +23,12 @@
 #' @keywords methods
 smoothDWT <- function(ms, nLevel = 6, wf = "la8", localNoiseTh = seq(1, 0, by = -0.2), localWinSize = 500, globalNoiseTh = 0.75,
     smoothMethod = c("soft", "hard"), method = c("dwt", "modwt")) {
+    .Deprecated(msg = paste(
+        "smoothDWT() appears to be unused, both internally in MassSpecWavelet",
+        "and by known downstream packages, and is scheduled for removal in a",
+        "future release. If you rely on it, please open an issue at",
+        "https://github.com/zeehio/MassSpecWavelet/issues within the next year."
+    ))
     if (!requireNamespace("waveslim", quietly = TRUE)) {
         stop("Please install the waveslim package to use smoothDWT()")
     }

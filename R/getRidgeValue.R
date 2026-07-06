@@ -2,6 +2,10 @@
 #'
 #' Get the CWT coefficient values corresponding to the peak ridge
 #'
+#' **Deprecated**: this function appears to be unused, both internally in
+#' MassSpecWavelet and by known downstream packages, and is scheduled for
+#' removal in a future release. If you rely on it, please open an issue at
+#' <https://github.com/zeehio/MassSpecWavelet/issues> within the next year.
 #'
 #' @param ridgeList a list of ridge lines
 #' @param wCoefs 2-D CWT coefficients
@@ -11,6 +15,12 @@
 #' @author Pan Du
 #' @keywords methods
 getRidgeValue <- function(ridgeList, wCoefs, skip = 0) {
+    .Deprecated(msg = paste(
+        "getRidgeValue() appears to be unused, both internally in MassSpecWavelet",
+        "and by known downstream packages, and is scheduled for removal in a",
+        "future release. If you rely on it, please open an issue at",
+        "https://github.com/zeehio/MassSpecWavelet/issues within the next year."
+    ))
     ridgeLen <- sapply(ridgeList, length)
     ridgeName <- names(ridgeList)
     ridgeInfo <- matrix(as.numeric(unlist(strsplit(ridgeName, "_"))), nrow = 2)

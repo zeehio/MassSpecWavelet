@@ -20,10 +20,6 @@ size of the largest window on \code{x} containing \code{x[i]} where:
 Optionally, if \code{capWinSize} is a positive integer, the maximum window size
 is capped to that value, to increase performance. Use this in case you just
 want to check if there exists a window of that size.
-@export
-@examples
-x <- c(1, 2, 3, 2, 1)
-findLocalMaxWinSize(x)
 }
 }
 \description{
@@ -31,3 +27,10 @@ Compared to the rest of the package, this is a rather experimental function.
 If you plan to use it or are interested in it, please open an issue at
 https://github.com/zeehio/MassSpecWavelet/issues to show your interest.
 }
+\examples{
+\donttest{
+x <- c(1, 2, 3, 2, 1)
+findLocalMaxWinSize(x)
+}
+}
+\keyword{internal}

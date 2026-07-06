@@ -26,9 +26,6 @@ test_that("cwt_classic, cwt, and prepared-wavelets cwt give identical results", 
     )
 
     scales <- c(1, 2, 4, 8)
-    # cwt_classic() is unexported, but testthat's test environment is a clone
-    # of the package namespace (see testthat:::test_env()), so it resolves
-    # here by its bare name, same as exported functions.
     wCoefs_classic <- cwt_classic(skinny_peak, scales = scales, wavelet = "mexh")
     wCoefs_new <- cwt(skinny_peak, scales = scales, wavelet = "mexh")
     prep_wav <- prepareWavelets(

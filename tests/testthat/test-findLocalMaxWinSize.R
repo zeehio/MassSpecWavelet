@@ -1,10 +1,6 @@
 ## findLocalMaxWinSize() has zero test coverage of its C implementation
 ## (find_local_maximum.c). Despite its roxygen comment saying `@export`, it is
 ## not actually listed in NAMESPACE (see R/findLocalMaxWinSize.R).
-##
-## It's unexported, but testthat's test environment is a clone of the package
-## namespace (see testthat:::test_env()), so it resolves here by its bare
-## name, same as exported functions.
 
 test_that("findLocalMaxWinSize() matches its own documented example", {
     expect_equal(findLocalMaxWinSize(c(1, 2, 3, 2, 1)), c(0, 0, 5, 0, 0))

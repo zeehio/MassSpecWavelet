@@ -26,7 +26,7 @@ test_that("cwt_classic, cwt, and prepared-wavelets cwt give identical results", 
     )
 
     scales <- c(1, 2, 4, 8)
-    wCoefs_classic <- MassSpecWavelet:::cwt_classic(skinny_peak, scales = scales, wavelet = "mexh")
+    wCoefs_classic <- cwt_classic(skinny_peak, scales = scales, wavelet = "mexh")
     wCoefs_new <- cwt(skinny_peak, scales = scales, wavelet = "mexh")
     prep_wav <- prepareWavelets(
         length(skinny_peak),

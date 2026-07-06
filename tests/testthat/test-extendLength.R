@@ -5,8 +5,6 @@
 ## default combination (method = "reflection", direction = "right") is ever
 ## exercised indirectly through cwt(); the other 8 method/direction
 ## combinations had no coverage at all.
-extendLength <- MassSpecWavelet:::extendLength
-extendNBase <- MassSpecWavelet:::extendNBase
 
 test_that("extendLength() pads to the right with each method", {
     x <- 1:5

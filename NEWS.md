@@ -1,3 +1,23 @@
+# MassSpecWavelet 1.78.2 (2026-07-05)
+
+- `tuneInPeakInfo()`: Fix three crashes found while adding unit tests for this
+  function:
+   * A peak whose local refinement window contains no ridges (e.g. a
+     quiet/flat neighborhood) crashed with
+     `Error in strsplit(ridgeName.i, "_") : non-character argument` (the same
+     bug class fixed earlier in `identifyMajorPeaks()`). That peak is now
+     left unprocessed instead.
+   * Calling `tuneInPeakInfo()` via the direct `peakIndex`/`peakScale`
+     arguments (instead of `majorPeakInfo`) could crash with
+     `attempt to set an attribute on NULL` if any peak ended up unprocessed.
+     `NA` is now used as a placeholder when there is no original value to
+     fall back on.
+   * `peakDetectionCWT(tuneIn = TRUE)` on a flat/constant signal (whose
+     `majorPeakInfo$peakIndex` is empty) crashed with
+     `missing value where TRUE/FALSE needed`, since `for (i in 1:length(x))`
+     iterates twice when `x` has length 0. Fixed to return a well-formed
+     empty result instead.
+
 # MassSpecWavelet 1.78.1 (2026-07-05)
 
 - `identifyMajorPeaks()`: Fix `Error in strsplit(ridgeName, "_") : non-character

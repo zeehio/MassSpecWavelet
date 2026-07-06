@@ -20,6 +20,12 @@ A list of ridge values corresponding to the input ridgeList.
 \description{
 Get the CWT coefficient values corresponding to the peak ridge
 }
+\details{
+\strong{Deprecated}: this function appears to be unused, both internally in
+MassSpecWavelet and by known downstream packages, and is scheduled for
+removal in a future release. If you rely on it, please open an issue at
+\url{https://github.com/zeehio/MassSpecWavelet/issues} within the next year.
+}
 \author{
 Pan Du
 }

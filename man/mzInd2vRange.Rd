@@ -17,6 +17,12 @@ return a vector of sorted m/z values
 \description{
 Match m/z index to m/z value with a certain error range
 }
+\details{
+\strong{Deprecated}: this function appears to be unused, both internally in
+MassSpecWavelet and by known downstream packages, and is scheduled for
+removal in a future release. If you rely on it, please open an issue at
+\url{https://github.com/zeehio/MassSpecWavelet/issues} within the next year.
+}
 \seealso{
 \code{\link[=mzV2indRange]{mzV2indRange()}}
 }

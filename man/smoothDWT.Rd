@@ -41,6 +41,12 @@ as an attribute 'detail'.
 \description{
 Smooth (denoise) the spectrum by DWT (Discrete Wavelet Transform)
 }
+\details{
+\strong{Deprecated}: this function appears to be unused, both internally in
+MassSpecWavelet and by known downstream packages, and is scheduled for
+removal in a future release. If you rely on it, please open an issue at
+\url{https://github.com/zeehio/MassSpecWavelet/issues} within the next year.
+}
 \author{
 Pan Du
 }

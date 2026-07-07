@@ -1,5 +1,22 @@
 # MassSpecWavelet 1.79.2 (2026-07-05)
 
+- `tuneInPeakInfo()`: Fix several crashes:
+   * A peak whose local refinement window contains no usable ridges (e.g. a
+     quiet/flat neighborhood, or a window near the edge of the spectrum with
+     too few scales to search) no longer crashes with `Error in
+     strsplit(ridgeName, "_") : non-character argument`; the peak is now
+     reported as unprocessed instead.
+   * Calling `tuneInPeakInfo()` with `peakIndex`/`peakScale` directly
+     (instead of `majorPeakInfo`) no longer crashes with `Error in
+     names<-`.
+
+- Deprecated `getRidgeValue()`, `i2u()`, `u2i()`, `mzInd2vRange()`,
+  `mzV2indRange()` and `smoothDWT()`. These functions appear to be unused,
+  both internally in MassSpecWavelet and by known downstream packages, and
+  are scheduled for removal in a future release. If you rely on any of
+  them, please open an issue at
+  <https://github.com/zeehio/MassSpecWavelet/issues>.
+
 - Migrated the unit test suite from RUnit to testthat (3rd edition). Tests now
   live in `tests/testthat/` instead of `inst/tests/`, following the standard
   testthat package layout.

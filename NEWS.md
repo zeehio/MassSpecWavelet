@@ -10,12 +10,12 @@
      (instead of `majorPeakInfo`) no longer crashes with `Error in
      names<-`.
 
-- Deprecated `getRidgeValue()`, `i2u()`, `u2i()`, `mzInd2vRange()`,
-  `mzV2indRange()` and `smoothDWT()`. These functions appear to be unused,
-  both internally in MassSpecWavelet and by known downstream packages, and
-  are scheduled for removal in a future release. If you rely on any of
-  them, please open an issue at
-  <https://github.com/zeehio/MassSpecWavelet/issues>.
+- Deprecated the internal, unexported functions `getRidgeValue()`, `i2u()`,
+  `u2i()`, `mzInd2vRange()`, `mzV2indRange()` and `smoothDWT()`. These
+  functions appear to be unused, both internally in MassSpecWavelet and by
+  known downstream packages, and are scheduled for removal in a future
+  release. If you rely on any of them (e.g. via `:::`), please open an
+  issue at <https://github.com/zeehio/MassSpecWavelet/issues>.
 
 - Migrated the unit test suite from RUnit to testthat (3rd edition). Tests now
   live in `tests/testthat/` instead of `inst/tests/`, following the standard

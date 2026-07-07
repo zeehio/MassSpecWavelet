@@ -19,7 +19,7 @@
 
 - Migrated the unit test suite from RUnit to testthat (3rd edition). Tests now
   live in `tests/testthat/` instead of `inst/tests/`, following the standard
-  testthat package layout.
+  testthat package layout. Significant increased in test coverage.
 
 # MassSpecWavelet 1.79.1 (2026-07-05)
 
